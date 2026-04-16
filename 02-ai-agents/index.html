@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Agents 学习课程 — AI Agents Learning Course</title>
+
+  <!-- Google Fonts: Noto Sans SC (Chinese) + Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --color-accent:       #2A7B9B;
+      --color-accent-hover: #1F6280;
+      --color-accent-light: #E4F2F7;
+      --color-accent-muted: #5A9DB8;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">AI Agents 学习课程</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="AI智能体入门" role="tab" aria-label="Module 1: AI智能体入门"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="行业案例库" role="tab" aria-label="Module 2: 行业案例库"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="Jupyter实战教程" role="tab" aria-label="Module 3: Jupyter实战教程"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="框架对比学习" role="tab" aria-label="Module 4: 框架对比学习"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="微软系统课程" role="tab" aria-label="Module 5: 微软系统课程"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+<section class="module" id="module-1" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">AI智能体入门 — Getting Started with AI Agents</h1>
+      <p class="lang-zh" style="font-size: var(--text-lg); color: var(--color-text-secondary);">从 Datawhale 的 Hello-Agents 开始，了解智能体的基本概念和构建方法。</p>
+      <p class="lang-en">Start with Datawhale's Hello-Agents to understand the fundamentals of building AI agents.</p>
+    </header>
+
+    <div class="module-body">
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Hello-Agents 是什么？ — What Is Hello-Agents?</h2>
+        <p class="lang-zh"><span class="term" data-definition-zh="Datawhale 是一个中国开源社区，专注于AI和机器学习领域的学习资源" data-definition-en="Datawhale is a Chinese open-source community focused on learning resources for AI and machine learning">Datawhale</span> 社区开源了《从零开始构建智能体》教程，GitHub 星标超过 35,000+。</p>
+        <p class="lang-en">The Datawhale community open-sourced "Building Agents from Scratch," with over 35,000+ GitHub stars.</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🤖</div>
+            <div>
+              <strong>Hello-Agents</strong>
+              <p class="lang-zh">从理论到实战，全面掌握智能体系统的设计与实现</p>
+              <p class="lang-en">Master agent system design and implementation from theory to practice</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🌐</div>
+            <div>
+              <strong><span class="term" data-definition-zh="GitHub 是全球最大的代码托管平台，开发者在这里分享开源项目" data-definition-en="GitHub is the world's largest code hosting platform where developers share open-source projects">GitHub</span> 地址</strong>
+              <p class="lang-en">github.com/datawhalechina/hello-agents</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📚</div>
+            <div>
+              <strong>在线阅读</strong>
+              <p class="lang-en">datawhalechina.github.io/hello-agents</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">智能体的两种流派 — Two Schools of Agent Building</h2>
+        <p class="lang-zh">当前 <span class="term" data-definition-zh="Agent（智能体）是一种能自主感知环境、做出决策并执行动作的AI系统" data-definition-en="An Agent is an AI system that can autonomously perceive its environment, make decisions, and take actions">Agent</span> 构建主要分为两大流派：</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🔧</div>
+            <h4 class="pattern-title">流程驱动派 — Process-Driven</h4>
+            <p class="lang-zh">Dify、Coze、n8n 等低代码平台，LLM 作为数据处理后端，流程由人预先设计好</p>
+            <p class="lang-en">Low-code platforms like Dify, Coze, n8n — LLM acts as a data processing backend, with workflows designed by humans in advance</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🧠</div>
+            <h4 class="pattern-title">AI 原生派 — AI Native</h4>
+            <p class="lang-zh">真正以 AI 驱动的智能体，能自主规划、调用工具、与其他智能体协作</p>
+            <p class="lang-en">Truly AI-driven agents that can autonomously plan, use tools, and collaborate with other agents</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">关键洞察 — Key Insight</strong>
+            <p class="lang-zh">流程驱动派像是"按照菜谱做菜"——每一步都规定好了；AI 原生派像是"请了一位厨师"——告诉他你想吃什么，他自己决定怎么做。</p>
+            <p class="lang-en">Process-driven is like "following a recipe" — every step is predetermined. AI Native is like "hiring a chef" — you tell them what you want, and they decide how to make it.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">课程结构一览 — Course Structure</h2>
+        <p class="lang-zh">Hello-Agents 教程分为五个部分，共十六章：</p>
+        <p class="lang-en">Hello-Agents is organized into five parts with sixteen chapters:</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong class="lang-zh">智能体与语言模型基础</strong>
+              <strong class="lang-en">Agent & LLM Fundamentals</strong>
+              <p class="lang-zh">定义、历史、Transformer 基础、主流 LLM</p>
+              <p class="lang-en">Definitions, history, Transformer basics, popular LLMs</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong class="lang-zh">构建你的大语言模型智能体</strong>
+              <strong class="lang-en">Build Your LLM Agent</strong>
+              <p class="lang-zh">ReAct、Plan-and-Solve 范式，低代码平台，主流框架实战</p>
+              <p class="lang-en">ReAct, Plan-and-Solve patterns, low-code platforms, framework practice</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong class="lang-zh">高级知识扩展</strong>
+              <strong class="lang-en">Advanced Knowledge</strong>
+              <p class="lang-zh">记忆系统、上下文工程、MCP 协议、Agentic RL、性能评估</p>
+              <p class="lang-en">Memory systems, context engineering, MCP protocol, Agentic RL, evaluation</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong class="lang-zh">综合案例进阶</strong>
+              <strong class="lang-en">Advanced Projects</strong>
+              <p class="lang-zh">智能旅行助手、深度研究智能体、赛博小镇</p>
+              <p class="lang-en">Smart travel assistant, DeepResearch agent, Cyber town</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong class="lang-zh">毕业设计及未来展望</strong>
+              <strong class="lang-en">Final Project & Future Outlook</strong>
+              <p class="lang-zh">构建属于你的完整多智能体应用</p>
+              <p class="lang-en">Build your own complete multi-agent application</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">群聊动画 — Agent Collaboration Chat</h2>
+        <p class="lang-zh">看看一个智能体系统内部是如何协作的：</p>
+        <p class="lang-en">See how an agent system collaborates internally:</p>
+
+        <div class="chat-window" id="chat-module1">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="actor-a" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">用户 — User</span>
+                <p>帮我规划一趟去日本的旅行，预算5000元</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="actor-b" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">协调器 — Coordinator</span>
+                <p>收到！我来分解任务：搜索航班、查酒店、规划行程</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="actor-c" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-3)">🔍</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-3)">搜索智能体 — Search Agent</span>
+                <p>查到上海飞东京往返机票约2000元，东京酒店每晚400元</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="actor-d" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">📋</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">规划智能体 — Planner Agent</span>
+                <p>5天行程建议：东京3天+京都2天，总预算4800元，剩余200元餐饮</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="actor-b" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">协调器 — Coordinator</span>
+                <p>方案汇总完成，呈现给用户！✅</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module1-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一条消息 — Next</button>
+            <button class="btn chat-all-btn">播放全部 — Play All</button>
+            <button class="btn chat-reset-btn">重播 — Replay</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">从 0 构建智能体框架 — Building Your Own Agent Framework</h2>
+        <p class="lang-zh">Hello-Agents 教程最独特的地方是带你从零构建一个名为 <span class="term" data-definition-zh="HelloAgents 是教程中从零构建的智能体框架，基于 OpenAI 原生 API" data-definition-en="HelloAgents is an agent framework built from scratch in the tutorial, based on the OpenAI native API">HelloAgents</span> 的框架。下面是核心的 <span class="term" data-definition-zh="API 调用就像你去餐厅点餐——你告诉服务员（API）你想要什么，厨房（服务器）做好后送回来" data-definition-en="An API call is like ordering at a restaurant — you tell the waiter (API) what you want, and the kitchen (server) prepares it and brings it back">API 调用</span>代码：</p>
+        <p class="lang-en">The most unique part of Hello-Agents is that it guides you to build your own framework called HelloAgents from scratch. Here's the core API call code:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">from</span> openai <span class="code-keyword">import</span> OpenAI</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">class</span> <span class="code-function">Agent</span>:</span>
+<span class="code-line">    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(self, name, role):</span>
+<span class="code-line">        self.name = name</span>
+<span class="code-line">        self.role = role</span>
+<span class="code-line">        self.client = OpenAI()</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-keyword">def</span> <span class="code-function">respond</span>(self, messages):</span>
+<span class="code-line">        response = self.client.chat.completions.create(</span>
+<span class="code-line">            model=<span class="code-string">"gpt-4"</span>,</span>
+<span class="code-line">            messages=messages</span>
+<span class="code-line">        )</span>
+<span class="code-line">        <span class="code-keyword">return</span> response.choices[<span class="code-number">0</span>].message.content</span>
+</code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">从 openai 库导入 OpenAI 客户端...</p>
+              <p class="tl">定义一个 Agent 类，每个智能体有自己的名字和角色...</p>
+              <p class="tl">初始化时创建 OpenAI 客户端连接...</p>
+              <p class="tl">respond 方法接收消息列表，调用 GPT-4 模型...</p>
+              <p class="tl">把对话发送给 AI 并返回生成的回复内容...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">测验 — Quiz: 理解智能体</h2>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right-zh="正确！AI 原生智能体能自主规划，而不只是按预设流程执行。"
+               data-explanation-right-en="Correct! AI-native agents can plan autonomously, not just follow pre-set workflows."
+               data-explanation-wrong-zh="再想想——关键区别在于是否能自主做决策和规划。"
+               data-explanation-wrong-en="Think again — the key difference is whether it can make autonomous decisions and plans.">
+            <h3 class="quiz-question">
+              <p class="lang-zh">智能体的"AI 原生派"和"流程驱动派"最核心的区别是什么？</p>
+              <p class="lang-en">What is the most fundamental difference between "AI Native" and "Process-Driven" agents?</p>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">使用的模型不同</span>
+                <span class="lang-en">Different models used</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">是否能自主规划和决策</span>
+                <span class="lang-en">Whether it can autonomously plan and make decisions</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">价格不同</span>
+                <span class="lang-en">Different pricing</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">检查答案 — Check</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">重试 — Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">行业案例库 — Industry Use Cases</h1>
+      <p class="lang-zh" style="font-size: var(--text-lg); color: var(--color-text-secondary);">探索 500 AI-Agents Projects，了解 AI 智能体在各行各业的应用。</p>
+      <p class="lang-en">Explore 500 AI-Agents Projects to see how AI agents are used across industries.</p>
+    </header>
+
+    <div class="module-body">
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">500+ AI Agent Projects 是什么？</h2>
+        <p class="lang-zh">这是一个由 <span class="term" data-definition-zh="Ashish Patel 是一位AI开发者和开源贡献者" data-definition-en="Ashish Patel is an AI developer and open-source contributor">ashishpatel26</span> 维护的精选案例库，收录了 500+ 个 AI 智能体在各行业的实际应用案例。</p>
+        <p class="lang-en">A curated collection maintained by ashishpatel26, featuring 500+ real-world AI agent applications across industries.</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🏥</div>
+            <div>
+              <strong class="lang-zh">医疗健康</strong>
+              <strong class="lang-en">Healthcare</strong>
+              <p class="lang-zh">AI 健康助手、医学报告分析、疾病诊断</p>
+              <p class="lang-en">AI health assistants, medical report analysis, disease diagnosis</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">💰</div>
+            <div>
+              <strong class="lang-zh">金融</strong>
+              <strong class="lang-en">Finance</strong>
+              <p class="lang-zh">自动交易机器人、股票分析工具</p>
+              <p class="lang-en">Automated trading bots, stock analysis tools</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📖</div>
+            <div>
+              <strong class="lang-zh">教育</strong>
+              <strong class="lang-en">Education</strong>
+              <p class="lang-zh">虚拟 AI 导师、个性化学习</p>
+              <p class="lang-en">Virtual AI tutors, personalized learning</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🛡️</div>
+            <div>
+              <strong class="lang-zh">网络安全</strong>
+              <strong class="lang-en">Cybersecurity</strong>
+              <p class="lang-zh">实时威胁检测、自动红队测试</p>
+              <p class="lang-en">Real-time threat detection, automated red team testing</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">框架级实战案例 — Framework-Level Projects</h2>
+        <p class="lang-zh">该仓库按主流智能体框架分类，整理了各框架的开源示例项目：</p>
+        <p class="lang-en">The repository organizes open-source sample projects by popular agent frameworks:</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">👥</div>
+            <h4 class="pattern-title">CrewAI</h4>
+            <p class="lang-zh">角色扮演式多智能体协作。邮件自动回复、会议助手、旅行规划、Instagram 帖子生成等 20+ 案例</p>
+            <p class="lang-en">Role-playing multi-agent collaboration. 20+ cases including auto email replies, meeting assistants, trip planning, Instagram post generation</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🔄</div>
+            <h4 class="pattern-title">AutoGen</h4>
+            <p class="lang-zh">微软开源的多智能体对话框架。代码生成、群聊协作、Web 搜索、SQL 生成等</p>
+            <p class="lang-en">Microsoft's open-source multi-agent conversation framework. Code generation, group chat collaboration, web search, SQL generation</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📊</div>
+            <h4 class="pattern-title">LangGraph</h4>
+            <p class="lang-zh">基于图结构的工作流引擎。客服智能体、论文评分、音乐创作、代码自愈等</p>
+            <p class="lang-en">Graph-based workflow engine. Customer support agents, essay grading, music composition, self-healing code</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🎯</div>
+            <h4 class="pattern-title">Agno</h4>
+            <p class="lang-zh">轻量级智能体框架，适合快速原型开发</p>
+            <p class="lang-en">Lightweight agent framework, ideal for rapid prototyping</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">数据流动画 — How Agents Communicate</h2>
+        <p class="lang-zh">在一个多智能体系统中，信息是如何在各个组件之间流动的：</p>
+        <p class="lang-en">In a multi-agent system, here's how information flows between components:</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"用户输入请求"},
+          {"highlight":"flow-actor-2","label":"协调器分析意图","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-3","label":"搜索智能体查询数据","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-4","label":"分析智能体处理结果","packet":true,"from":"actor-3","to":"actor-4"},
+          {"highlight":"flow-actor-2","label":"协调器整合所有结果","packet":true,"from":"actor-4","to":"actor-2"},
+          {"highlight":"flow-actor-1","label":"返回最终答案给用户","packet":true,"from":"actor-2","to":"actor-1"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon">👤</div>
+              <span class="lang-zh">用户</span>
+              <span class="lang-en" style="font-size:var(--text-xs);color:var(--color-text-muted)">User</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon">🧠</div>
+              <span class="lang-zh">协调器</span>
+              <span class="lang-en" style="font-size:var(--text-xs);color:var(--color-text-muted)">Coordinator</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon">🔍</div>
+              <span class="lang-zh">搜索智能体</span>
+              <span class="lang-en" style="font-size:var(--text-xs);color:var(--color-text-muted)">Search Agent</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon">📊</div>
+              <span class="lang-zh">分析智能体</span>
+              <span class="lang-en" style="font-size:var(--text-xs);color:var(--color-text-muted)">Analysis Agent</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点击"下一步"开始 — Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步 — Next</button>
+            <button class="btn flow-reset-btn">重新开始 — Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">经典代码示例解析 — Key Code Example</h2>
+        <p class="lang-zh">AutoGen 框架中，多个智能体通过群聊协作的核心代码：</p>
+        <p class="lang-en">In the AutoGen framework, here's the core code for multi-agent group chat collaboration:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">from</span> autogen <span class="code-keyword">import</span> GroupChat, GroupChatManager</span>
+<span class="code-line"></span>
+<span class="code-line">groupchat = GroupChat(</span>
+<span class="code-line">    agents=[coder, reviewer, tester],</span>
+<span class="code-line">    messages=[],</span>
+<span class="code-line">    max_round=<span class="code-number">12</span></span>
+<span class="code-line">)</span>
+<span class="code-line">manager = GroupChatManager(</span>
+<span class="code-line">    groupchat=groupchat,</span>
+<span class="code-line">    llm_config={</span>
+<span class="code-line">        <span class="code-string">"config_list"</span>: config_list</span>
+<span class="code-line">    }</span>
+<span class="code-line">)</span>
+</code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">导入 AutoGen 框架的群聊和群聊管理器...</p>
+              <p class="tl">创建一个群聊，包含三个角色：编码员、审核员、测试员...</p>
+              <p class="tl">初始消息为空，最多进行 12 轮对话...</p>
+              <p class="tl">创建一个群聊管理器来协调整个群聊...</p>
+              <p class="tl">配置 LLM 模型列表供智能体使用...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">
+              <span class="lang-zh">学到了吗？</span>
+              <span class="lang-en">Did you know?</span>
+            </strong>
+            <p class="lang-zh">AutoGen 的群聊就像微信群——每个成员（智能体）可以看到前面的对话，然后决定什么时候发言、说什么。管理器就像群主，决定发言的顺序和规则。</p>
+            <p class="lang-en">AutoGen's group chat is like a WeChat group — each member (agent) can see previous messages and decides when and what to say. The manager is like the group admin, deciding the order and rules of speaking.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">测验 — Quiz: 行业应用理解</h2>
+
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right-zh="正确！多智能体系统的核心优势是不同角色的专业分工，各自擅长不同的任务。"
+               data-explanation-right-en="Correct! The core advantage of multi-agent systems is specialized division of labor — each role excels at different tasks."
+               data-explanation-wrong-zh="再想想——多智能体系统的价值在于不同角色各司其职，协同完成复杂任务。"
+               data-explanation-wrong-en="Think again — the value of multi-agent systems lies in different roles each doing their part to collaboratively complete complex tasks.">
+            <h3 class="quiz-question">
+              <p class="lang-zh">为什么在 AutoGen 的群聊中要设置多个不同角色的智能体（编码员、审核员、测试员），而不是用一个万能智能体？</p>
+              <p class="lang-en">Why does AutoGen's group chat set up multiple agents with different roles (coder, reviewer, tester) instead of using one all-purpose agent?</p>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">因为多个智能体运行速度更快</span>
+                <span class="lang-en">Because multiple agents run faster</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">因为一个智能体的上下文长度不够</span>
+                <span class="lang-en">Because one agent doesn't have enough context length</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">因为每个角色可以专注于自己擅长的任务，提高整体质量</span>
+                <span class="lang-en">Because each role can focus on tasks they excel at, improving overall quality</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">检查答案 — Check</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">重试 — Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">Jupyter实战教程 — Jupyter Hands-on Tutorials</h1>
+      <p class="lang-zh" style="font-size: var(--text-lg); color: var(--color-text-secondary);">GenAI Agents 项目提供 50+ 个 Jupyter Notebook 实战教程，从入门到精通。</p>
+      <p class="lang-en">GenAI Agents provides 50+ Jupyter Notebook hands-on tutorials, from beginner to advanced.</p>
+    </header>
+
+    <div class="module-body">
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">GenAI Agents 是什么？ — What Is GenAI Agents?</h2>
+        <p class="lang-zh">由 <span class="term" data-definition-zh="Nir Diamant 是一位AI教育者，拥有50,000+订阅者的Substack作者" data-definition-en="Nir Diamant is an AI educator with a Substack of 50,000+ subscribers">NirDiamant</span> 创建的综合教程库，包含 50+ 个 <span class="term" data-definition-zh="Jupyter Notebook 是一种可以在浏览器中直接编写代码、运行并即时看到结果的交互式文档格式" data-definition-en="Jupyter Notebook is an interactive document format where you can write code, run it, and see results immediately in your browser">Jupyter Notebook</span> 教程。</p>
+        <p class="lang-en">A comprehensive tutorial library created by NirDiamant, featuring 50+ Jupyter Notebook tutorials.</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📓</div>
+            <div>
+              <strong>50+ 实战教程 — 50+ Hands-on Tutorials</strong>
+              <p class="lang-zh">每个教程都是一个可运行的 Jupyter Notebook，边学边练</p>
+              <p class="lang-en">Each tutorial is a runnable Jupyter Notebook — learn by doing</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🏗️</div>
+            <div>
+              <strong>从简单到复杂 — From Simple to Complex</strong>
+              <p class="lang-zh">从对话机器人到多智能体协作系统，逐步进阶</p>
+              <p class="lang-en">From chatbots to multi-agent collaboration systems, progressive learning</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">教程分类一览 — Tutorial Categories</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🌱</div>
+            <h4 class="pattern-title">
+              <span class="lang-zh">入门级</span>
+              <span class="lang-en">Beginner</span>
+            </h4>
+            <p class="lang-zh">对话式智能体、简单问答、数据分析</p>
+            <p class="lang-en">Conversational agents, simple Q&A, data analysis</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🔧</div>
+            <h4 class="pattern-title">
+              <span class="lang-zh">框架教程</span>
+              <span class="lang-en">Framework Tutorials</span>
+            </h4>
+            <p class="lang-zh">LangGraph 工作流、MCP 协议集成</p>
+            <p class="lang-en">LangGraph workflows, MCP protocol integration</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">💼</div>
+            <h4 class="pattern-title">
+              <span class="lang-zh">商业应用</span>
+              <span class="lang-en">Business Applications</span>
+            </h4>
+            <p class="lang-zh">客服智能体、论文评分、旅行规划、合同分析</p>
+            <p class="lang-en">Customer support, essay grading, trip planning, contract analysis</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🎨</div>
+            <h4 class="pattern-title">
+              <span class="lang-zh">创意应用</span>
+              <span class="lang-en">Creative Applications</span>
+            </h4>
+            <p class="lang-zh">GIF 动画生成、音乐创作、内容智能体</p>
+            <p class="lang-en">GIF animation generation, music composition, content agents</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🚀</div>
+            <h4 class="pattern-title">
+              <span class="lang-zh">高级进阶</span>
+              <span class="lang-en">Advanced</span>
+            </h4>
+            <p class="lang-zh">自我修复代码、天气应急系统、销售通话分析</p>
+            <p class="lang-en">Self-healing code, weather emergency systems, sales call analysis</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">LangGraph 教程核心代码 — LangGraph Tutorial Core Code</h2>
+        <p class="lang-zh">LangGraph 是最流行的智能体框架之一。下面是创建一个简单工作流的核心代码：</p>
+        <p class="lang-en">LangGraph is one of the most popular agent frameworks. Here's the core code for creating a simple workflow:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">from</span> langgraph.graph <span class="code-keyword">import</span> StateGraph, END</span>
+<span class="code-line"><span class="code-keyword">from</span> typing <span class="code-keyword">import</span> TypedDict</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">class</span> <span class="code-function">AgentState</span>(TypedDict):</span>
+<span class="code-line">    messages: <span class="code-keyword">list</span></span>
+<span class="code-line"></span>
+<span class="code-line">workflow = StateGraph(AgentState)</span>
+<span class="code-line">workflow.add_node(<span class="code-string">"research"</span>, research_agent)</span>
+<span class="code-line">workflow.add_node(<span class="code-string">"write"</span>, writer_agent)</span>
+<span class="code-line">workflow.add_edge(<span class="code-string">"research"</span>, <span class="code-string">"write"</span>)</span>
+<span class="code-line">workflow.set_entry_point(<span class="code-string">"research"</span>)</span>
+<span class="code-line">app = workflow.compile()</span>
+</code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">从 langgraph 导入 StateGraph，定义工作流的结构...</p>
+              <p class="tl">定义智能体的状态——这里保存消息列表...</p>
+              <p class="tl">创建一个基于状态的工作流...</p>
+              <p class="tl">添加"研究"节点：由研究智能体执行...</p>
+              <p class="tl">添加"写作"节点：由写作智能体执行...</p>
+              <p class="tl">连接两个节点：研究完成后自动进入写作...</p>
+              <p class="tl">设置入口点从研究开始...</p>
+              <p class="tl">编译工作流，变成一个可运行的应用...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">
+              <span class="lang-zh">关键洞察</span>
+              <span class="lang-en">Key Insight</span>
+            </strong>
+            <p class="lang-zh">LangGraph 的核心思想把智能体工作流想象成一张"流程图"——每个节点是一个智能体，每条边是数据流动的方向。你只需要定义"谁做什么"和"做完之后交给谁"，框架自动处理执行和状态管理。</p>
+            <p class="lang-en">LangGraph's core idea is to think of agent workflows as a "flowchart" — each node is an agent, each edge is the direction of data flow. You just define "who does what" and "who gets it next," and the framework handles execution and state management automatically.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">MCP 协议教程 — Model Context Protocol</h2>
+        <p class="lang-zh"><span class="term" data-definition-zh="MCP（Model Context Protocol）是一个开放标准，让 AI 模型可以像 USB 设备一样即插即用地连接外部工具和资源" data-definition-en="MCP (Model Context Protocol) is an open standard that lets AI models connect to external tools and resources like plugging in a USB device">MCP</span> 教程展示了如何让智能体调用外部工具：</p>
+        <p class="lang-en">The MCP tutorial shows how agents can call external tools:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">from</span> mcp <span class="code-keyword">import</span> ClientSession</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">async def</span> <span class="code-function">use_tool</span>():</span>
+<span class="code-line">    <span class="code-keyword">async with</span> ClientSession() <span class="code-keyword">as</span> session:</span>
+<span class="code-line">        <span class="code-keyword">await</span> session.initialize()</span>
+<span class="code-line">        result = <span class="code-keyword">await</span> session.call_tool(</span>
+<span class="code-line">            <span class="code-string">"weather"</span>,</span>
+<span class="code-line">            {<span class="code-string">"city"</span>: <span class="code-string">"Tokyo"</span>}</span>
+<span class="code-line">        )</span>
+<span class="code-line">        <span class="code-keyword">return</span> result</span>
+</code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">导入 MCP 客户端会话类...</p>
+              <p class="tl">定义一个异步函数来使用外部工具...</p>
+              <p class="tl">创建一个 MCP 会话连接...</p>
+              <p class="tl">初始化会话，准备调用...</p>
+              <p class="tl">调用名为 "weather" 的工具...</p>
+              <p class="tl">传入参数：查询东京的天气...</p>
+              <p class="tl">返回工具的执行结果...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">测验 — Quiz: 框架理解</h2>
+
+        <div class="quiz-container" id="quiz-module3">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right-zh="正确！LangGraph 中 add_edge 定义了执行顺序——研究完成后才进入写作，就像流水线。"
+               data-explanation-right-en="Correct! In LangGraph, add_edge defines execution order — writing only starts after research completes, like an assembly line."
+               data-explanation-wrong-zh="再想想——工作流的执行顺序是由 add_edge 连接的，从入口点开始沿着边走。"
+               data-explanation-wrong-en="Think again — workflow execution order follows the add_edge connections, starting from the entry point and following the edges.">
+            <h3 class="quiz-question">
+              <p class="lang-zh">在 LangGraph 工作流中，如果你想让"研究→写作→审核"三个步骤按顺序执行，应该如何连接？</p>
+              <p class="lang-en">In a LangGraph workflow, if you want "research → write → review" three steps to execute in order, how should you connect them?</p>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">三个节点同时运行，不需要连接</span>
+                <span class="lang-en">Run all three nodes simultaneously, no connections needed</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">add_edge("research","write") 然后 add_edge("write","review")</span>
+                <span class="lang-en">add_edge("research","write") then add_edge("write","review")</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">只需要设置入口点为 research</span>
+                <span class="lang-en">Just set the entry point to research</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">检查答案 — Check</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">重试 — Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-4" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">框架对比学习 — Framework Comparison</h1>
+      <p class="lang-zh" style="font-size: var(--text-lg); color: var(--color-text-secondary);">Hugging Face 官方课程，学习 smolagents、LangGraph 和 LlamaIndex 三大框架。</p>
+      <p class="lang-en">Hugging Face official course — learn the three major frameworks: smolagents, LangGraph, and LlamaIndex.</p>
+    </header>
+
+    <div class="module-body">
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Hugging Face Agents Course 是什么？</h2>
+        <p class="lang-zh"><span class="term" data-definition-zh="Hugging Face 是全球最大的开源AI社区，致力于机器学习、自然语言处理等领域" data-definition-en="Hugging Face is the world's largest open-source AI community, focused on machine learning, NLP, and more">Hugging Face</span> 官方推出的智能体课程，分为 4 个单元，从基础到最终项目实战。</p>
+        <p class="lang-en">Hugging Face's official agents course has 4 units, from fundamentals to final project.</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">U0</div>
+            <div class="step-body">
+              <strong class="lang-zh">欢迎来到课程</strong>
+              <strong class="lang-en">Welcome to the Course</strong>
+              <p class="lang-zh">课程指南、必备工具和概览</p>
+              <p class="lang-en">Course guidelines, necessary tools, and overview</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">U1</div>
+            <div class="step-body">
+              <strong class="lang-zh">智能体入门</strong>
+              <strong class="lang-en">Introduction to Agents</strong>
+              <p class="lang-zh">智能体定义、LLM、模型家族树、特殊 Token</p>
+              <p class="lang-en">Agent definitions, LLMs, model family trees, special tokens</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">U2</div>
+            <div class="step-body">
+              <strong class="lang-zh">AI 智能体框架</strong>
+              <strong class="lang-en">Frameworks for AI Agents</strong>
+              <p class="lang-zh">smolagents、LangGraph、LlamaIndex 三大框架对比</p>
+              <p class="lang-en">Comparison of smolagents, LangGraph, and LlamaIndex</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">U3</div>
+            <div class="step-body">
+              <strong class="lang-zh">Agentic RAG 实战</strong>
+              <strong class="lang-en">Use Case for Agentic RAG</strong>
+              <p class="lang-zh">使用智能体增强检索回答不同场景</p>
+              <p class="lang-en">Use agentic RAG to handle different scenarios</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">U4</div>
+            <div class="step-body">
+              <strong class="lang-zh">最终项目 — 创建、测试和认证</strong>
+              <strong class="lang-en">Final Project — Create, Test & Certify</strong>
+              <p class="lang-zh">自动化评估你的智能体，参与排行榜</p>
+              <p class="lang-en">Automated evaluation of your agent, compete on leaderboard</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">三大框架对比 — Three Frameworks Compared</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🤗</div>
+            <h4 class="pattern-title">smolagents</h4>
+            <p class="lang-zh">Hugging Face 官方轻量级框架，简单上手，适合教学和快速原型</p>
+            <p class="lang-en">Hugging Face's lightweight framework — simple to learn, ideal for teaching and rapid prototyping</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🔗</div>
+            <h4 class="pattern-title">LangGraph</h4>
+            <p class="lang-zh">基于图结构的生产级工作流引擎，灵活且强大</p>
+            <p class="lang-en">Production-grade graph-based workflow engine — flexible and powerful</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📑</div>
+            <h4 class="pattern-title">LlamaIndex</h4>
+            <p class="lang-zh">专注数据索引和 RAG 场景，让你的数据成为智能体的知识库</p>
+            <p class="lang-en">Focused on data indexing and RAG — make your data the agent's knowledge base</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">
+              <span class="lang-zh">选择框架的建议</span>
+              <span class="lang-en">Framework Selection Tip</span>
+            </strong>
+            <p class="lang-zh">如果你刚开始——选 smolagents；如果你要构建生产级应用——选 LangGraph；如果你的核心需求是搜索自己的文档/数据——选 LlamaIndex。</p>
+            <p class="lang-en">Just starting — pick smolagents. Building production apps — pick LangGraph. Core need is searching your own documents/data — pick LlamaIndex.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">smolagents 核心代码 — smolagents Core Code</h2>
+        <p class="lang-zh">smolagents 的极简设计——几行代码就能创建一个智能体：</p>
+        <p class="lang-en">smolagents' minimalist design — create an agent in just a few lines:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">from</span> smolagents <span class="code-keyword">import</span> CodeAgent, HfApiModel</span>
+<span class="code-line"></span>
+<span class="code-line">model = HfApiModel(model_id=<span class="code-string">"Qwen/Qwen2.5-Coder-32B-Instruct"</span>)</span>
+<span class="code-line">agent = CodeAgent(tools=[], model=model)</span>
+<span class="code-line"></span>
+<span class="code-line">result = agent.run(</span>
+<span class="code-line">    <span class="code-string">"How many seconds would it take for a jaguar "</span></span>
+<span class="code-line">    <span class="code-string">"to run a marathon at top speed?"</span></span>
+<span class="code-line">)</span>
+</code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">导入 CodeAgent 和 HuggingFace API 模型...</p>
+              <p class="tl">初始化一个 HuggingFace 模型（这里用的是 Qwen 代码模型）...</p>
+              <p class="tl">创建一个 CodeAgent，暂时不添加任何工具...</p>
+              <p class="tl">运行智能体，提出一个问题：一只美洲豹以最高速度跑完马拉松需要多少秒？...</p>
+              <p class="tl">智能体会自己推理并计算出答案...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">测验 — Quiz: 框架选择</h2>
+
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right-zh="正确！smolagents 设计目标就是极简——几行代码即可开始，不需要配置工作流图。"
+               data-explanation-right-en="Correct! smolagents is designed for minimalism — start in a few lines, no workflow graph configuration needed."
+               data-explanation-wrong-zh="再想想——smolagents 的核心卖点就是代码量极少，不需要复杂配置。"
+               data-explanation-wrong-en="Think again — smolagents' core selling point is minimal code, no complex configuration required.">
+            <h3 class="quiz-question">
+              <p class="lang-zh">如果你想快速验证一个智能体想法，不关心生产部署和复杂工作流，应该选择哪个框架？</p>
+              <p class="lang-en">If you want to quickly validate an agent idea without caring about production deployment or complex workflows, which framework should you choose?</p>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">smolagents — 最少代码，最快上手</span>
+                <span class="lang-en">smolagents — least code, fastest to start</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">LangGraph — 最灵活</span>
+                <span class="lang-en">LangGraph — most flexible</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">LlamaIndex — 最全面的知识检索</span>
+                <span class="lang-en">LlamaIndex — most comprehensive knowledge retrieval</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">检查答案 — Check</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重试 — Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-5" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">微软系统课程 — Microsoft System Course</h1>
+      <p class="lang-zh" style="font-size: var(--text-lg); color: var(--color-text-secondary);">Microsoft AI Agents for Beginners — 12+ 课时，覆盖主流工具链和 Agent 设计模式。</p>
+      <p class="lang-en">Microsoft AI Agents for Beginners — 12+ lessons covering mainstream toolchains and Agent design patterns.</p>
+    </header>
+
+    <div class="module-body">
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">微软课程概览 — Course Overview</h2>
+        <p class="lang-zh">微软开源的 <span class="term" data-definition-zh="AI Agents for Beginners 是微软官方开源的AI智能体入门课程，提供50+语言翻译" data-definition-en="AI Agents for Beginners is Microsoft's official open-source AI agent intro course, with 50+ language translations">AI Agents for Beginners</span> 是一个完整的系统课程，覆盖从入门到生产的完整链路。</p>
+        <p class="lang-en">Microsoft's open-source AI Agents for Beginners is a complete system course covering the full path from beginner to production.</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📋</div>
+            <div>
+              <strong>15+ 课时 — 15+ Lessons</strong>
+              <p class="lang-zh">每课包含文本教程、短视频和 Python 代码示例</p>
+              <p class="lang-en">Each lesson includes text tutorials, short videos, and Python code samples</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🌍</div>
+            <div>
+              <strong>50+ 语言翻译 — 50+ Languages</strong>
+              <p class="lang-zh">简体中文、繁体中文、日语、韩语、法语、德语等全覆盖</p>
+              <p class="lang-en">Full coverage: Simplified Chinese, Traditional Chinese, Japanese, Korean, French, German, etc.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">课程目录 — Full Lesson List</h2>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <div class="step-body">
+              <strong class="lang-zh">AI 智能体简介与用例</strong>
+              <strong class="lang-en">Intro to AI Agents & Use Cases</strong>
+              <p class="lang-zh">什么是智能体？在哪些行业有应用？</p>
+              <p class="lang-en">What are agents? Which industries use them?</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <div class="step-body">
+              <strong class="lang-zh">探索 AI 智能体框架</strong>
+              <strong class="lang-en">Exploring AI Agentic Frameworks</strong>
+              <p class="lang-zh">对比 OpenAI、CrewAI、LangGraph 等主流工具</p>
+              <p class="lang-en">Compare OpenAI, CrewAI, LangGraph, and other mainstream tools</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <div class="step-body">
+              <strong class="lang-zh">理解设计模式</strong>
+              <strong class="lang-en">Agentic Design Patterns</strong>
+              <p class="lang-zh">反射、规划、工具调用等核心模式</p>
+              <p class="lang-en">Core patterns: reflection, planning, tool use</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">04</div>
+            <div class="step-body">
+              <strong class="lang-zh">工具调用设计模式</strong>
+              <strong class="lang-en">Tool Use Design Pattern</strong>
+              <p class="lang-zh">智能体如何调用外部工具执行任务</p>
+              <p class="lang-en">How agents call external tools to execute tasks</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">05</div>
+            <div class="step-body">
+              <strong class="lang-zh">Agentic RAG</strong>
+              <strong class="lang-en">Agentic RAG</strong>
+              <p class="lang-zh">智能体驱动的知识检索问答</p>
+              <p class="lang-en">Agent-driven knowledge retrieval Q&A</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">06</div>
+            <div class="step-body">
+              <strong class="lang-zh">构建可信智能体</strong>
+              <strong class="lang-en">Building Trustworthy AI Agents</strong>
+              <p class="lang-zh">安全性、可解释性、公平性</p>
+              <p class="lang-en">Safety, explainability, fairness</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">07</div>
+            <div class="step-body">
+              <strong class="lang-zh">规划设计模式</strong>
+              <strong class="lang-en">Planning Design Pattern</strong>
+              <p class="lang-zh">智能体如何制定和执行计划</p>
+              <p class="lang-en">How agents plan and execute strategies</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">08</div>
+            <div class="step-body">
+              <strong class="lang-zh">多智能体设计模式</strong>
+              <strong class="lang-en">Multi-Agent Design Pattern</strong>
+              <p class="lang-zh">多个智能体如何协同工作</p>
+              <p class="lang-en">How multiple agents collaborate</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">09</div>
+            <div class="step-body">
+              <strong class="lang-zh">元认知设计模式</strong>
+              <strong class="lang-en">Metacognition Design Pattern</strong>
+              <p class="lang-zh">智能体如何"思考自己的思考"</p>
+              <p class="lang-en">How agents "think about their own thinking"</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">10</div>
+            <div class="step-body">
+              <strong class="lang-zh">生产环境中的智能体</strong>
+              <strong class="lang-en">AI Agents in Production</strong>
+              <p class="lang-zh">部署、监控、扩展的最佳实践</p>
+              <p class="lang-en">Best practices for deployment, monitoring, and scaling</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">11</div>
+            <div class="step-body">
+              <strong class="lang-zh">Agentic 协议（MCP, A2A, NLWeb）</strong>
+              <strong class="lang-en">Agentic Protocols</strong>
+              <p class="lang-zh">MCP、A2A、NLWeb 协议解析</p>
+              <p class="lang-en">MCP, A2A, NLWeb protocol deep dive</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">12</div>
+            <div class="step-body">
+              <strong class="lang-zh">上下文工程</strong>
+              <strong class="lang-en">Context Engineering</strong>
+              <p class="lang-zh">为智能体设计和管理工作上下文</p>
+              <p class="lang-en">Design and manage working context for agents</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">群聊动画 — Multi-Agent Collaboration</h2>
+        <p class="lang-zh">微软课程中多智能体协作的完整流程展示：</p>
+        <p class="lang-en">A complete multi-agent collaboration flow from the Microsoft course:</p>
+
+        <div class="chat-window" id="chat-module2">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="actor-a" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">用户 — User</span>
+                <p>帮我分析这份法律合同的关键条款</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="actor-b" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">📋</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">规划器 — Planner</span>
+                <p>我来拆解：先阅读合同，提取关键条款，然后进行风险评估</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="actor-c" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-3)">📄</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-3)">阅读智能体 — Reader</span>
+                <p>已读取合同，发现 12 个关键条款，包括违约责任、保密协议和终止条件</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="actor-d" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚖️</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">审核智能体 — Reviewer</span>
+                <p>风险评估完成：第 3 条违约责任过严，建议重新谈判。第 7 条保密范围过宽。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="actor-b" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">📋</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">规划器 — Planner</span>
+                <p>分析完成，生成报告并提交给用户 ✅</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module2-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一条 — Next</button>
+            <button class="btn chat-all-btn">播放全部 — Play All</button>
+            <button class="btn chat-reset-btn">重播 — Replay</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">上下文工程代码示例 — Context Engineering Code</h2>
+        <p class="lang-zh">微软课程中上下文工程的关键概念——管理系统提示和对话历史：</p>
+        <p class="lang-en">Key concept from the Microsoft course — managing system prompts and conversation history:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line">messages = [</span>
+<span class="code-line">    {</span>
+<span class="code-line">        <span class="code-string">"role"</span>: <span class="code-string">"system"</span>,</span>
+<span class="code-line">        <span class="code-string">"content"</span>: <span class="code-string">"你是一个法律助手。请仔细分析合同条款，"</span></span>
+<span class="code-line">                   <span class="code-string">"并标注潜在风险。"</span></span>
+<span class="code-line">    },</span>
+<span class="code-line">    {</span>
+<span class="code-line">        <span class="code-string">"role"</span>: <span class="code-string">"user"</span>,</span>
+<span class="code-line">        <span class="code-string">"content"</span>: <span class="code-string">"请分析这份合同的违约责任条款。"</span></span>
+<span class="code-line">    }</span>
+<span class="code-line">]</span>
+</code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">创建一个消息列表，包含两条消息...</p>
+              <p class="tl">system 角色消息：定义智能体的角色和行为准则——这里设定为"法律助手"...</p>
+              <p class="tl">告诉智能体要做什么：分析合同并标注风险...</p>
+              <p class="tl">user 角色消息：用户的具体请求...</p>
+              <p class="tl">让智能体分析具体的违约责任条款...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">
+              <span class="lang-zh">学到了吗？</span>
+              <span class="lang-en">Did you know?</span>
+            </strong>
+            <p class="lang-zh">上下文工程是智能体开发中最被低估的技能。system 提示就像给新员工的工作描述——定义了他的角色、权限和工作方式。好的 system 提示比复杂的代码更重要。</p>
+            <p class="lang-en">Context engineering is the most underrated skill in agent development. The system prompt is like a job description for a new employee — it defines their role, authority, and way of working. A good system prompt matters more than complex code.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">测验 — Quiz: 课程综合理解</h2>
+
+        <div class="quiz-container" id="quiz-module5">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right-zh="正确！system 消息定义了智能体的角色、行为准则和专业领域，这是上下文工程的核心。"
+               data-explanation-right-en="Correct! The system message defines the agent's role, behavioral guidelines, and domain expertise — this is the core of context engineering."
+               data-explanation-wrong-zh="再想想——在上下文工程中，system 消息的作用是设定智能体的'人格'和工作方式。"
+               data-explanation-wrong-en="Think again — in context engineering, the system message sets the agent's 'personality' and way of working.">
+            <h3 class="quiz-question">
+              <p class="lang-zh">在构建一个法律助手智能体时，system 消息中最重要的内容是什么？</p>
+              <p class="lang-en">When building a legal assistant agent, what is the most important content in the system message?</p>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">法律条文的具体内容</span>
+                <span class="lang-en">Specific legal article content</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">智能体的角色定义和行为准则</span>
+                <span class="lang-en">The agent's role definition and behavioral guidelines</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">用户的个人偏好设置</span>
+                <span class="lang-en">User's personal preference settings</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">检查答案 — Check</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">重试 — Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+  </main>
+
+</body>
+</html>

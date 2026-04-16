@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermes Agent - 完整使用指南</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --gold: #FFD700;
+    --gold-dim: #B8960C;
+    --bg: #0D1117;
+    --card: #161B22;
+    --border: #30363D;
+    --text: #E6EDF3;
+    --text-dim: #8B949E;
+    --accent: #58A6FF;
+    --green: #3FB950;
+    --purple: #BC8CFF;
+    --red: #F85149;
+    --orange: #D29922;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    scroll-behavior: smooth;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    background: linear-gradient(135deg, #0D1117 0%, #1A1E2E 50%, #0D1117 100%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,215,0,0.05) 0%, transparent 50%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--gold), #FFF8DC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero .subtitle {
+    font-size: 1.3rem;
+    color: var(--text-dim);
+    max-width: 700px;
+    margin: 0 auto 30px;
+    position: relative;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: rgba(255,215,0,0.15);
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    position: relative;
+  }
+
+  /* Nav */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav a:hover { color: var(--gold); }
+
+  /* Container */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Section */
+  section {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  section:last-child { border-bottom: none; }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--gold);
+  }
+  h2 .icon { margin-right: 10px; }
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 28px 0 12px;
+    color: var(--text);
+  }
+  .section-desc {
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    border-color: var(--gold-dim);
+    transform: translateY(-2px);
+  }
+  .card .card-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+  .card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .card p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+
+  /* Code */
+  pre {
+    background: #0D1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 16px 0;
+  }
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.88rem;
+  }
+  p code, li code {
+    background: rgba(110,118,129,0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+  .cmd { color: var(--green); }
+  .flag { color: var(--orange); }
+  .comment { color: var(--text-dim); }
+  .string { color: #A5D6FF; }
+
+  /* Mermaid */
+  .mermaid-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 24px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+  .mermaid {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--card);
+    color: var(--gold);
+    font-weight: 600;
+  }
+  tr:hover td { background: rgba(255,215,0,0.03); }
+
+  /* Example box */
+  .example {
+    background: rgba(88,166,255,0.08);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .example .label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  /* Concept pill */
+  .concept {
+    background: rgba(188,140,255,0.1);
+    border: 1px solid rgba(188,140,255,0.3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 12px 0;
+  }
+  .concept .concept-title {
+    color: var(--purple);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  /* Steps */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+  }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 16px 16px 16px 60px;
+    margin: 12px 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: var(--gold);
+    color: var(--bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .tag-core { background: rgba(63,185,80,0.15); color: var(--green); }
+  .tag-tool { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .tag-skill { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .tag-config { background: rgba(210,153,34,0.15); color: var(--orange); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2.2rem; }
+    .card-grid { grid-template-columns: 1fr; }
+    .nav { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Hermes Agent</h1>
+  <p class="subtitle">Nous Research 打造的自进化 AI Agent — 从经验中学习、自主创建技能、跨会话记忆、本地运行</p>
+  <span class="badge">v0.8.0 | Qwen2.5-Coder-32B | 本地部署</span>
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <a href="#overview">概览</a>
+  <a href="#architecture">架构</a>
+  <a href="#quickstart">快速开始</a>
+  <a href="#daily">日常使用</a>
+  <a href="#tools">工具系统</a>
+  <a href="#skills">技能系统</a>
+  <a href="#memory">记忆系统</a>
+  <a href="#commands">命令参考</a>
+  <a href="#advanced">进阶功能</a>
+  <a href="#examples">实战案例</a>
+</nav>
+
+<div class="container">
+
+<!-- Section 1: Overview -->
+<section id="overview">
+  <h2><span class="icon">&#9672;</span> 什么是 Hermes Agent</h2>
+  <p class="section-desc">Hermes Agent 是一个开源的、可自我进化的 AI Agent 框架。它不仅是一个聊天机器人，更是一个具备完整工具链、记忆系统和学习能力的智能助手。</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">&#128736;</div>
+      <h4>40+ 内置工具</h4>
+      <p>终端执行、文件操作、浏览器自动化、代码执行、Web 搜索、图像生成、TTS 语音等</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#129504;</div>
+      <h4>自学习闭环</h4>
+      <p>完成复杂任务后自动提炼为可复用技能，技能在使用中持续自我改进</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128172;</div>
+      <h4>多平台通信</h4>
+      <p>CLI 终端 + Telegram + Discord + Slack + WhatsApp + Signal，统一对话体验</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#9201;</div>
+      <h4>定时自动化</h4>
+      <p>内置 Cron 调度器，用自然语言设置定时报告、备份、审计等自动化任务</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128187;</div>
+      <h4>本地运行</h4>
+      <p>支持 llama.cpp 本地模型，也可用 OpenRouter/OpenAI/Anthropic 等云端模型</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#127760;</div>
+      <h4>灵活部署</h4>
+      <p>6 种终端后端：本地、Docker、SSH、Daytona、Singularity、Modal</p>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-title">核心理念：Agent 闭环</div>
+    <p>传统 AI 聊天 = 单次问答。Hermes Agent = <strong>观察 -> 思考 -> 使用工具 -> 学习 -> 记忆</strong>。每次交互都在积累经验，跨会话持续进化。</p>
+  </div>
+</section>
+
+<!-- Section 2: Architecture -->
+<section id="architecture">
+  <h2><span class="icon">&#9881;</span> 系统架构</h2>
+  <p class="section-desc">了解 Hermes Agent 的核心组件和数据流，帮助你更好地使用和定制。</p>
+
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+graph TB
+    subgraph User["用户接入层"]
+        CLI["CLI 终端<br/>(hermes)"]
+        TG["Telegram"]
+        DC["Discord"]
+        SK["Slack"]
+        WA["WhatsApp"]
+    end
+
+    subgraph Core["核心引擎"]
+        Agent["AIAgent<br/>对话循环"]
+        PM["Prompt Builder<br/>系统提示构建"]
+        CC["Context Compressor<br/>上下文压缩"]
+        PC["Prompt Caching<br/>提示缓存"]
+    end
+
+    subgraph Tools["工具层 (40+)"]
+        T1["terminal<br/>命令执行"]
+        T2["file<br/>文件操作"]
+        T3["browser<br/>浏览器"]
+        T4["web<br/>搜索/抓取"]
+        T5["vision<br/>图像理解"]
+        T6["code_exec<br/>代码沙箱"]
+        T7["delegate<br/>子代理"]
+        T8["tts<br/>语音合成"]
+    end
+
+    subgraph Persist["持久化层"]
+        MEM["Memory<br/>长期记忆"]
+        SKILL["Skills<br/>技能库"]
+        SESSION["Sessions<br/>会话历史 (FTS5)"]
+        CRON["Cron<br/>定时任务"]
+    end
+
+    subgraph Model["模型层"]
+        LOCAL["llama-server<br/>本地 Qwen-32B"]
+        OR["OpenRouter<br/>200+ 模型"]
+        OAI["OpenAI"]
+        ANT["Anthropic"]
+    end
+
+    CLI --> Agent
+    TG --> Agent
+    DC --> Agent
+    SK --> Agent
+    WA --> Agent
+
+    Agent --> PM
+    Agent --> CC
+    Agent --> PC
+    Agent --> Tools
+    Agent --> Persist
+
+    Agent --> Model
+
+    style User fill:#1a1e2e,stroke:#FFD700,color:#E6EDF3
+    style Core fill:#1a1e2e,stroke:#58A6FF,color:#E6EDF3
+    style Tools fill:#1a1e2e,stroke:#3FB950,color:#E6EDF3
+    style Persist fill:#1a1e2e,stroke:#BC8CFF,color:#E6EDF3
+    style Model fill:#1a1e2e,stroke:#D29922,color:#E6EDF3
+    </pre>
+  </div>
+
+  <h3>目录结构</h3>
+  <pre>
+<span class="comment"># Hermes 用户数据</span>
+~/.hermes/
+  ├── config.yaml        <span class="comment"># 模型/终端/显示配置</span>
+  ├── .env               <span class="comment"># API 密钥</span>
+  ├── SOUL.md            <span class="comment"># Agent 人格定义</span>
+  ├── memories/          <span class="comment"># 持久化记忆 (MEMORY.md, USER.md)</span>
+  ├── sessions/          <span class="comment"># 会话历史 (SQLite FTS5)</span>
+  ├── skills/            <span class="comment"># 用户技能 (26 个分类)</span>
+  ├── hooks/             <span class="comment"># 事件钩子</span>
+  ├── cron/              <span class="comment"># 定时任务</span>
+  ├── logs/              <span class="comment"># 运行日志</span>
+  └── hermes-agent/      <span class="comment"># 程序源码 + venv</span>
+
+<span class="comment"># 本地模型</span>
+~/models/qwen2.5-coder-32b/
+  └── qwen2.5-coder-32b-instruct-q4_k_m.gguf  <span class="comment"># ~19.8GB</span>
+</pre>
+</section>
+
+<!-- Section 3: Quick Start -->
+<section id="quickstart">
+  <h2><span class="icon">&#9889;</span> 快速开始</h2>
+  <p class="section-desc">从零到运行只需 3 步。</p>
+
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart LR
+    A["1. 启动模型服务器"] -->|终端 1| B["2. 验证 API 就绪"]
+    B -->|终端 2| C["3. 启动 Hermes"]
+    C --> D["开始对话!"]
+
+    style A fill:#D29922,stroke:#FFD700,color:#0D1117
+    style B fill:#58A6FF,stroke:#58A6FF,color:#0D1117
+    style C fill:#3FB950,stroke:#3FB950,color:#0D1117
+    style D fill:#BC8CFF,stroke:#BC8CFF,color:#0D1117
+    </pre>
+  </div>
+
+  <ol class="steps">
+    <li>
+      <strong>启动本地模型服务器</strong>（新开一个终端标签页）
+      <pre><span class="cmd">/Users/adam/hermes-local/start-qwen32b.sh</span></pre>
+      <p style="color:var(--text-dim);font-size:0.9rem">等待看到 "server listening" 或类似日志表示就绪</p>
+    </li>
+    <li>
+      <strong>验证模型 API 可用</strong>
+      <pre><span class="cmd">curl -s</span> http://127.0.0.1:8080/v1/models | <span class="cmd">python3 -m json.tool</span></pre>
+      <p style="color:var(--text-dim);font-size:0.9rem">应返回包含模型 ID 的 JSON</p>
+    </li>
+    <li>
+      <strong>启动 Hermes Agent</strong>
+      <pre><span class="cmd">hermes</span></pre>
+      <p style="color:var(--text-dim);font-size:0.9rem">进入交互式 TUI，开始对话！</p>
+    </li>
+  </ol>
+
+  <div class="example">
+    <div class="label">便捷启动别名 (加入 ~/.zshrc)</div>
+    <pre><span class="comment"># Hermes 快捷命令</span>
+<span class="cmd">alias</span> hm=<span class="string">'hermes'</span>
+<span class="cmd">alias</span> hm-server=<span class="string">'/Users/adam/hermes-local/start-qwen32b.sh'</span>
+<span class="cmd">alias</span> hm-check=<span class="string">'curl -s http://127.0.0.1:8080/v1/models | python3 -m json.tool'</span></pre>
+  </div>
+</section>
+
+<!-- Section 4: Daily Usage -->
+<section id="daily">
+  <h2><span class="icon">&#128197;</span> 日常使用流程</h2>
+  <p class="section-desc">一个典型的 Hermes Agent 工作日长什么样。</p>
+
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart TD
+    START(["开启终端"]) --> SERVER["启动 llama-server<br/>start-qwen32b.sh"]
+    SERVER --> HERMES["hermes 进入 CLI"]
+    HERMES --> NEW{新任务?}
+
+    NEW -->|是| NEWCHAT["/new 新会话"]
+    NEW -->|否| RESUME["/continue 恢复上次"]
+
+    NEWCHAT --> TASK["描述任务"]
+    RESUME --> TASK
+
+    TASK --> AGENT["Agent 分析 + 调用工具"]
+    AGENT --> TOOLS{需要工具?}
+
+    TOOLS -->|执行命令| TERM["terminal: 运行 shell"]
+    TOOLS -->|读写文件| FILE["file: 文件操作"]
+    TOOLS -->|搜索网络| WEB["web: Exa/Firecrawl"]
+    TOOLS -->|分析图片| VIS["vision: 图像理解"]
+    TOOLS -->|并行处理| DEL["delegate: 子代理"]
+
+    TERM --> RESULT["返回结果"]
+    FILE --> RESULT
+    WEB --> RESULT
+    VIS --> RESULT
+    DEL --> RESULT
+
+    RESULT --> LEARN{复杂任务?}
+    LEARN -->|是| SKILL["自动创建技能"]
+    LEARN -->|否| DONE["任务完成"]
+    SKILL --> MEM["记忆更新"]
+    MEM --> DONE
+
+    DONE --> NEXT{继续?}
+    NEXT -->|新任务| NEW
+    NEXT -->|退出| END(["Ctrl+D 退出"])
+
+    style START fill:#FFD700,stroke:#FFD700,color:#0D1117
+    style END fill:#F85149,stroke:#F85149,color:#0D1117
+    style AGENT fill:#58A6FF,stroke:#58A6FF,color:#0D1117
+    style SKILL fill:#BC8CFF,stroke:#BC8CFF,color:#0D1117
+    style MEM fill:#3FB950,stroke:#3FB950,color:#0D1117
+    </pre>
+  </div>
+
+  <h3>上下文管理</h3>
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart LR
+    MSG["用户消息"] --> CTX{"上下文<br/>快满了?"}
+    CTX -->|否| CHAT["正常对话"]
+    CTX -->|是| COMP["/compress 压缩"]
+    COMP --> SLIM["精简上下文<br/>保留关键信息"]
+    SLIM --> CHAT
+    CHAT --> USAGE["/usage 查看消耗"]
+
+    style COMP fill:#D29922,stroke:#D29922,color:#0D1117
+    </pre>
+  </div>
+</section>
+
+<!-- Section 5: Tools -->
+<section id="tools">
+  <h2><span class="icon">&#128295;</span> 工具系统</h2>
+  <p class="section-desc">Hermes 的核心能力来自丰富的工具集。Agent 根据任务自动选择合适的工具组合。</p>
+
+  <table>
+    <tr>
+      <th>工具集</th>
+      <th>功能</th>
+      <th>需要配置</th>
+      <th>状态</th>
+    </tr>
+    <tr>
+      <td><code>terminal</code> <span class="tag tag-core">核心</span></td>
+      <td>执行 shell 命令，支持后台进程、超时控制</td>
+      <td>无</td>
+      <td style="color:var(--green)">已启用</td>
+    </tr>
+    <tr>
+      <td><code>file</code> <span class="tag tag-core">核心</span></td>
+      <td>读写文件、搜索、补丁、目录遍历</td>
+      <td>无</td>
+      <td style="color:var(--green)">已启用</td>
+    </tr>
+    <tr>
+      <td><code>vision</code> <span class="tag tag-core">核心</span></td>
+      <td>图像理解、截图分析</td>
+      <td>无</td>
+      <td style="color:var(--green)">已启用</td>
+    </tr>
+    <tr>
+      <td><code>code_execution</code> <span class="tag tag-core">核心</span></td>
+      <td>沙箱中安全执行 Python/JS 代码</td>
+      <td>无</td>
+      <td style="color:var(--green)">已启用</td>
+    </tr>
+    <tr>
+      <td><code>browser</code> <span class="tag tag-tool">工具</span></td>
+      <td>无头浏览器自动化 (Playwright)</td>
+      <td>agent-browser (Node.js)</td>
+      <td style="color:var(--green)">已启用</td>
+    </tr>
+    <tr>
+      <td><code>tts</code> <span class="tag tag-tool">工具</span></td>
+      <td>文字转语音 (Edge TTS 免费)</td>
+      <td>无</td>
+      <td style="color:var(--green)">已启用</td>
+    </tr>
+    <tr>
+      <td><code>delegation</code> <span class="tag tag-tool">工具</span></td>
+      <td>生成子代理并行处理工作流</td>
+      <td>无</td>
+      <td style="color:var(--green)">已启用</td>
+    </tr>
+    <tr>
+      <td><code>web</code> <span class="tag tag-config">配置</span></td>
+      <td>Web 搜索/抓取 (Exa, Firecrawl, Parallel)</td>
+      <td>API Key</td>
+      <td style="color:var(--orange)">需配置</td>
+    </tr>
+    <tr>
+      <td><code>image_gen</code> <span class="tag tag-config">配置</span></td>
+      <td>AI 图像生成 (FAL)</td>
+      <td>FAL API Key</td>
+      <td style="color:var(--orange)">需配置</td>
+    </tr>
+    <tr>
+      <td><code>mcp</code> <span class="tag tag-tool">工具</span></td>
+      <td>连接 MCP 服务器扩展能力</td>
+      <td>MCP 服务器配置</td>
+      <td style="color:var(--green)">已启用</td>
+    </tr>
+  </table>
+
+  <div class="concept">
+    <div class="concept-title">工具调用安全机制</div>
+    <p>Hermes 内置命令审批系统。危险操作（如 <code>rm -rf</code>、<code>sudo</code>）会暂停并请求用户确认。可通过 <code>hermes tools</code> 配置每个平台的工具权限。<code>--yolo</code> 模式可跳过确认（谨慎使用）。</p>
+  </div>
+</section>
+
+<!-- Section 6: Skills -->
+<section id="skills">
+  <h2><span class="icon">&#127891;</span> 技能系统</h2>
+  <p class="section-desc">Hermes 最独特的能力：从经验中自动学习，把复杂流程提炼为可复用的技能。</p>
+
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart TD
+    TASK["复杂任务完成"] --> NUDGE["Agent 检测到<br/>可提炼模式"]
+    NUDGE --> CREATE["自动创建技能<br/>~/.hermes/skills/"]
+    CREATE --> STORE["保存为 Markdown<br/>包含步骤+上下文"]
+
+    LATER["下次类似任务"] --> MATCH["匹配已有技能"]
+    MATCH --> APPLY["应用技能<br/>/skill-name"]
+    APPLY --> IMPROVE["使用中发现改进点"]
+    IMPROVE --> UPDATE["更新技能文件"]
+    UPDATE --> BETTER["技能持续进化"]
+
+    style NUDGE fill:#BC8CFF,stroke:#BC8CFF,color:#0D1117
+    style BETTER fill:#3FB950,stroke:#3FB950,color:#0D1117
+    </pre>
+  </div>
+
+  <h3>内置技能分类 (26 类)</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h4><span class="tag tag-skill">开发</span> software-development</h4>
+      <p>代码审查、重构、测试生成、项目脚手架</p>
+    </div>
+    <div class="card">
+      <h4><span class="tag tag-skill">运维</span> devops</h4>
+      <p>Docker、CI/CD、部署、监控配置</p>
+    </div>
+    <div class="card">
+      <h4><span class="tag tag-skill">研究</span> research</h4>
+      <p>文献搜索、数据分析、论文阅读</p>
+    </div>
+    <div class="card">
+      <h4><span class="tag tag-skill">创意</span> creative</h4>
+      <p>写作、设计、图表、演示文稿</p>
+    </div>
+    <div class="card">
+      <h4><span class="tag tag-skill">数据</span> data-science</h4>
+      <p>数据清洗、可视化、模型训练</p>
+    </div>
+    <div class="card">
+      <h4><span class="tag tag-skill">效率</span> productivity</h4>
+      <p>日程管理、邮件处理、笔记整理</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="label">技能操作命令</div>
+    <pre><span class="comment"># 在 Hermes 对话中</span>
+<span class="cmd">/skills</span>                    <span class="comment"># 浏览技能商店</span>
+<span class="cmd">/skills search</span> <span class="string">python</span>    <span class="comment"># 搜索技能</span>
+<span class="cmd">/skill-name</span>               <span class="comment"># 直接调用某个技能</span>
+
+<span class="comment"># 在终端中</span>
+<span class="cmd">hermes skills list</span>        <span class="comment"># 查看已安装技能</span>
+<span class="cmd">hermes skills search</span> <span class="string">web</span>  <span class="comment"># 搜索 Skills Hub</span></pre>
+  </div>
+</section>
+
+<!-- Section 7: Memory -->
+<section id="memory">
+  <h2><span class="icon">&#128024;</span> 记忆系统</h2>
+  <p class="section-desc">Hermes 的记忆让它成为真正"认识你"的 Agent，不是每次从零开始。</p>
+
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart LR
+    subgraph Short["短期记忆"]
+        CTX["当前会话<br/>上下文窗口"]
+    end
+
+    subgraph Long["长期记忆"]
+        MEM_MD["MEMORY.md<br/>关键事实"]
+        USER_MD["USER.md<br/>用户画像"]
+        FTS["FTS5 搜索<br/>历史会话"]
+    end
+
+    subgraph External["外部记忆 (可选)"]
+        HONCHO["Honcho<br/>辩证用户建模"]
+        MEM0["Mem0<br/>向量记忆"]
+    end
+
+    CTX -->|"对话结束时<br/>Agent 筛选保存"| Long
+    Long -->|"新会话加载"| CTX
+    External -.->|"增强"| CTX
+
+    style Short fill:#58A6FF,stroke:#58A6FF,color:#0D1117
+    style Long fill:#3FB950,stroke:#3FB950,color:#0D1117
+    style External fill:#BC8CFF,stroke:#BC8CFF,color:#0D1117
+    </pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-title">Agent 驱动的记忆管理</div>
+    <p>Hermes 不是机械保存所有对话。它通过 <strong>周期性自省提示（nudge）</strong> 主动评估哪些信息值得长期记住。记忆分为事实记忆（MEMORY.md）和用户模型（USER.md），每次新会话自动加载。</p>
+  </div>
+
+  <div class="example">
+    <div class="label">记忆相关操作</div>
+    <pre><span class="comment"># 在 Hermes 对话中</span>
+<span class="cmd">/insights</span> <span class="flag">--days 7</span>       <span class="comment"># 查看过去7天的使用分析</span>
+<span class="string">"记住我喜欢用 TypeScript"</span>  <span class="comment"># 直接告诉 Agent 要记住的事</span>
+
+<span class="comment"># 管理记忆</span>
+<span class="cmd">hermes memory setup</span>       <span class="comment"># 配置外部记忆提供者</span>
+<span class="cmd">cat</span> ~/.hermes/memories/MEMORY.md  <span class="comment"># 查看记忆内容</span></pre>
+  </div>
+</section>
+
+<!-- Section 8: Commands -->
+<section id="commands">
+  <h2><span class="icon">&#9000;</span> 命令参考</h2>
+  <p class="section-desc">Hermes 的两层命令体系：CLI 外部命令 + 对话内 Slash 命令。</p>
+
+  <h3>CLI 外部命令 (终端中执行)</h3>
+  <table>
+    <tr><th>命令</th><th>说明</th></tr>
+    <tr><td><code>hermes</code></td><td>进入交互式对话</td></tr>
+    <tr><td><code>hermes --resume &lt;id&gt;</code></td><td>恢复指定会话</td></tr>
+    <tr><td><code>hermes --continue</code></td><td>恢复最近会话</td></tr>
+    <tr><td><code>hermes model</code></td><td>选择模型/提供商</td></tr>
+    <tr><td><code>hermes setup</code></td><td>运行完整配置向导</td></tr>
+    <tr><td><code>hermes doctor</code></td><td>诊断问题</td></tr>
+    <tr><td><code>hermes tools</code></td><td>配置工具启用/禁用</td></tr>
+    <tr><td><code>hermes skills list</code></td><td>查看已安装技能</td></tr>
+    <tr><td><code>hermes gateway start</code></td><td>启动消息网关</td></tr>
+    <tr><td><code>hermes cron list</code></td><td>查看定时任务</td></tr>
+    <tr><td><code>hermes sessions list</code></td><td>列出历史会话</td></tr>
+    <tr><td><code>hermes config show</code></td><td>显示当前配置</td></tr>
+    <tr><td><code>hermes update</code></td><td>更新到最新版本</td></tr>
+  </table>
+
+  <h3>Slash 命令 (对话中使用)</h3>
+  <table>
+    <tr><th>命令</th><th>说明</th><th>分类</th></tr>
+    <tr><td><code>/new</code> / <code>/reset</code></td><td>开始新对话</td><td><span class="tag tag-core">会话</span></td></tr>
+    <tr><td><code>/model [provider:model]</code></td><td>切换模型</td><td><span class="tag tag-config">配置</span></td></tr>
+    <tr><td><code>/personality [name]</code></td><td>切换人格</td><td><span class="tag tag-config">配置</span></td></tr>
+    <tr><td><code>/compress</code></td><td>压缩上下文</td><td><span class="tag tag-core">会话</span></td></tr>
+    <tr><td><code>/usage</code></td><td>查看 token 使用量</td><td><span class="tag tag-core">会话</span></td></tr>
+    <tr><td><code>/retry</code></td><td>重新生成上一条回复</td><td><span class="tag tag-core">会话</span></td></tr>
+    <tr><td><code>/undo</code></td><td>撤销上一轮对话</td><td><span class="tag tag-core">会话</span></td></tr>
+    <tr><td><code>/tools</code></td><td>查看当前工具配置</td><td><span class="tag tag-tool">工具</span></td></tr>
+    <tr><td><code>/skills</code></td><td>浏览/安装技能</td><td><span class="tag tag-skill">技能</span></td></tr>
+    <tr><td><code>/insights --days N</code></td><td>使用分析报告</td><td><span class="tag tag-core">会话</span></td></tr>
+    <tr><td><code>Ctrl+C</code></td><td>中断当前执行</td><td><span class="tag tag-core">控制</span></td></tr>
+  </table>
+</section>
+
+<!-- Section 9: Advanced -->
+<section id="advanced">
+  <h2><span class="icon">&#128640;</span> 进阶功能</h2>
+
+  <h3>子代理委托</h3>
+  <div class="concept">
+    <div class="concept-title">delegation 工具</div>
+    <p>Hermes 可以生成隔离的子代理并行处理多个工作流。主代理保持上下文，子代理独立执行后返回结果。适合同时处理搜索 + 编码 + 测试等多步骤任务。</p>
+  </div>
+
+  <h3>MCP 集成</h3>
+  <pre><span class="comment"># 添加 MCP 服务器</span>
+<span class="cmd">hermes mcp add</span> <span class="string">my-server</span> <span class="flag">--command</span> <span class="string">"node /path/to/server.js"</span>
+
+<span class="comment"># 查看已配置的 MCP 服务器</span>
+<span class="cmd">hermes mcp list</span></pre>
+
+  <h3>多 Profile 支持</h3>
+  <pre><span class="comment"># 创建工作用 Profile</span>
+<span class="cmd">hermes</span> <span class="flag">-p work</span>             <span class="comment"># 独立的配置/记忆/技能</span>
+
+<span class="comment"># 创建个人用 Profile</span>
+<span class="cmd">hermes</span> <span class="flag">-p personal</span>         <span class="comment"># 完全隔离的另一个实例</span>
+
+<span class="comment"># 管理 Profile</span>
+<span class="cmd">hermes profile list</span></pre>
+
+  <h3>消息网关配置</h3>
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart LR
+    GW["hermes gateway"] --> TG["Telegram Bot"]
+    GW --> DC["Discord Bot"]
+    GW --> SK["Slack App"]
+    GW --> WA["WhatsApp"]
+    GW --> SIG["Signal"]
+
+    TG --> AGENT["同一个 Agent<br/>共享记忆和技能"]
+    DC --> AGENT
+    SK --> AGENT
+    WA --> AGENT
+    SIG --> AGENT
+
+    style GW fill:#FFD700,stroke:#FFD700,color:#0D1117
+    style AGENT fill:#58A6FF,stroke:#58A6FF,color:#0D1117
+    </pre>
+  </div>
+
+  <h3>人格定制 (SOUL.md)</h3>
+  <pre><span class="comment"># 编辑 ~/.hermes/SOUL.md，无需重启即生效</span>
+
+<span class="comment"># 例1: 技术专家</span>
+<span class="string">You are a concise technical expert. No fluff, just facts.
+Always provide code examples when relevant.</span>
+
+<span class="comment"># 例2: 友好助手</span>
+<span class="string">You are a warm, playful assistant who uses kaomoji occasionally.
+You speak like a friendly coworker who happens to know everything.</span>
+
+<span class="comment"># 例3: 中文助手</span>
+<span class="string">你是一个专业的中文技术助手。使用简洁的中文回复，
+技术术语保留英文。风格直接，不啰嗦。</span></pre>
+</section>
+
+<!-- Section 10: Examples -->
+<section id="examples">
+  <h2><span class="icon">&#128161;</span> 实战案例</h2>
+
+  <div class="example">
+    <div class="label">案例 1: 项目代码审查</div>
+    <pre><span class="comment"># 在项目目录下启动 Hermes</span>
+<span class="cmd">cd</span> ~/my-project && <span class="cmd">hermes</span>
+
+<span class="comment"># 对话：</span>
+<span class="string">"帮我审查 src/auth/ 目录下的代码，关注安全漏洞和性能问题"</span>
+
+<span class="comment"># Hermes 会自动：</span>
+<span class="comment"># 1. 用 file 工具读取源代码</span>
+<span class="comment"># 2. 分析安全模式和反模式</span>
+<span class="comment"># 3. 给出具体的改进建议和代码补丁</span></pre>
+  </div>
+
+  <div class="example">
+    <div class="label">案例 2: 自动化数据处理</div>
+    <pre><span class="string">"从 data/raw/ 中的 CSV 文件提取用户行为数据，
+清洗后生成可视化报告，保存到 reports/ 目录"</span>
+
+<span class="comment"># Hermes 会自动：</span>
+<span class="comment"># 1. terminal: 检查文件结构</span>
+<span class="comment"># 2. code_execution: 运行 Python 数据处理脚本</span>
+<span class="comment"># 3. file: 保存处理结果</span>
+<span class="comment"># 4. 生成 HTML/图表报告</span></pre>
+  </div>
+
+  <div class="example">
+    <div class="label">案例 3: 设置定时任务</div>
+    <pre><span class="string">"每天早上 9 点检查 GitHub 仓库的新 Issues，
+并把摘要发到我的 Telegram"</span>
+
+<span class="comment"># Hermes 会创建 Cron 任务：</span>
+<span class="comment"># 1. 配置 GitHub API 检查</span>
+<span class="comment"># 2. 设置 cron 表达式: 0 9 * * *</span>
+<span class="comment"># 3. 配置 Telegram 投递</span>
+<span class="comment"># 4. 无需手动维护，自动运行</span></pre>
+  </div>
+
+  <div class="example">
+    <div class="label">案例 4: 网页浏览和信息提取</div>
+    <pre><span class="string">"打开 Hacker News 首页，总结今天排名前 5 的帖子"</span>
+
+<span class="comment"># Hermes 会自动：</span>
+<span class="comment"># 1. browser: 打开 HN 页面</span>
+<span class="comment"># 2. vision: 分析页面内容</span>
+<span class="comment"># 3. 提取标题、链接、讨论数</span>
+<span class="comment"># 4. 生成结构化摘要</span></pre>
+  </div>
+</section>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>Hermes Agent v0.8.0 | 由 <a href="https://nousresearch.com">Nous Research</a> 构建 | MIT License</p>
+  <p style="margin-top:8px">本地模型: Qwen2.5-Coder-32B-Instruct Q4_K_M | 通过 llama.cpp 运行</p>
+  <p style="margin-top:8px">文档: <a href="https://hermes-agent.nousresearch.com/docs/">hermes-agent.nousresearch.com/docs</a> | 社区: <a href="https://discord.gg/NousResearch">Discord</a></p>
+</footer>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      darkMode: true,
+      background: '#161B22',
+      primaryColor: '#1f2937',
+      primaryTextColor: '#E6EDF3',
+      primaryBorderColor: '#FFD700',
+      lineColor: '#58A6FF',
+      secondaryColor: '#1a1e2e',
+      tertiaryColor: '#0D1117',
+      fontSize: '14px'
+    },
+    flowchart: {
+      curve: 'basis',
+      padding: 20
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code 互动课程 — From Vibe Coding to Agentic Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root { --color-accent: #D94F30; --color-accent-hover: #C4432A; --color-accent-light: #FDEEE9; --color-accent-muted: #E8836C; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="progress-bar" role="progressbar" aria-valuenow="0"></div>
+    <div class="nav-inner">
+      <span class="nav-title">Claude Code 互动课程</span>
+      <div class="nav-dots">
+        <button class="nav-dot" data-target="module-1" data-tooltip="模块 1 — 认识 Claude Code" role="tab" aria-label="Module 1"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="模块 2 — 核心概念" role="tab" aria-label="Module 2"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="模块 3 — 命令与技能" role="tab" aria-label="Module 3"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="模块 4 — 智能体与工作流" role="tab" aria-label="Module 4"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="模块 5 — 设置与 MCP" role="tab" aria-label="Module 5"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="模块 6 — 最佳实践" role="tab" aria-label="Module 6"></button>
+      </div>
+    </div>
+  </nav>
+
+  <div id="modules-container"><section class="module" id="module-1">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">认识 Claude Code</h1>
+      <p class="module-subtitle lang-en">Meet Claude Code — Your AI Coding Partner in the Terminal</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Claude Code 是什么？</h2>
+        <p class="lang-zh">Claude Code 是一款运行在终端的 AI 编程助手。你只需用自然语言告诉它你想做什么，它就会帮你写代码、改代码、调试程序、运行测试，甚至管理 Git 提交。它不是一款普通的聊天机器人——它能直接操作你的文件系统、执行命令、读取和修改代码。</p>
+        <p class="lang-en">Claude Code is an AI coding assistant that runs in your terminal. You tell it what to do in natural language, and it writes code, fixes bugs, runs tests, and manages git commits. It's not a chatbot — it directly operates on your files, executes commands, and reads/modifies code.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">关键洞察 / Key Insight</strong>
+            <p class="lang-zh">这就像身边坐了一位不知疲倦的高级工程师，随时可以帮你解决任何编程问题。你不需要记住语法或命令——你只需要描述你想做什么。</p>
+            <p class="lang-en">It's like having a tireless senior engineer sitting next to you, ready to solve any coding problem. You don't need to memorize syntax or commands — you just describe what you want to do.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">从"氛围编程"到"智能体工程"</h2>
+        <p class="lang-zh">你可能听说过"氛围编程"（Vibe Coding）——用自然语言指挥 AI 写代码。Claude Code 把这个概念提升到了一个新的层次：它不仅能写代码，还能自主研究代码库、制定计划、执行复杂任务。这就是<strong>"智能体工程"（Agentic Engineering）</strong>——让 AI 不仅仅是打字员，而是真正的工程师。</p>
+        <p class="lang-en">You may have heard of "Vibe Coding" — telling AI to write code in natural language. Claude Code takes this to a new level: it can research codebases, make plans, and execute complex tasks autonomously. This is <strong>"Agentic Engineering"</strong> — making AI not just a typist, but a real engineer.</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🗣️</div>
+            <div>
+              <strong class="lang-zh">自然语言驱动</strong>
+              <span class="lang-en">Natural Language Driven</span>
+              <p class="lang-zh">用中文或英文直接告诉 Claude 你想做什么</p>
+              <p class="lang-en">Tell Claude what you want in Chinese or English</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🔧</div>
+            <div>
+              <strong class="lang-zh">直接操作代码</strong>
+              <span class="lang-en">Direct Code Operations</span>
+              <p class="lang-zh">读取、编写、修改文件，执行终端命令</p>
+              <p class="lang-en">Read, write, modify files, execute terminal commands</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🧠</div>
+            <div>
+              <strong class="lang-zh">理解整个项目</strong>
+              <span class="lang-en">Understands the Whole Project</span>
+              <p class="lang-zh">能搜索、分析整个代码库，不只是当前文件</p>
+              <p class="lang-en">Searches and analyzes the entire codebase, not just the current file</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🔄</div>
+            <div>
+              <strong class="lang-zh">自主完成多步任务</strong>
+              <span class="lang-en">Autonomous Multi-Step Tasks</span>
+              <p class="lang-zh">可以自己规划、研究、执行、验证完整流程</p>
+              <p class="lang-en">Can plan, research, execute, and verify complete workflows</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">安装与启动</h2>
+        <p class="lang-zh">Claude Code 运行在终端中。安装非常简单——只需一条命令。你可以在 macOS、Windows（WSL）或 Linux 上使用它。</p>
+        <p class="lang-en">Claude Code runs in your terminal. Installation is simple — just one command. Available on macOS, Windows (WSL), and Linux.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment"># 安装 Claude Code（需要 Node.js）</span></span>
+<span class="code-line">npm install -g @anthropic-ai/claude-code</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 进入项目目录后启动</span></span>
+<span class="code-line">cd your-project</span>
+<span class="code-line">claude</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">用 npm 全局安装 Claude Code，就像安装其他命令行工具一样。</p>
+              <p class="tl">进入你的项目文件夹。</p>
+              <p class="tl">输入 claude 启动——就这么简单。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong class="lang-zh">描述你的需求</strong>
+              <span class="lang-en">Describe Your Needs</span>
+              <p class="lang-zh">"帮我读一下这个项目，解释它的结构"</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong class="lang-zh">Claude 研究代码</strong>
+              <span class="lang-en">Claude Researches the Code</span>
+              <p class="lang-zh">自动搜索文件、阅读代码、理解架构</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong class="lang-zh">Claude 执行任务</strong>
+              <span class="lang-en">Claude Executes</span>
+              <p class="lang-zh">写代码、改文件、运行测试、提交 Git</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">为什么这个仓库如此重要？</h2>
+        <p class="lang-zh">你正在学习的这个仓库 <strong>claude-code-best-practice</strong> 是 GitHub 上最受欢迎的 Claude Code 学习资源之一，拥有超过 <strong>44,000 颗星</strong>。它汇集了来自 Claude Code 创造者 Boris Cherny、社区顶级使用者以及大量实践者的最佳实践、技巧和教程。</p>
+        <p class="lang-en">The repository you're learning from — <strong>claude-code-best-practice</strong> — is one of the most popular Claude Code learning resources on GitHub with over <strong>44,000 stars</strong>. It collects best practices, tips, and tutorials from Claude Code creator Boris Cherny, top community users, and practitioners.</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">📚</div>
+          <div class="callout-content">
+            <strong class="callout-title">关于本课程 / About This Course</strong>
+            <p class="lang-zh">本课程将这个仓库的全部内容转化为互动式学习体验。你不需要编程基础——每个概念都会用通俗语言解释。所有操作都可以在 Claude Code 中直接尝试。</p>
+            <p class="lang-en">This course transforms the entire repository into an interactive learning experience. No coding background needed — every concept is explained in plain language. You can try everything directly in Claude Code.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小测验：你对 Claude Code 了解多少？</h2>
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确！Claude Code 运行在终端中，通过命令行使用。"
+               data-explanation-wrong="不对。Claude Code 是一个终端命令行工具，不是浏览器扩展或手机应用。">
+            <h3 class="quiz-question">
+              <span class="lang-zh">Claude Code 在哪里运行？</span>
+              <span class="lang-en">Where does Claude Code run?</span>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span><span class="lang-zh">Chrome 浏览器中</span> <span class="lang-en">In Chrome browser</span></span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span><span class="lang-zh">终端（命令行）</span> <span class="lang-en">Terminal (command line)</span></span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span><span class="lang-zh">手机 App</span> <span class="lang-en">Mobile app</span></span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">
+            <span class="lang-zh">检查答案</span> <span class="lang-en">Check Answer</span>
+          </button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">
+            <span class="lang-zh">重试</span> <span class="lang-en">Try Again</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="module" id="module-2">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">核心概念</h1>
+      <p class="module-subtitle lang-en">Core Concepts — Subagents, Commands, Skills, Hooks, and MCP</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Claude Code 的"角色"们</h2>
+        <p class="lang-zh">Claude Code 不是一个单块程序——它由多个<strong>"角色"</strong>组成，每个角色有不同的职责。理解这些角色，你就知道什么时候该用什么功能。</p>
+        <p class="lang-en">Claude Code is not a monolithic program — it's made up of different <strong>"roles"</strong>, each with different responsibilities. Understanding these roles tells you when to use which feature.</p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p class="lang-zh"><strong>智能体 Agent</strong><br>自主执行任务的独立工作者</p>
+            <p class="lang-en"><strong>Agent</strong><br>Independent workers that autonomously execute tasks</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p class="lang-zh"><strong>命令 Command</strong><br>用户一键触发的快捷流程</p>
+            <p class="lang-en"><strong>Command</strong><br>One-click user-triggered workflows</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p class="lang-zh"><strong>技能 Skill</strong><br>自动加载的专业知识</p>
+            <p class="lang-en"><strong>Skill</strong><br>Auto-loaded domain expertise</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p class="lang-zh"><strong>钩子 Hook</strong><br>事件触发器，在后台运行</p>
+            <p class="lang-en"><strong>Hook</strong><br>Event triggers running in the background</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">5</div>
+            <p class="lang-zh"><strong>MCP 服务器</strong><br>连接外部工具和 API</p>
+            <p class="lang-en"><strong>MCP Server</strong><br>Connect to external tools and APIs</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">用对话来理解这些概念</h2>
+        <p class="lang-zh">想象你在和一个团队一起工作，每个成员有不同的专长：</p>
+        <p class="lang-en">Imagine you're working with a team where each member has a different specialty:</p>
+
+        <div class="chat-window" id="chat-module2">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="actor-a" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你 / You</span>
+                <p>我需要一个天气信息的 SVG 卡片。</p>
+                <p>I need an SVG weather card.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="actor-b" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">⚡</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">命令 / Command</span>
+                <p>收到！我先问问用户想要摄氏度还是华氏度？</p>
+                <p>Got it! Let me ask: Celsius or Fahrenheit?</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="actor-c" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-3)">🤖</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-3)">智能体 / Agent</span>
+                <p>我去网上查当前温度，查到了：26°C</p>
+                <p>I'll look up the current temperature online... Found it: 26°C</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="actor-d" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">🎨</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">技能 / Skill</span>
+                <p>我来画一个漂亮的 SVG 天气卡片！</p>
+                <p>I'll draw a beautiful SVG weather card!</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="actor-e" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">🔧</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">MCP</span>
+                <p>我提供了网上查询天气的接口，没有我，智能体就查不到数据。</p>
+                <p>I provide the interface to query weather online. Without me, the agent can't fetch data.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-typing" style="display:none">
+            <div class="chat-avatar" id="typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">
+              <span class="lang-zh">下一条消息</span> <span class="lang-en">Next Message</span>
+            </button>
+            <button class="btn chat-all-btn">
+              <span class="lang-zh">播放全部</span> <span class="lang-en">Play All</span>
+            </button>
+            <button class="btn chat-reset-btn">
+              <span class="lang-zh">重播</span> <span class="lang-en">Replay</span>
+            </button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">文件系统结构</h2>
+        <p class="lang-zh">Claude Code 的所有功能都通过特定的文件夹和文件来配置。每个角色都有自己的"家"：</p>
+        <p class="lang-en">All of Claude Code's features are configured through specific folders and files. Each role has its own "home":</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">.claude/</span>
+            <span class="ft-desc"><span class="lang-zh">Claude Code 的配置目录</span> <span class="lang-en">Claude Code config directory</span></span>
+            <div class="ft-children">
+              <div class="ft-folder">
+                <span class="ft-name">agents/</span>
+                <span class="ft-desc"><span class="lang-zh">智能体定义 —— 自主工作者</span> <span class="lang-en">Agent definitions — autonomous workers</span></span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">commands/</span>
+                <span class="ft-desc"><span class="lang-zh">命令 —— 用户触发的快捷方式</span> <span class="lang-en">Commands — user-triggered shortcuts</span></span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">skills/</span>
+                <span class="ft-desc"><span class="lang-zh">技能 —— 自动加载的专业知识</span> <span class="lang-en">Skills — auto-loaded domain expertise</span></span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">hooks/</span>
+                <span class="ft-desc"><span class="lang-zh">钩子 —— 事件触发器</span> <span class="lang-en">Hooks — event triggers</span></span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">rules/</span>
+                <span class="ft-desc"><span class="lang-zh">规则 —— 大型指令的拆分</span> <span class="lang-en">Rules — splitting large instructions</span></span>
+              </div>
+            </div>
+          </div>
+          <div class="ft-file">
+            <span class="ft-name">CLAUDE.md</span>
+            <span class="ft-desc"><span class="lang-zh">项目记忆 —— 告诉 Claude 你的约定</span> <span class="lang-en">Project memory — tell Claude your conventions</span></span>
+          </div>
+          <div class="ft-file">
+            <span class="ft-name">.mcp.json</span>
+            <span class="ft-desc"><span class="lang-zh">MCP 服务器配置 —— 连接外部工具</span> <span class="lang-en">MCP server config — connect external tools</span></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">数据流：一个请求的生命周期</h2>
+        <p class="lang-zh">当你使用一个命令时，背后发生了什么？点击"下一步"来看：</p>
+        <p class="lang-en">When you use a command, what happens behind the scenes? Click "Next Step" to see:</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"用户输入 /user-orchestrator"},
+          {"highlight":"flow-actor-1","label":"命令处理用户输入，确定需求","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"智能体执行任务（如查询天气）","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-3","label":"MCP 提供外部数据接口（如天气 API）"},
+          {"highlight":"flow-actor-2","label":"智能体返回结果给命令","packet":true,"from":"actor-3","to":"actor-2"},
+          {"highlight":"flow-actor-1","label":"命令调用技能生成最终输出","packet":true,"from":"actor-2","to":"actor-4"},
+          {"highlight":"flow-actor-4","label":"技能创建 SVG 卡片并保存文件"},
+          {"highlight":"flow-actor-1","label":"完成！用户看到最终结果"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">⌨️</div>
+              <span class="lang-zh">用户 / 命令</span>
+              <span class="lang-en">User / Command</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">🤖</div>
+              <span class="lang-zh">智能体</span>
+              <span class="lang-en">Agent</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🔌</div>
+              <span>MCP</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">🎨</div>
+              <span class="lang-zh">技能</span>
+              <span class="lang-en">Skill</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点击"下一步"开始 / Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">
+              <span class="lang-zh">下一步</span> <span class="lang-en">Next Step</span>
+            </button>
+            <button class="btn flow-reset-btn">
+              <span class="lang-zh">重新开始</span> <span class="lang-en">Restart</span>
+            </button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">术语表</h2>
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <h4 class="pattern-title">
+              <span class="term" data-definition-zh="智能体：一个自主的 AI 工作者，有自己的工具集、权限和模型。你可以派它去独立完成一个任务，然后回来拿结果。" data-definition-en="Agent: An autonomous AI worker with its own tools, permissions, and model. You can send it to complete a task independently and come back with the results.">智能体 / Agent</span>
+            </h4>
+            <p class="pattern-desc lang-zh">就像一个有特定专业技能的助手。比如"代码审查员"只能读取代码，不能修改。</p>
+            <p class="pattern-desc lang-en">Like an assistant with a specific specialty. e.g. "Code Reviewer" can only read code, not modify it.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <h4 class="pattern-title">
+              <span class="term" data-definition-zh="命令：以 / 开头的快捷方式，比如 /doctor 或 /review。按下后，Claude 会按照预定义的流程来帮助你。" data-definition-en="Command: A shortcut starting with /, like /doctor or /review. When pressed, Claude follows a predefined workflow to help you.">命令 / Command</span>
+            </h4>
+            <p class="pattern-desc lang-zh">就像手机上的快捷指令——一个点击完成一套操作。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <h4 class="pattern-title">
+              <span class="term" data-definition-zh="技能：Claude 自动加载的知识库。当它检测到你在做特定任务时（如写测试、调试），会自动调用对应技能。" data-definition-en="Skill: Knowledge that Claude auto-loads. When it detects you're doing a specific task (like writing tests, debugging), it automatically invokes the relevant skill.">技能 / Skill</span>
+            </h4>
+            <p class="pattern-desc lang-zh">就像给 Claude 安装了一个"专业模式"，让它对特定领域更了解。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <h4 class="pattern-title">
+              <span class="term" data-definition-zh="MCP（模型上下文协议）：让 Claude 能连接外部工具的标准方式。通过 MCP，Claude 可以使用数据库、浏览器、API 等。" data-definition-en="MCP (Model Context Protocol): A standard way for Claude to connect to external tools. Through MCP, Claude can use databases, browsers, APIs, etc.">MCP 服务器</span>
+            </h4>
+            <p class="pattern-desc lang-zh">就像给 Claude 插上各种"外设"，让它能操作浏览器、查询数据库等。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小测验</h2>
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正确！Skills 是 Claude 自动加载的知识库，当它检测到相关任务时会自动调用。"
+               data-explanation-wrong="不对。Commands 是用户手动触发的（/ 开头），Agents 是自主工作者。Skills 才是自动加载的专业知识。">
+            <h3 class="quiz-question">
+              <span class="lang-zh">哪个组件会在你写代码时自动加载特定领域的知识？</span>
+              <span class="lang-en">Which component auto-loads domain-specific knowledge while you code?</span>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Commands（命令）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Agents（智能体）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Skills（技能）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">
+            <span class="lang-zh">检查答案</span> <span class="lang-en">Check Answer</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">命令与技能</h1>
+      <p class="module-subtitle lang-en">Commands & Skills — Your Daily Workflow Accelerators</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <h2 class="screen-heading">命令：一键完成复杂流程</h2>
+        <p class="lang-zh">命令是你最强大的日常工具。它们以 <code>/</code> 开头，按下后 Claude 会按照预定义的流程来帮助你。Claude Code 有 <strong>70 多个内置命令</strong>。</p>
+        <p class="lang-en">Commands are your most powerful daily tool. They start with <code>/</code>, and when invoked, Claude follows a predefined workflow. Claude Code has <strong>70+ built-in commands</strong>.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">黄金法则 / Golden Rule</strong>
+            <p class="lang-zh">如果你每天都要做某件事超过一次，把它变成一个命令或技能。</p>
+            <p class="lang-en">If you do something more than once a day, turn it into a command or skill.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">常用命令速查</h2>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🏥</div>
+            <div>
+              <strong>/doctor</strong>
+              <p class="lang-zh">诊断 Claude Code 安装和配置问题，按 f 让 Claude 自动修复</p>
+              <p class="lang-en">Diagnose installation and config issues, press f to auto-fix</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📊</div>
+            <div>
+              <strong>/context</strong>
+              <p class="lang-zh">可视化当前上下文使用情况，显示优化建议</p>
+              <p class="lang-en">Visualize context usage with optimization suggestions</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🔄</div>
+            <div>
+              <strong>/compact</strong>
+              <p class="lang-zh">压缩对话释放上下文空间。建议在 50% 上下文时手动执行</p>
+              <p class="lang-en">Compress conversation to free context. Recommend manual at 50%</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📝</div>
+            <div>
+              <strong>/plan</strong>
+              <p class="lang-zh">进入规划模式——Claude 先研究再出方案，不直接动手</p>
+              <p class="lang-en">Enter planning mode — Claude researches first, doesn't execute</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">⏮️</div>
+            <div>
+              <strong>/rewind</strong>
+              <p class="lang-zh">回退到之前的代码/对话状态，基于 Git 检查点</p>
+              <p class="lang-en">Rewind to previous code/conversation state via Git checkpoints</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-accent)">🎤</div>
+            <div>
+              <strong>/voice</strong>
+              <p class="lang-zh">语音输入——支持 20 种语言，包括中文</p>
+              <p class="lang-en">Voice input — supports 20 languages including Chinese</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">技能：自动加载的专业知识</h2>
+        <p class="lang-zh">技能是 Claude Code 的<strong>智能扩展系统</strong>。与命令不同（命令需要用户手动触发），技能会在检测到你在做特定任务时<strong>自动激活</strong>。</p>
+        <p class="lang-en">Skills are Claude Code's <strong>smart extension system</strong>. Unlike commands (which need manual trigger), skills <strong>auto-activate</strong> when Claude detects you're doing a specific task.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">YAML</span>
+            <pre><code><span class="code-line"><span class="code-comment"># .claude/skills/debug/SKILL.md</span></span>
+<span class="code-line">---</span>
+<span class="code-line"><span class="code-property">name</span>: <span class="code-string">debug</span></span>
+<span class="code-line"><span class="code-property">description</span>: <span class="code-string">Debug failing commands or code issues</span></span>
+<span class="code-line"><span class="code-property">when_to_use</span>: <span class="code-string">When the user encounters errors, bugs,
+  or unexpected behavior</span></span>
+<span class="code-line">---</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 以下是技能的具体内容</span></span>
+<span class="code-line"><span class="code-comment"># 告诉 Claude 如何调试的步骤和策略</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">这是一个技能的定义文件，位于 .claude/skills/ 目录下。</p>
+              <p class="tl">name 是技能的名称，可以用 /debug 调用。</p>
+              <p class="tl">description 告诉 Claude 这个技能做什么，用于自动发现。</p>
+              <p class="tl">when_to_use 告诉 Claude 何时自动激活这个技能——这里是在遇到错误或意外行为时。</p>
+              <p class="tl">--- 以下是技能的实际内容，告诉 Claude 具体的调试步骤。</p>
+              <p class="tl">技能文件夹里还可以包含 references/、scripts/、examples/ 等子目录。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">创建你自己的命令</h2>
+        <p class="lang-zh">创建命令非常简单——只需在 <code>.claude/commands/</code> 下创建一个 Markdown 文件：</p>
+        <p class="lang-en">Creating commands is very simple — just create a Markdown file under <code>.claude/commands/</code>:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">YAML</span>
+            <pre><code><span class="code-line"><span class="code-comment"># .claude/commands/review-pr.md</span></span>
+<span class="code-line">---</span>
+<span class="code-line"><span class="code-property">name</span>: <span class="code-string">review-pr</span></span>
+<span class="code-line"><span class="code-property">description</span>: <span class="code-string">Review a pull request with best practices</span></span>
+<span class="code-line"><span class="code-property">argument-hint</span>: <span class="code-string">[pr-number]</span></span>
+<span class="code-line"><span class="code-property">model</span>: <span class="code-string">opus</span></span>
+<span class="code-line"><span class="code-property">effort</span>: <span class="code-string">high</span></span>
+<span class="code-line">---</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 命令的执行内容</span></span>
+<span class="code-line"><span class="code-comment"># 这里告诉 Claude 收到 /review-pr 后做什么</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">这个文件创建了一个名为 /review-pr 的新命令。</p>
+              <p class="tl">argument-hint 提示用户输入参数，比如 PR 编号。</p>
+              <p class="tl">model 指定使用 Opus 模型——最强大的推理模型。</p>
+              <p class="tl">effort 设为 high，让 Claude 花更多精力思考。</p>
+              <p class="tl">--- 以下是命令的具体执行逻辑，用自然语言写就行。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">技能的"Gotchas"原则</h2>
+        <p class="lang-zh">每个技能都应该有一个 <strong>Gotchas</strong>（常见陷阱）部分。这是来自仓库创作者 Boris Cherny 的建议：</p>
+        <p class="lang-en">Every skill should have a <strong>Gotchas</strong> section. This is advice from repo creator Boris Cherny:</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-error)">
+            <h4 class="pattern-title">不要写显而易见的东西</h4>
+            <p class="pattern-desc lang-zh">不要在技能里告诉 Claude 它已经知道的基本常识。技能应该提供<strong>独特的、项目特定的</strong>知识。</p>
+            <p class="pattern-desc lang-en">Don't tell Claude things it already knows. Skills should provide <strong>unique, project-specific</strong> knowledge.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-info)">
+            <h4 class="pattern-title">description 是触发器，不是总结</h4>
+            <p class="pattern-desc lang-zh">description 字段用来告诉 Claude 何时激活技能。写得具体，包含触发短语和场景。</p>
+            <p class="pattern-desc lang-en">The description field tells Claude when to activate. Be specific with trigger phrases and scenarios.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-success)">
+            <h4 class="pattern-title">使用 context: fork 隔离执行</h4>
+            <p class="pattern-desc lang-zh">在技能 frontmatter 里设 context: fork，让技能在独立子智能体中运行，不污染主上下文。</p>
+            <p class="pattern-desc lang-en">Set context: fork in skill frontmatter to run in an isolated subagent, not polluting main context.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小测验</h2>
+        <div class="quiz-container" id="quiz-module3">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确！Commands 以 / 开头，需要用户手动触发，如 /doctor 或 /compact。"
+               data-explanation-wrong="不对。Skills 是自动激活的（不需要 /），Hooks 是后台事件触发器。Commands 才是以 / 开头的用户触发命令。">
+            <h3 class="quiz-question">
+              <span class="lang-zh">什么功能以 / 开头，需要用户手动触发？</span>
+              <span class="lang-en">What feature starts with / and needs manual user trigger?</span>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Skill（技能）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Command（命令）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Hook（钩子）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="正确！如果你每天做某件事超过一次，应该把它变成命令或技能来加速工作流。"
+               data-explanation-wrong="不对。仓库的建议是：每天做超过一次的事，就自动化它。">
+            <h3 class="quiz-question">
+              <span class="lang-zh">根据仓库的黄金法则，每天做超过一次的事应该怎么做？</span>
+              <span class="lang-en">According to the repo golden rule, what to do if you do something more than once daily?</span>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">变成一个命令或技能</span>
+                <span class="lang-en">Turn it into a command or skill</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">手动重复做就行</span>
+                <span class="lang-en">Just keep doing it manually</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">写一个外部脚本</span>
+                <span class="lang-en">Write an external script</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">
+            <span class="lang-zh">检查答案</span> <span class="lang-en">Check Answers</span>
+          </button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">
+            <span class="lang-zh">重试</span> <span class="lang-en">Try Again</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="module" id="module-4">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">智能体与工作流</h1>
+      <p class="module-subtitle lang-en">Agents & Workflows — Autonomous Development at Scale</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <h2 class="screen-heading">智能体：自主工作者</h2>
+        <p class="lang-zh">智能体是 Claude Code 中<strong>独立运行的 AI 工作者</strong>。你可以派它去执行一个任务，它有自己独立的上下文、工具权限和模型选择。它完成后把结果交还给你。</p>
+        <p class="lang-en">Agents are <strong>independent AI workers</strong> in Claude Code. You can dispatch one to a task with its own isolated context, tools, permissions, and model. When done, it returns results to you.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">为什么用智能体？ / Why Use Agents?</strong>
+            <p class="lang-zh">每个智能体有独立的上下文窗口。这意味着主对话不会被它的研究污染，它也不会被你之前的对话混淆。这就是所谓的"计算时间"（Test Time Compute）——投入更多计算资源得到更好的结果。</p>
+            <p class="lang-en">Each agent has an isolated context window. This means your main conversation stays clean, and the agent isn't confused by your prior chat. This is "Test Time Compute" — investing more compute for better results.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">官方智能体类型</h2>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🔍</div>
+            <div>
+              <strong>Explore</strong>
+              <p class="lang-zh">快速代码库搜索——只读，不能修改文件。适合"这个项目是怎么组织的？"这类问题</p>
+              <p class="lang-en">Fast codebase search — read-only. Great for "how is this project organized?" questions</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📋</div>
+            <div>
+              <strong>Plan</strong>
+              <p class="lang-zh">规划模式智能体——只研究和设计，不写代码。适合复杂的架构决策</p>
+              <p class="lang-en">Planning agent — researches and designs only, no coding. Great for complex architecture decisions</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">⚙️</div>
+            <div>
+              <strong>general-purpose</strong>
+              <p class="lang-zh">通用智能体——默认类型，拥有所有工具权限，可以独立完成任何复杂任务</p>
+              <p class="lang-en">General-purpose — the default type with all tools, can independently handle any complex task</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📚</div>
+            <div>
+              <strong>claude-code-guide</strong>
+              <p class="lang-zh">Claude Code 文档专家——回答关于功能、API、Agent SDK 的任何问题</p>
+              <p class="lang-en">Claude Code documentation expert — answers any question about features, APIs, Agent SDK</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">创建自定义智能体</h2>
+        <p class="lang-zh">你可以定义自己的智能体，给它分配特定的角色、工具和模型。以下是一个"代码审查员"智能体的定义：</p>
+        <p class="lang-en">You can define your own agent with specific roles, tools, and models. Here's a "Code Reviewer" agent:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">YAML</span>
+            <pre><code><span class="code-line"><span class="code-comment"># .claude/agents/code-reviewer.md</span></span>
+<span class="code-line">---</span>
+<span class="code-line"><span class="code-property">name</span>: <span class="code-string">code-reviewer</span></span>
+<span class="code-line"><span class="code-property">description</span>: <span class="code-string">Review code for bugs, security issues,
+  and best practices</span></span>
+<span class="code-line"><span class="code-property">tools</span>: <span class="code-string">Read, Grep, Glob</span></span>
+<span class="code-line"><span class="code-property">disallowedTools</span>: <span class="code-string">Write, Edit, Bash</span></span>
+<span class="code-line"><span class="code-property">model</span>: <span class="code-string">opus</span></span>
+<span class="code-line"><span class="code-property">effort</span>: <span class="code-string">high</span></span>
+<span class="code-line"><span class="code-property">color</span>: <span class="code-string">red</span></span>
+<span class="code-line">---</span>
+<span class="code-line"></span>
+<span class="code-line">你是一个资深代码审查员。检查：</span>
+<span class="code-line">1. 安全漏洞（SQL 注入、XSS）</span>
+<span class="code-line">2. 潜在 bug 和边界情况</span>
+<span class="code-line">3. 性能和可读性问题</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">给智能体取一个唯一的名字，用小写字母和连字符。</p>
+              <p class="tl">description 告诉 Claude 何时派它上场。描述越具体，Claude 判断越准确。</p>
+              <p class="tl">tools 限制它能用的工具——审查员只需要读取和搜索，不需要写文件。</p>
+              <p class="tl">disallowedTools 明确禁止某些操作——这里禁止了写入和编辑，防止它意外改代码。</p>
+              <p class="tl">model 指定用 Opus 来做深度推理，effort 设为 high 让它仔细思考。</p>
+              <p class="tl">--- 以下是智能体的角色定义和具体审查要求。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">开发工作流：Research → Plan → Execute → Review → Ship</h2>
+        <p class="lang-zh">所有主流 Claude Code 工作流都收敛到这个五步模式。不同的开源框架（Superpowers、Spec Kit、gstack、GSD）都在这个基础上构建：</p>
+        <p class="lang-en">All major Claude Code workflows converge on this five-step pattern. Different open-source frameworks (Superpowers, Spec Kit, gstack, GSD) all build on top of this:</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong class="lang-zh">研究 / Research</strong>
+              <p class="lang-zh">用 Explore 智能体搜索代码库，理解现有架构</p>
+              <p class="lang-en">Use Explore agent to search codebase, understand existing architecture</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong class="lang-zh">规划 / Plan</strong>
+              <p class="lang-zh">进入 Plan 模式，让 Claude 出方案，不要直接动手</p>
+              <p class="lang-en">Enter Plan mode, let Claude propose a solution, don't code yet</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong class="lang-zh">执行 / Execute</strong>
+              <p class="lang-zh">确认方案后，派通用智能体去实施</p>
+              <p class="lang-en">After confirming the plan, dispatch general-purpose agent to implement</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong class="lang-zh">审查 / Review</strong>
+              <p class="lang-zh">用代码审查智能体或第二个 Claude 检查结果</p>
+              <p class="lang-en">Use code-reviewer agent or a second Claude to check the result</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong class="lang-zh">发布 / Ship</strong>
+              <p class="lang-zh">提交代码，发起 PR，用 /code-review 做多智能体分析</p>
+              <p class="lang-en">Commit code, open PR, use /code-review for multi-agent analysis</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">跨模型工作流</h2>
+        <p class="lang-zh">高级用法：用不同的 Claude 模型各司其职。Sonnet 做日常交互，Opus 做关键决策，Haiku 做快速搜索。</p>
+        <p class="lang-en">Advanced usage: use different Claude models for different jobs. Sonnet for daily interaction, Opus for critical decisions, Haiku for quick searches.</p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num" style="background: var(--color-actor-4)">⚡</div>
+            <p><strong>Haiku</strong><br><span class="lang-zh">快速查找</span><br><span class="lang-en">Quick lookups</span></p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num" style="background: var(--color-actor-2)">⚡</div>
+            <p><strong>Sonnet</strong><br><span class="lang-zh">标准任务</span><br><span class="lang-en">Standard tasks</span></p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num" style="background: var(--color-actor-1)">⚡</div>
+            <p><strong>Opus</strong><br><span class="lang-zh">架构、深度分析</span><br><span class="lang-en">Architecture, deep analysis</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小测验</h2>
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确！每个智能体有独立的上下文窗口，主对话不会被它的研究污染。这就是'计算时间'优势。"
+               data-explanation-wrong="不对。智能体的核心优势是独立的上下文窗口，主对话和智能体各自保持清洁。">
+            <h3 class="quiz-question">
+              <span class="lang-zh">为什么智能体能提供更好的结果？</span>
+              <span class="lang-en">Why do agents provide better results?</span>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">它们用更快的模型</span>
+                <span class="lang-en">They use faster models</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">独立的上下文窗口避免污染</span>
+                <span class="lang-en">Isolated context windows avoid pollution</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">它们有更多工具</span>
+                <span class="lang-en">They have more tools</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">
+            <span class="lang-zh">检查答案</span> <span class="lang-en">Check Answer</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="module" id="module-5">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">设置与 MCP</h1>
+      <p class="module-subtitle lang-en">Settings & MCP — Configuration and External Tools</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <h2 class="screen-heading">设置层级</h2>
+        <p class="lang-zh">Claude Code 有 <strong>60+ 设置项</strong>和 <strong>170+ 环境变量</strong>。设置按照优先级从高到低加载：</p>
+        <p class="lang-en">Claude Code has <strong>60+ settings</strong> and <strong>170+ environment variables</strong>. Settings load in priority order from highest to lowest:</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong class="lang-zh">组织管理设置</strong>
+              <span class="lang-en">Managed Settings</span>
+              <p class="lang-zh">IT 部署的安全策略，不可覆盖</p>
+              <p class="lang-en">Security policies deployed by IT, cannot be overridden</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong class="lang-zh">命令行参数</strong>
+              <span class="lang-en">CLI Arguments</span>
+              <p class="lang-zh">单次会话临时覆盖，如 claude --model haiku</p>
+              <p class="lang-en">Temporary single-session overrides like claude --model haiku</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong class="lang-zh">本地项目设置</strong>
+              <span class="lang-en">Local Project Settings</span>
+              <p class="lang-zh">.claude/settings.local.json — 个人用，不提交到 Git</p>
+              <p class="lang-en">.claude/settings.local.json — personal, not committed to Git</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong class="lang-zh">团队项目设置</strong>
+              <span class="lang-en">Team Project Settings</span>
+              <p class="lang-zh">.claude/settings.json — 团队共享，提交到 Git</p>
+              <p class="lang-en">.claude/settings.json — team-shared, committed to Git</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong class="lang-zh">全局个人设置</strong>
+              <span class="lang-en">Global Personal Settings</span>
+              <p class="lang-zh">~/.claude/settings.json — 所有项目的默认值</p>
+              <p class="lang-en">~/.claude/settings.json — defaults for all projects</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">MCP：给 Claude 插上"外设"</h2>
+        <p class="lang-zh">MCP（模型上下文协议）让 Claude 能连接外部工具、数据库和 API。有了 MCP，Claude 不只是写代码——它还能<strong>操作浏览器、查询实时文档、生成架构图</strong>。</p>
+        <p class="lang-en">MCP (Model Context Protocol) lets Claude connect to external tools, databases, and APIs. With MCP, Claude doesn't just write code — it can <strong>operate browsers, query live docs, generate architecture diagrams</strong>.</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">常见错误 / Common Mistake</strong>
+            <p class="lang-zh">"装了 15 个 MCP 服务器以为越多越好，结果每天只用了 4 个。" —— 社区经验。只安装你真正需要的。</p>
+            <p class="lang-en">"Went overboard with 15 MCP servers thinking more = better. Ended up using only 4 daily." — Community wisdom. Only install what you truly need.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">每日必备的 5 个 MCP</h2>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📚</div>
+            <div>
+              <strong>Context7</strong>
+              <p class="lang-zh">获取最新库文档，防止 Claude 用过时的 API 写代码</p>
+              <p class="lang-en">Fetch up-to-date library docs, prevent Claude from using outdated APIs</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🌐</div>
+            <div>
+              <strong>Playwright</strong>
+              <p class="lang-zh">浏览器自动化——自动测试 UI、点击按钮、填表格</p>
+              <p class="lang-en">Browser automation — auto-test UI, click buttons, fill forms</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🔧</div>
+            <div>
+              <strong>Claude in Chrome</strong>
+              <p class="lang-zh">连接 Claude 到你的 Chrome 浏览器——检查控制台、网络请求、DOM</p>
+              <p class="lang-en">Connect Claude to your Chrome browser — inspect console, network, DOM</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📖</div>
+            <div>
+              <strong>DeepWiki</strong>
+              <p class="lang-zh">获取任何 GitHub 仓库的结构化 wiki 文档</p>
+              <p class="lang-en">Fetch structured wiki docs for any GitHub repo</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">📊</div>
+            <div>
+              <strong>Excalidraw</strong>
+              <p class="lang-zh">根据描述手绘风格的架构图和流程图</p>
+              <p class="lang-en">Hand-drawn style architecture diagrams and flowcharts from descriptions</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">配置 MCP 服务器</h2>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">JSON</span>
+            <pre><code><span class="code-line">{</span>
+<span class="code-line">  <span class="code-property">"mcpServers"</span>: {</span>
+<span class="code-line">    <span class="code-property">"context7"</span>: {</span>
+<span class="code-line">      <span class="code-property">"command"</span>: <span class="code-string">"npx"</span>,</span>
+<span class="code-line">      <span class="code-property">"args"</span>: [<span class="code-string">"-y"</span>, <span class="code-string">"@upstash/context7-mcp"</span>]</span>
+<span class="code-line">    },</span>
+<span class="code-line">    <span class="code-property">"remote-api"</span>: {</span>
+<span class="code-line">      <span class="code-property">"type"</span>: <span class="code-string">"http"</span>,</span>
+<span class="code-line">      <span class="code-property">"url"</span>: <span class="code-string">"https://api.example.com?token=${API_KEY}"</span></span>
+<span class="code-line">    }</span>
+<span class="code-line">  }</span>
+<span class="code-line">}</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">中文解释</span>
+            <div class="translation-lines">
+              <p class="tl">MCP 服务器配置在 .mcp.json 文件中。</p>
+              <p class="tl">context7 使用 npx 命令自动下载并运行，这是最常见的类型（stdio）。</p>
+              <p class="tl">remote-api 使用 http 类型，连接到远程 URL。</p>
+              <p class="tl">注意用 ${API_KEY} 环境变量引用密钥，不要把真实密钥写进文件。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">CLAUDE.md：项目记忆系统</h2>
+        <p class="lang-zh">CLAUDE.md 是影响 Claude 行为最强大的文件。它告诉 Claude 你的项目约定、技术栈和偏好。</p>
+        <p class="lang-en">CLAUDE.md is the most powerful file for influencing Claude's behavior. It tells Claude your project conventions, tech stack, and preferences.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">CLAUDE.md 加载机制 / Loading Mechanism</strong>
+            <p class="lang-zh"><strong>祖先加载（向上）</strong>：Claude 从当前目录向上找，所有 CLAUDE.md 启动时立即加载。<br>
+<strong>后代加载（向下）</strong>：子目录的 CLAUDE.md 只在 Claude 进入该目录时才加载（懒加载）。</p>
+            <p class="lang-en"><strong>Ancestor Loading (UP)</strong>: Claude walks UP from current directory, all CLAUDE.md load at startup.<br>
+<strong>Descendant Loading (DOWN)</strong>: Subdirectory CLAUDE.md only loads when Claude enters that directory (lazy load).</p>
+          </div>
+        </div>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-success)">
+            <h4 class="pattern-title">CLAUDE.md 最佳写法</h4>
+            <p class="pattern-desc lang-zh">每文件控制在 200 行以内。用 &lt;important if="..."&gt; 标签包裹关键规则，防止 Claude 忽略。</p>
+            <p class="pattern-desc lang-en">Keep under 200 lines per file. Wrap critical rules in &lt;important if="..."&gt; tags to prevent Claude from ignoring them.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小测验</h2>
+        <div class="quiz-container" id="quiz-module5">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确！祖先目录的 CLAUDE.md 在启动时立即加载，子目录的是懒加载（进入时才加载）。"
+               data-explanation-wrong="不对。Claude 使用两种加载机制：祖先立即加载 + 后代懒加载。">
+            <h3 class="quiz-question">
+              <span class="lang-zh">CLAUDE.md 在 monorepo 中如何加载？</span>
+              <span class="lang-en">How does CLAUDE.md load in a monorepo?</span>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">所有 CLAUDE.md 都立即加载</span>
+                <span class="lang-en">All CLAUDE.md load immediately</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">祖先立即加载，后代懒加载</span>
+                <span class="lang-en">Ancestors immediate, descendants lazy</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">只有根目录的加载</span>
+                <span class="lang-en">Only root loads</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">
+            <span class="lang-zh">检查答案</span> <span class="lang-en">Check Answer</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="module" id="module-6">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">最佳实践</h1>
+      <p class="module-subtitle lang-en">Best Practices — 69 Tips from the Community</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <h2 class="screen-heading">提示技巧</h2>
+        <p class="lang-zh">和 Claude 对话也有技巧。以下是社区验证过的提示策略：</p>
+        <p class="lang-en">Talking to Claude also has techniques. Here are community-verified prompting strategies:</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong class="lang-zh">"挑战我"模式</strong>
+              <span class="lang-en">"Challenge Me" Mode</span>
+              <p class="lang-zh">"审查这些改动，考考我，不通过别提交 PR"</p>
+              <p class="lang-en">"Grill me on these changes, don't make a PR until I pass"</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong class="lang-zh">"放弃重来"策略</strong>
+              <span class="lang-en">"Scrap and Redo" Strategy</span>
+              <p class="lang-zh">"知道你现在所知的一切，放弃这个方案，实现更优雅的那个"</p>
+              <p class="lang-en">"Knowing everything you know now, scrap this and implement the elegant solution"</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong class="lang-zh">让 Claude 自治</strong>
+              <span class="lang-en">Let Claude Self-Manage</span>
+              <p class="lang-zh">粘贴 bug，说"修复"，不要指挥它怎么做——它自己会找到最好的方法</p>
+              <p class="lang-en">Paste the bug, say "fix", don't micromanage — it'll find the best approach itself</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Git 和 PR 最佳实践</h2>
+        <p class="lang-zh">来自 Claude Code 创造者 Boris Cherny 的 Git 实践：</p>
+        <p class="lang-en">Git practices from Claude Code creator Boris Cherny:</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <h4 class="pattern-title">
+              <span class="lang-zh">小 PR</span> <span class="lang-en">Small PRs</span>
+            </h4>
+            <p class="pattern-desc lang-zh">PR 中位数 118 行——每个 PR 只做一个功能。小的 PR 更容易审查，出错更少。</p>
+            <p class="pattern-desc lang-en">PR median of 118 lines — one feature per PR. Small PRs are easier to review and have fewer bugs.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <h4 class="pattern-title">
+              <span class="lang-zh">Squash Merge</span> <span class="lang-en">Squash Merge</span>
+            </h4>
+            <p class="pattern-desc lang-zh">始终使用 squash merge——保持 Git 历史干净整洁，一条线性的提交记录。</p>
+            <p class="pattern-desc lang-en">Always squash merge — keeps git history clean with a linear commit record.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <h4 class="pattern-title">
+              <span class="lang-zh">频繁提交</span> <span class="lang-en">Commit Often</span>
+            </h4>
+            <p class="pattern-desc lang-zh">至少每小时提交一次。频繁提交让你可以用 /rewind 回退到任何一个时间点。</p>
+            <p class="pattern-desc lang-en">Commit at least once per hour. Frequent commits let you /rewind to any point.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <h4 class="pattern-title">
+              <span class="lang-zh">/code-review</span> <span class="lang-en">/code-review</span>
+            </h4>
+            <p class="pattern-desc lang-zh">用多智能体 PR 分析——自动检测 bug、安全漏洞和回归问题。</p>
+            <p class="pattern-desc lang-en">Multi-agent PR analysis — auto-detects bugs, security vulnerabilities, and regressions.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">调试技巧</h2>
+        <p class="lang-zh">遇到 bug 时的有效策略：</p>
+        <p class="lang-en">Effective strategies when you hit a bug:</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📸</div>
+            <div>
+              <strong class="lang-zh">截图习惯</strong>
+              <span class="lang-en">Screenshot Habit</span>
+              <p class="lang-zh">卡住时就截图发给 Claude——视觉上下文帮助它更快理解问题</p>
+              <p class="lang-en">Screenshot when stuck — visual context helps Claude understand faster</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🌐</div>
+            <div>
+              <strong class="lang-zh">MCP 浏览器调试</strong>
+              <span class="lang-en">MCP Browser Debug</span>
+              <p class="lang-zh">用 Playwright 或 Chrome MCP 让 Claude 直接看控制台和网络请求</p>
+              <p class="lang-en">Use Playwright or Chrome MCP to let Claude see console and network directly</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🔄</div>
+            <div>
+              <strong class="lang-zh">后台任务运行</strong>
+              <span class="lang-en">Background Task Run</span>
+              <p class="lang-zh">让 Claude 在后台运行终端命令——更好的调试体验，你可以同时做其他事</p>
+              <p class="lang-en">Have Claude run terminal commands in background — better debugging, you can do other things</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🔍</div>
+            <div>
+              <strong class="lang-zh">/doctor 诊断</strong>
+              <span class="lang-en">/doctor Diagnose</span>
+              <p class="lang-zh">遇到安装或配置问题，先跑 /doctor——它能发现大多数常见问题并自动修复</p>
+              <p class="lang-en">For install or config issues, run /doctor first — it finds and auto-fixes most problems</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">日常习惯</h2>
+        <p class="lang-zh">让 Claude Code 保持最佳状态的两个日常习惯：</p>
+        <p class="lang-en">Two daily habits to keep Claude Code at peak performance:</p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p class="lang-zh"><strong>每天更新</strong><br>运行更新命令获取最新功能和修复</p>
+            <p class="lang-en"><strong>Update Daily</strong><br>Run update command for latest features and fixes</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p class="lang-zh"><strong>阅读更新日志</strong><br>了解新增的命令、智能体和功能</p>
+            <p class="lang-en"><strong>Read Changelog</strong><br>Learn about new commands, agents, and features</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">"十亿美元问题"</h2>
+        <p class="lang-zh">来自社区的高级思考题——这些问题的答案会帮助你从"会用"升级到"精通"：</p>
+        <p class="lang-en">Advanced thinking questions from the community — answering these will take you from "can use" to "mastery":</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+            <h4 class="pattern-title">
+              <span class="lang-zh">CLAUDE.md 应该放什么、不该放什么？</span>
+              <span class="lang-en">What should go in CLAUDE.md — and what should stay out?</span>
+            </h4>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-info)">
+            <h4 class="pattern-title">
+              <span class="lang-zh">什么时候用命令，什么时候用智能体，什么时候用技能？</span>
+              <span class="lang-en">When to use command vs agent vs skill — and when is vanilla better?</span>
+            </h4>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-success)">
+            <h4 class="pattern-title">
+              <span class="lang-zh">随着模型进步，多久更新一次你的智能体和技能？</span>
+              <span class="lang-en">How often should you update your agents and skills as models improve?</span>
+            </h4>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <h4 class="pattern-title">
+              <span class="lang-zh">能不能把代码库转化为规格文档，然后让 AI 重新生成一样的代码？</span>
+              <span class="lang-en">Can we convert codebase to specs, then have AI regenerate the exact same code?</span>
+            </h4>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🚀</div>
+          <div class="callout-content">
+            <strong class="callout-title">下一步 / Next Step</strong>
+            <p class="lang-zh">恭喜！你已经学完了 Claude Code 的核心知识。现在克隆这个仓库，在 Claude Code 中亲自体验每个功能。从 /doctor 开始，然后试试 /powerup 互动教程。</p>
+            <p class="lang-en">Congratulations! You've learned the core knowledge of Claude Code. Now clone this repo and try each feature yourself in Claude Code. Start with /doctor, then try /powerup interactive lessons.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen animate-in">
+        <h2 class="screen-heading">最终测验</h2>
+        <div class="quiz-container" id="quiz-module6">
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="正确！PR 中位数是 118 行，每个 PR 只做一个功能。小的 PR 更容易审查。"
+               data-explanation-wrong="不对。Boris 的建议是小 PR（中位数 118 行），而不是越大越好。">
+            <h3 class="quiz-question">
+              <span class="lang-zh">根据 Boris Cherny 的建议，PR 的最佳大小是多少？</span>
+              <span class="lang-en">According to Boris Cherny, what's the ideal PR size?</span>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">中位数 118 行，一功能一 PR</span>
+                <span class="lang-en">Median 118 lines, one feature per PR</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">越大越好，一次全做完</span>
+                <span class="lang-en">Bigger is better, do everything at once</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">每次只改一个文件</span>
+                <span class="lang-en">Only one file per change</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确！Claude 会自动修复大多数 bug。粘贴 bug 说'修复'就好，不要指挥它怎么做。"
+               data-explanation-wrong="不对。仓库的建议是让 Claude 自己处理——它通常能找到正确的修复方法。">
+            <h3 class="quiz-question">
+              <span class="lang-zh">遇到 bug 时，仓库推荐怎么做？</span>
+              <span class="lang-en">When you hit a bug, what does the repo recommend?</span>
+            </h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">详细告诉 Claude 每一步怎么修</span>
+                <span class="lang-en">Tell Claude step by step how to fix</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">粘贴 bug，说"修复"，让它自己处理</span>
+                <span class="lang-en">Paste bug, say "fix", let it self-manage</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span class="lang-zh">不用 AI，自己修</span>
+                <span class="lang-en">Don't use AI, fix it yourself</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module6')">
+            <span class="lang-zh">检查答案</span> <span class="lang-en">Check Answers</span>
+          </button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module6')">
+            <span class="lang-zh">重试</span> <span class="lang-en">Try Again</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+</div>
+
+  <script src="main.js"></script>
+</body>
+</html>

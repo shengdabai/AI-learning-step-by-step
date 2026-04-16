@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding 新手工具桌面</title>
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --surface: #141416;
+    --surface2: #1c1c20;
+    --surface3: #252528;
+    --border: #2a2a2e;
+    --border-light: #3a3a3e;
+    --text: #e8e8ec;
+    --text-dim: #8a8a94;
+    --text-dimmer: #5a5a64;
+    --accent: #6c5ce7;
+    --accent-light: #a29bfe;
+    --accent-glow: rgba(108, 92, 231, 0.15);
+    --green: #00b894;
+    --green-glow: rgba(0, 184, 148, 0.15);
+    --orange: #fdcb6e;
+    --orange-glow: rgba(253, 203, 110, 0.15);
+    --blue: #74b9ff;
+    --blue-glow: rgba(116, 185, 255, 0.15);
+    --pink: #fd79a8;
+    --pink-glow: rgba(253, 121, 168, 0.15);
+    --red: #ff6b6b;
+    --cyan: #81ecec;
+    --cyan-glow: rgba(129, 236, 236, 0.15);
+    --yellow: #ffeaa7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, var(--accent-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, var(--blue-glow) 0%, transparent 50%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroGlow {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-5%, 3%) scale(1.1); }
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+  }
+
+  .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent-light) 50%, var(--blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.8;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat .num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-light);
+  }
+
+  .hero-stat .label {
+    font-size: 0.8rem;
+    color: var(--text-dimmer);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-dimmer);
+    font-size: 0.8rem;
+    animation: bounce 2s infinite;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 30px;
+    background: var(--text-dimmer);
+    margin: 0.5rem auto 0;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* Navigation */
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 11, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-item {
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); border-color: var(--border); }
+
+  /* Sections */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-num {
+    font-size: 0.75rem;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    line-height: 1.8;
+  }
+
+  /* Tool Cards */
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tool-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+  .tool-card:hover::before { opacity: 1; }
+
+  .tool-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tool-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .tool-card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .tool-card-tagline {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+
+  .tool-card-body { margin-top: 1.5rem; }
+
+  .tool-card-body p {
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  .tool-card-body .highlight {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Concept Grid */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .concept-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.2s;
+  }
+
+  .concept-item:hover { border-color: var(--border-light); }
+
+  .concept-item .term {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .concept-item .term .en {
+    font-size: 0.75rem;
+    color: var(--accent-light);
+    background: var(--accent-glow);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .concept-item .def {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* Workflow Chain */
+  .workflow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .workflow-step {
+    padding: 0.5rem 1rem;
+    background: var(--accent-glow);
+    border: 1px solid rgba(108, 92, 231, 0.3);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-light);
+  }
+
+  .workflow-step.green { background: var(--green-glow); border-color: rgba(0, 184, 148, 0.3); color: var(--green); }
+  .workflow-step.blue { background: var(--blue-glow); border-color: rgba(116, 185, 255, 0.3); color: var(--blue); }
+  .workflow-step.orange { background: var(--orange-glow); border-color: rgba(253, 203, 110, 0.3); color: var(--orange); }
+  .workflow-step.pink { background: var(--pink-glow); border-color: rgba(253, 121, 168, 0.3); color: var(--pink); }
+  .workflow-step.cyan { background: var(--cyan-glow); border-color: rgba(129, 236, 236, 0.3); color: var(--cyan); }
+
+  .workflow-arrow {
+    color: var(--text-dimmer);
+    font-size: 1.2rem;
+  }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .tag-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(108, 92, 231, 0.2); }
+  .tag-green { background: var(--green-glow); color: var(--green); border: 1px solid rgba(0, 184, 148, 0.2); }
+  .tag-blue { background: var(--blue-glow); color: var(--blue); border: 1px solid rgba(116, 185, 255, 0.2); }
+  .tag-orange { background: var(--orange-glow); color: var(--orange); border: 1px solid rgba(253, 203, 110, 0.2); }
+  .tag-pink { background: var(--pink-glow); color: var(--pink); border: 1px solid rgba(253, 121, 168, 0.2); }
+
+  /* Key Point */
+  .key-point {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .key-point.green { border-left-color: var(--green); }
+  .key-point.blue { border-left-color: var(--blue); }
+  .key-point.orange { border-left-color: var(--orange); }
+  .key-point.pink { border-left-color: var(--pink); }
+
+  .key-point p {
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .key-point .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-light);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .key-point.green .label { color: var(--green); }
+  .key-point.blue .label { color: var(--blue); }
+  .key-point.orange .label { color: var(--orange); }
+  .key-point.pink .label { color: var(--pink); }
+
+  /* Two Column */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* Link */
+  .tool-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--accent-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .tool-link:hover { background: rgba(108, 92, 231, 0.25); }
+
+  /* Summary Table */
+  .summary-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 2rem 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .summary-table th {
+    background: var(--surface2);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary-table td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--text-dim);
+  }
+
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table td:first-child { font-weight: 600; color: var(--text); }
+
+  /* Pain Point Cards */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .pain-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .pain-card .pain-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .pain-card .pain-text { font-size: 0.88rem; color: var(--text-dim); }
+  .pain-card .pain-solution { font-size: 0.82rem; color: var(--green); margin-top: 0.5rem; font-weight: 500; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-dimmer);
+    font-size: 0.85rem;
+  }
+
+  .footer .quote {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.8;
+    font-style: italic;
+  }
+
+  /* Animations */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Quote Block */
+  .quote-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-dim);
+    line-height: 1.8;
+    position: relative;
+  }
+
+  .quote-block::before {
+    content: '"';
+    position: absolute;
+    top: -0.5rem;
+    left: 1rem;
+    font-size: 3rem;
+    color: var(--accent);
+    opacity: 0.3;
+    font-family: Georgia, serif;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 1.5rem 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .tool-card { padding: 1.5rem; }
+    .section { padding: 3rem 1rem; }
+    .hero-stats { gap: 1rem; }
+    .concept-grid { grid-template-columns: 1fr; }
+    .workflow { flex-direction: column; align-items: flex-start; }
+    .workflow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Vibe Coding 新手指南
+    </div>
+    <h1>先把这 8 个工具<br>放上桌面</h1>
+    <p>vibe-coding 最该先准备的从来不只是模型，而是一张够用的工作台。模型决定你写得快不快，工作台决定你会不会越做越乱。</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">8</div>
+        <div class="label">核心工具</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">6</div>
+        <div class="label">常踩的坑</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">1</div>
+        <div class="label">套工作台</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">向下滚动</div>
+</section>
+
+<!-- Navigation -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a class="nav-item" href="#ide">1. IDE</a>
+    <a class="nav-item" href="#git">2. Git</a>
+    <a class="nav-item" href="#ui">3. UI 设计</a>
+    <a class="nav-item" href="#motion">4. 动效</a>
+    <a class="nav-item" href="#icons">5. 图标</a>
+    <a class="nav-item" href="#media">6. 图片/视频</a>
+    <a class="nav-item" href="#db">7. 数据库</a>
+    <a class="nav-item" href="#deploy">8. 部署</a>
+    <a class="nav-item" href="#summary">总结</a>
+  </div>
+</nav>
+
+<!-- Section 1: IDE -->
+<section class="section fade-in" id="ide">
+  <div class="section-header">
+    <div class="section-num">Tool 01</div>
+    <h2 class="section-title">IDE：先把工作台搭起来</h2>
+    <p class="section-subtitle">IDE 解决的是"你能不能看清晰自己手上的项目"。这一步没站稳，后面都会飘。</p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="tool-icon" style="background: var(--accent-glow); color: var(--accent-light);">🖥️</div>
+      <div>
+        <div class="tool-card-title">集成开发环境 (IDE)</div>
+        <div class="tool-card-tagline">你的修理台、总控台和驾驶舱</div>
+      </div>
+    </div>
+
+    <div class="tool-card-body">
+      <p>新手最缺的不是"AI 帮你写代码"，而是<span class="highlight">一个看得清全局的工作台</span>。IDE 不是一个写代码窗口，它是你整个项目的总控中心。</p>
+
+      <div class="two-col">
+        <div class="concept-item">
+          <div class="term">左边：文件树</div>
+          <div class="def">看清项目结构，知道每个文件在哪，入口文件是什么</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">上面：全局搜索</div>
+          <div class="def">快速定位任何代码或文字，不用一个个文件翻</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">中间：代码编辑</div>
+          <div class="def">直接修改代码，配合 AI 助手快速迭代</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">下面：终端</div>
+          <div class="def">运行命令、启动服务器、安装依赖</div>
+        </div>
+      </div>
+
+      <div class="key-point">
+        <div class="label">推荐</div>
+        <p><strong>Trae 国际版 / 国内版</strong> — 对中文用户更友好，界面直观，AI 辅助编程能力强。如果你已习惯其他编辑器（VS Code、Cursor、Windsurf），也不必硬切。</p>
+      </div>
+
+      <div class="quote-block">
+        很多人直接用聊天框式工具（如 Codex、Claude Code），短期很爽，长期很容易迷路。AI 给你改了 6 个文件，你连入口在哪都不知道，下一次再出 bug，就只能继续问模型，心里会越来越虚。
+      </div>
+
+      <a class="tool-link" href="https://trae.ai" target="_blank">trae.ai →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: Git -->
+<section class="section fade-in" id="git">
+  <div class="section-header">
+    <div class="section-num">Tool 02</div>
+    <h2 class="section-title">Git：版本时光机</h2>
+    <p class="section-subtitle">新手学 Git 不是为了显得专业，是为了别让自己被 AI 的速度甩飞。</p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="tool-icon" style="background: var(--green-glow); color: var(--green);">📦</div>
+      <div>
+        <div class="tool-card-title">Git 版本控制</div>
+        <div class="tool-card-tagline">你的版本时光机，AI 改代码快的另一面是你更容易失控</div>
+      </div>
+    </div>
+
+    <div class="tool-card-body">
+      <p>AI 改代码很快，昨天只改一处，今天模型一口气帮你动了 11 个文件。如果没有 Git，你根本说不清<span class="highlight">到底是哪一步开始坏的</span>。</p>
+
+      <h3 style="margin: 2rem 0 1rem; font-size: 1.1rem; color: var(--text);">核心概念</h3>
+
+      <div class="concept-grid">
+        <div class="concept-item">
+          <div class="term">仓库 <span class="en">Repository</span></div>
+          <div class="def">专门放项目的仓库，不只放文件，还记住什么时候改过、改了哪些、每次改动是为了什么</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">本地仓库 <span class="en">Local</span></div>
+          <div class="def">你自己电脑上的那一份，平时改代码大多数时候先在这里动手</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">远程仓库 <span class="en">Remote</span></div>
+          <div class="def">放在 GitHub 等云平台上的总仓，电脑坏了它还在，别人协作也围着它转</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">分支 <span class="en">Branch</span></div>
+          <div class="def">"平行施工线"。主分支像正式营业中的店面，试新功能另拉一条线，试成功再并回主线</div>
+        </div>
+      </div>
+
+      <h3 style="margin: 2rem 0 1rem; font-size: 1.1rem; color: var(--text);">Git 最常见的 6 个动作</h3>
+
+      <div class="concept-grid">
+        <div class="concept-item">
+          <div class="term">clone <span class="en">克隆</span></div>
+          <div class="def">把远程仓库整仓复制一份到电脑里。像去总仓拿了一整套货搬回工作台</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">add <span class="en">添加</span></div>
+          <div class="def">把刚改好的东西放进待打包区。像发快递前先把要寄的东西放进箱子</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">commit <span class="en">提交</span></div>
+          <div class="def">把那箱东西封箱，贴上说明单。在本地存一个带说明的版本快照</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">push <span class="en">推送</span></div>
+          <div class="def">把本地已封箱的版本发到远程仓库。不 push 别人通常看不到你的提交</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">pull <span class="en">拉取</span></div>
+          <div class="def">把远程仓库的新变化拉回本地，合并进来。总仓更新了搬回工作台</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">fetch <span class="en">获取</span></div>
+          <div class="def">比 pull 更轻：先去总仓看有什么新货，但先不拆箱合并。看完自己决定怎么处理</div>
+        </div>
+      </div>
+
+      <div class="key-point green">
+        <div class="label">最小动作链</div>
+        <p>新手先把这条链记住就够了：</p>
+      </div>
+
+      <div class="workflow">
+        <span class="workflow-step green">clone 克隆</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step">改文件</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step blue">add 添加</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step orange">commit 提交</span>
+        <span class="workflow-arrow">→</span>
+        <span class="workflow-step pink">push 推送</span>
+      </div>
+
+      <div class="key-point blue">
+        <div class="label">Git 给你的三种底气</div>
+        <p><strong>第一</strong>，你能看 diff —— 看这次到底改了哪几行。<br>
+        <strong>第二</strong>，你能按提交回看历史。<br>
+        <strong>第三</strong>，你能开分支试，不满意就退。</p>
+      </div>
+
+      <p style="color: var(--text-dimmer); font-size: 0.85rem; margin-top: 1rem;">协作时补充：开工前先 pull；想先看更新但不合并，就用 fetch。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 3: UI -->
+<section class="section fade-in" id="ui">
+  <div class="section-header">
+    <div class="section-num">Tool 03</div>
+    <h2 class="section-title">UI 设计：装修前先拉平面图</h2>
+    <p class="section-subtitle">别让产品死在"脑子里很好看"。先把页面结构画清楚，后面让 AI 写前端才会更稳。</p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="tool-icon" style="background: var(--pink-glow); color: var(--pink);">🎨</div>
+      <div>
+        <div class="tool-card-title">UI 设计工具</div>
+        <div class="tool-card-tagline">像装修前先拉一张平面图，别让施工队看着你的"感觉"盲干</div>
+      </div>
+    </div>
+
+    <div class="tool-card-body">
+      <p>很多人做 vibe-coding 的时候，代码都还没开始写，脑子里已经有了一个"应该很高级"的产品。问题是，<span class="highlight">脑子里的界面最容易骗人</span>。</p>
+
+      <div class="two-col">
+        <div class="concept-item">
+          <div class="term">Stitch <span class="en">AI UI 工具</span></div>
+          <div class="def">快速把"这个页面大概长什么样"压出来，AI 生成界面草图，适合快速验证想法</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">Pixso <span class="en">设计工具</span></div>
+          <div class="def">轻量、符合中文团队习惯。拖组件画界面，按钮放哪、卡片怎么排、首页先展示什么</div>
+        </div>
+      </div>
+
+      <div class="concept-grid" style="margin-top: 1.5rem;">
+        <div class="concept-item">
+          <div class="term">需要回答的问题</div>
+          <div class="def">
+            • 按钮放哪？<br>
+            • 卡片怎么排？<br>
+            • 首页先展示什么？<br>
+            • 用户点进去先看到什么？
+          </div>
+        </div>
+        <div class="concept-item">
+          <div class="term">Figma <span class="en">备选</span></div>
+          <div class="def">如果你习惯自己手绘、自己拖组件，Figma 是行业标准的传统选择，功能最全面</div>
+        </div>
+      </div>
+
+      <a class="tool-link" href="https://pixso.cn/" target="_blank">pixso.cn →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: Motion -->
+<section class="section fade-in" id="motion">
+  <div class="section-header">
+    <div class="section-num">Tool 04</div>
+    <h2 class="section-title">动效：产品不是只有能不能用</h2>
+    <p class="section-subtitle">动效不是装饰品，它很多时候在负责反馈。这直接影响"这个产品像不像活的"。</p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="tool-icon" style="background: var(--orange-glow); color: var(--orange);">✨</div>
+      <div>
+        <div class="tool-card-title">动效工具</div>
+        <div class="tool-card-tagline">页面能打开只是第一层，顺不顺手才是另一层</div>
+      </div>
+    </div>
+
+    <div class="tool-card-body">
+      <p>很多产品最后看起来"廉价"，不是因为功能不行，是因为<span class="highlight">所有东西都硬切</span>。弹窗是硬弹出来的，按钮点了像没点，页面切换像瞬移。</p>
+
+      <div class="two-col">
+        <div class="concept-item">
+          <div class="term">Rive <span class="en">交互式动效</span></div>
+          <div class="def">做更精细、可交互的动效。可以嵌入到网页、App 中，支持状态机，能做复杂的交互动画</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">Lottie <span class="en">轻量动画</span></div>
+          <div class="def">加载动画、提示动画、成功状态动画。更轻量，适合简单的 UI 反馈场景</div>
+        </div>
+      </div>
+
+      <div class="concept-grid" style="margin-top: 1.5rem;">
+        <div class="concept-item">
+          <div class="term">加载反馈</div>
+          <div class="def">按钮按下去转一下圈，用户就知道系统在处理，不会重复点击</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">成功反馈</div>
+          <div class="def">提交成功有个小动画，用户就知道事情完成了，产生满足感</div>
+        </div>
+      </div>
+
+      <div class="key-point orange">
+        <div class="label">关键认知</div>
+        <p>最重要的不是你一开始就做多炫，而是你要知道：动效在负责<strong>反馈</strong>。它让产品"像活的"。</p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+        <a class="tool-link" href="https://rive.app/" target="_blank">rive.app →</a>
+        <a class="tool-link" href="https://lottiefiles.com/" target="_blank">lottiefiles.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 5: Icons -->
+<section class="section fade-in" id="icons">
+  <div class="section-header">
+    <div class="section-num">Tool 05</div>
+    <h2 class="section-title">图标：AI 画的太丑了</h2>
+    <p class="section-subtitle">别为了一个搜索图标折腾半小时。图标解决的是"界面里的小符号统一不统一"。</p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="tool-icon" style="background: var(--blue-glow); color: var(--blue);">🔣</div>
+      <div>
+        <div class="tool-card-title">图标库</div>
+        <div class="tool-card-tagline">统一了产品会整洁很多，不统一用户说不出哪里怪但会觉得哪哪都散</div>
+      </div>
+    </div>
+
+    <div class="tool-card-body">
+      <p>很多新手做到这里，会开始在最不值钱的地方浪费时间。<span class="highlight">图标这块分两路走</span>。</p>
+
+      <div class="two-col">
+        <div class="concept-item">
+          <div class="term">Iconfont <span class="en">阿里巴巴矢量图标库</span></div>
+          <div class="def">
+            • 中文搜索友好<br>
+            • 找图标快<br>
+            • 国内常见场景都能很快搜到<br>
+            • 适合中文用户使用
+          </div>
+        </div>
+        <div class="concept-item">
+          <div class="term">Lucide <span class="en">开源图标库</span></div>
+          <div class="def">
+            • 干净、统一、开源<br>
+            • 生态兼容度高<br>
+            • 稳定、统一、不抢戏<br>
+            • 适合网页产品、后台、SaaS
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem;">
+        <a class="tool-link" href="https://www.iconfont.cn/" target="_blank">iconfont.cn →</a>
+        <a class="tool-link" href="https://lucide.dev/" target="_blank">lucide.dev →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 6: Media -->
+<section class="section fade-in" id="media">
+  <div class="section-header">
+    <div class="section-num">Tool 06</div>
+    <h2 class="section-title">图片/视频：先当参考素材库</h2>
+    <p class="section-subtitle">别在产品还没站起来的时候，先把所有精力都砸在视觉热闹上。</p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="tool-icon" style="background: var(--cyan-glow); color: var(--cyan);">🖼️</div>
+      <div>
+        <div class="tool-card-title">图片与视频素材</div>
+        <div class="tool-card-tagline">能帮你提升第一眼质感，但往往不是决定生死的那一层</div>
+      </div>
+    </div>
+
+    <div class="tool-card-body">
+      <p>如果你的产品一开始核心是功能验证，那图片、视频工具<span class="highlight">先拿来做参考、找感觉、补一点演示资产</span>就够了。</p>
+
+      <div class="concept-grid">
+        <div class="concept-item">
+          <div class="term">Lovart</div>
+          <div class="def">参考素材库，找感觉、补演示资产。前期属于"加分项"不是"开工门票"</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">定位</div>
+          <div class="def">像陈列和海报系统，能帮你提升第一眼质感。但项目前期，往往不是决定生死的那一层</div>
+        </div>
+      </div>
+
+      <div class="key-point pink">
+        <div class="label">建议</div>
+        <p>不是图和视频不重要，而是别在产品还没站起来的时候，先把所有精力都砸在视觉热闹上。先做功能，再美颜值。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Database -->
+<section class="section fade-in" id="db">
+  <div class="section-header">
+    <div class="section-num">Tool 07</div>
+    <h2 class="section-title">数据库：先用 Supabase</h2>
+    <p class="section-subtitle">别一上来自己盖物流园，先租一个带基础设施的小仓库就够了。</p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="tool-icon" style="background: var(--green-glow); color: var(--green);">🗄️</div>
+      <div>
+        <div class="tool-card-title">Supabase</div>
+        <div class="tool-card-tagline">数据库 + 鉴权 + 存储 + 常见后端能力，打包成易用服务</div>
+      </div>
+    </div>
+
+    <div class="tool-card-body">
+      <p>数据库这个词容易把新手吓到。其实第一次做小产品，你更该关心的是：</p>
+
+      <div class="concept-grid">
+        <div class="concept-item">
+          <div class="term">产品要不要记住用户</div>
+          <div class="def">用户注册登录、账号体系、个人偏好设置</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">要不要保存数据</div>
+          <div class="def">聊天记录、用户创作内容、订单信息等持久化存储</div>
+        </div>
+      </div>
+
+      <div class="key-point green">
+        <div class="label">为什么选 Supabase</div>
+        <p>
+          • 把数据库、鉴权、存储、常见后端能力打包成易用服务<br>
+          • 不用从零搭一整套后端基础设施<br>
+          • <strong>免费计划</strong>对大多数验证阶段的小产品已经够用<br>
+          • 基于 PostgreSQL，开源、成熟、可扩展
+        </p>
+      </div>
+
+      <div class="concept-grid" style="margin-top: 1.5rem;">
+        <div class="concept-item">
+          <div class="term">Supabase 提供</div>
+          <div class="def">
+            • 数据库 (PostgreSQL)<br>
+            • 用户认证 (Auth)<br>
+            • 文件存储 (Storage)<br>
+            • 实时订阅 (Realtime)<br>
+            • Edge Functions (后端逻辑)
+          </div>
+        </div>
+        <div class="concept-item">
+          <div class="term">免费计划包含</div>
+          <div class="def">
+            • 500MB 数据库空间<br>
+            • 1GB 文件存储<br>
+            • 50,000 月活跃用户<br>
+            • 无限 API 请求
+          </div>
+        </div>
+      </div>
+
+      <a class="tool-link" href="https://supabase.com/" target="_blank">supabase.com →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Section 8: Deploy -->
+<section class="section fade-in" id="deploy">
+  <div class="section-header">
+    <div class="section-num">Tool 08</div>
+    <h2 class="section-title">部署：先上 Vercel</h2>
+    <p class="section-subtitle">部署不是最后的仪式，它更像第一次把东西送去见人。</p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="tool-icon" style="background: var(--accent-glow); color: var(--accent-light);">🚀</div>
+      <div>
+        <div class="tool-card-title">Vercel 部署平台</div>
+        <div class="tool-card-tagline">你电脑里能开只说明你自己能看，部署出去别人才打开</div>
+      </div>
+    </div>
+
+    <div class="tool-card-body">
+      <p>很多人做产品最大的幻觉：<span class="highlight">"我本地已经跑起来了，差不多算做完了。"</span>其实差很远。</p>
+
+      <div class="key-point">
+        <div class="label">为什么部署特别重要</div>
+        <p>产品一旦被部署出去，很多假问题会消失，很多真问题会冒出来：</p>
+      </div>
+
+      <div class="concept-grid" style="margin-top: 1.5rem;">
+        <div class="concept-item">
+          <div class="term">页面错位</div>
+          <div class="def">在别人手机上会不会错位？不同屏幕尺寸、浏览器表现是否一致</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">真实报错</div>
+          <div class="def">接口会不会真报错？本地 Mock 数据和真实 API 的差异</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">密钥配置</div>
+          <div class="def">你的密钥是不是漏配了？环境变量是否正确设置</div>
+        </div>
+        <div class="concept-item">
+          <div class="term">这些问题</div>
+          <div class="def">在"只活在自己电脑里"的阶段，很多都藏着。部署出来才能发现</div>
+        </div>
+      </div>
+
+      <div class="key-point blue">
+        <div class="label">为什么选 Vercel</div>
+        <p>
+          • 部署快，push 代码即自动部署<br>
+          • 对前端和现代 Web 项目友好<br>
+          • <strong>Hobby 免费计划</strong>：做验证版、小流量版本、作品集和原型通常已经够用<br>
+          • 自动 HTTPS、全球 CDN、预览部署
+        </p>
+      </div>
+
+      <a class="tool-link" href="https://vercel.com/" target="_blank">vercel.com →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Summary -->
+<section class="section fade-in" id="summary">
+  <div class="section-header">
+    <div class="section-num">Summary</div>
+    <h2 class="section-title">新手工具包总结</h2>
+    <p class="section-subtitle">这套工具刚好对应了新手最常卡的 8 个坑。</p>
+  </div>
+
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>工具</th>
+        <th>推荐</th>
+        <th>解决的坑</th>
+        <th>标签</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>IDE</td>
+        <td>Trae 国际版 / 国内版</td>
+        <td>看不清项目</td>
+        <td><span class="tag tag-purple">基础</span></td>
+      </tr>
+      <tr>
+        <td>Git</td>
+        <td>最小动作链 + IDE 可视化</td>
+        <td>不会管版本</td>
+        <td><span class="tag tag-green">基础</span></td>
+      </tr>
+      <tr>
+        <td>UI 设计</td>
+        <td>Stitch 出草图，Pixso 细化</td>
+        <td>画不清界面</td>
+        <td><span class="tag tag-pink">设计</span></td>
+      </tr>
+      <tr>
+        <td>动效</td>
+        <td>Rive / Lottie</td>
+        <td>不会做反馈</td>
+        <td><span class="tag tag-pink">设计</span><span class="tag tag-orange">可选</span></td>
+      </tr>
+      <tr>
+        <td>图标</td>
+        <td>Iconfont + Lucide</td>
+        <td>视觉细节乱</td>
+        <td><span class="tag tag-blue">素材</span></td>
+      </tr>
+      <tr>
+        <td>图片/视频</td>
+        <td>Lovart 参考素材库</td>
+        <td>素材没有方向</td>
+        <td><span class="tag tag-blue">素材</span><span class="tag tag-orange">可选</span></td>
+      </tr>
+      <tr>
+        <td>数据库</td>
+        <td>Supabase (免费版)</td>
+        <td>数据没地方放</td>
+        <td><span class="tag tag-green">后端</span></td>
+      </tr>
+      <tr>
+        <td>部署</td>
+        <td>Vercel (Hobby 免费版)</td>
+        <td>做完发不出去</td>
+        <td><span class="tag tag-green">上线</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">👀</div>
+      <div class="pain-text">看不清项目全貌</div>
+      <div class="pain-solution">→ IDE 解决</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">⏰</div>
+      <div class="pain-text">AI 改完不知道改了什么</div>
+      <div class="pain-solution">→ Git 解决</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📐</div>
+      <div class="pain-text">界面只在脑子里，落地就变形</div>
+      <div class="pain-solution">→ UI 工具解决</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🤖</div>
+      <div class="pain-text">产品用起来僵硬没反馈</div>
+      <div class="pain-solution">→ 动效解决</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🔤</div>
+      <div class="pain-text">图标不统一到处散</div>
+      <div class="pain-solution">→ 图标库解决</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🖼️</div>
+      <div class="pain-text">素材没有方向到处找</div>
+      <div class="pain-solution">→ Lovart 参考解决</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📊</div>
+      <div class="pain-text">数据没地方存放</div>
+      <div class="pain-solution">→ Supabase 解决</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🌐</div>
+      <div class="pain-text">做完了别人打不开</div>
+      <div class="pain-solution">→ Vercel 解决</div>
+    </div>
+  </div>
+
+  <div class="quote-block" style="margin-top: 3rem; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
+    模型决定你写得快不快，工作台决定你会不会越做越乱。如果你现在真想开始，第一步别急着研究最强 prompt，先把桌面摆对。后面很多问题，都会比你想象中简单。
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p class="quote">vibe-coding 最该先准备的从来不只是模型，而是一张够用的工作台。</p>
+  <p style="margin-top: 2rem; color: var(--text-dimmer); font-size: 0.8rem;">基于 Russell 的 Vibe Coding 工具集文章整理 · 2026/04/16</p>
+</footer>
+
+<script>
+// Fade in on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Smooth scroll for nav
+document.querySelectorAll('.nav-item').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

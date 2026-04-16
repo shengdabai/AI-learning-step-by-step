@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>GitHub 与 Vibe Coding 学习作战地图</title>
+  <style>
+    :root {
+      --ink: #17222e;
+      --muted: #526476;
+      --accent: #eb6f4a;
+      --teal: #0c7c7f;
+      --gold: #c9993a;
+      --paper: rgba(255, 252, 247, 0.84);
+      --line: rgba(23, 34, 46, 0.1);
+      --soft: rgba(255, 255, 255, 0.72);
+      --shadow: 0 22px 60px rgba(23, 34, 46, 0.12);
+      --serif: 'Iowan Old Style', 'Palatino Linotype', 'Songti SC', serif;
+      --sans: 'Avenir Next', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', sans-serif;
+      --mono: 'SF Mono', 'Menlo', monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 14%, rgba(235, 111, 74, 0.16), transparent 20%),
+        radial-gradient(circle at 84% 10%, rgba(12, 124, 127, 0.15), transparent 18%),
+        radial-gradient(circle at 78% 72%, rgba(201, 153, 58, 0.14), transparent 22%),
+        linear-gradient(180deg, #fbf7f2 0%, #f6efe6 48%, #ede0d1 100%);
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(23, 34, 46, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 34, 46, 0.02) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.14));
+    }
+    .page {
+      width: min(1240px, calc(100vw - 24px));
+      margin: 20px auto 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero, .panel {
+      background: var(--paper);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 30px;
+    }
+    .hero {
+      padding: 30px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(235, 111, 74, 0.12), transparent 30%),
+        linear-gradient(300deg, rgba(12, 124, 127, 0.12), transparent 40%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.35fr 0.95fr;
+      gap: 24px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(23, 34, 46, 0.05);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      box-shadow: 0 0 0 6px rgba(235, 111, 74, 0.08);
+    }
+    h1, h2, h3 {
+      margin: 0;
+      font-family: var(--serif);
+      line-height: 1.04;
+    }
+    h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      letter-spacing: -0.05em;
+      max-width: 10ch;
+    }
+    h2 {
+      font-size: clamp(30px, 4vw, 50px);
+      letter-spacing: -0.03em;
+    }
+    h3 {
+      font-size: 24px;
+    }
+    .lead {
+      max-width: 60ch;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+    .grid, .metrics, .cards, .resources, .learn-grid, .nav, .timeline, .two-col, .triptych, .pillars, .diagram-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 22px; }
+    .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .resources { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .learn-grid, .two-col { grid-template-columns: 1fr 1fr; }
+    .triptych { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pillars { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .timeline { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .diagram-grid { grid-template-columns: 1.05fr 0.95fr; }
+    .chip, .metric, .card, .box, .resource, .timeline-card, .qa, .diagram, .pillar {
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+    .chip strong, .metric strong, .card strong, .box strong, .resource strong, .timeline-card strong, .pillar strong {
+      display: block;
+    }
+    .metric strong {
+      font-size: 30px;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .flow-note {
+      margin-top: 14px;
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(12, 124, 127, 0.12), transparent 62%), rgba(23, 34, 46, 0.96);
+      color: #f8f0e6;
+    }
+    .flow-note p, .flow-note li { color: rgba(248, 240, 230, 0.8); }
+    .stack { display: grid; gap: 18px; }
+    .panel { padding: 24px; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+    .section-head p,
+    .chip span,
+    .metric span,
+    .card p,
+    .box p,
+    .resource p,
+    .timeline-card p,
+    .note,
+    .footer,
+    .qa p,
+    details,
+    .diagram p,
+    .pillar p,
+    .list li,
+    .workspace-caption,
+    .svg-note {
+      color: var(--muted);
+      line-height: 1.72;
+    }
+    .section-head p {
+      max-width: 68ch;
+      margin: 10px 0 0;
+    }
+    .badge {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .nav {
+      grid-template-columns: repeat(16, max-content);
+      overflow: auto;
+      gap: 10px;
+      padding: 14px 4px 4px;
+    }
+    .nav a {
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f7e8bd;
+      color: #7b5a18;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .card label {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      cursor: pointer;
+    }
+    .note {
+      padding: 15px 16px;
+      border-left: 4px solid var(--accent);
+      background: rgba(255, 255, 255, 0.72);
+      border-radius: 0 14px 14px 0;
+    }
+    .term-list, .cmd-list, .qa-list {
+      display: grid;
+      gap: 10px;
+    }
+    .term-list details, .cmd-list details, .qa-list details {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    code, pre {
+      font-family: var(--mono);
+    }
+    code {
+      background: rgba(23, 34, 46, 0.08);
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+    pre {
+      margin: 12px 0 0;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(23, 34, 46, 0.92);
+      color: #f7f1e7;
+      overflow: auto;
+      line-height: 1.6;
+      font-size: 13px;
+    }
+    .list {
+      margin: 12px 0 0;
+      padding-left: 18px;
+    }
+    .flowline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .node {
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .arrow {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 18px;
+    }
+    .tree {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+    .workspace-mockup {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.74);
+      margin-top: 12px;
+    }
+    .simulator-shell {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .scenario-list, .sim-stage, .sim-console, .sim-feedback, .sim-mini-card {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 22px;
+    }
+    .scenario-list {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+    .scenario-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(247,240,232,.84));
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+    }
+    .scenario-btn strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .scenario-btn span {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    .scenario-btn.is-active {
+      border-color: rgba(12, 124, 127, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(12, 124, 127, 0.15);
+      background: linear-gradient(135deg, rgba(12,124,127,.12), rgba(255,255,255,.92));
+    }
+    .simulator-main {
+      display: grid;
+      gap: 12px;
+    }
+    .sim-stage,
+    .sim-console,
+    .sim-feedback {
+      padding: 16px;
+    }
+    .sim-topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(23, 34, 46, 0.06);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .status-pill strong { color: var(--ink); }
+    .sim-clues {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .sim-mini-card {
+      padding: 12px;
+    }
+    .sim-mini-card strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .sim-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .sim-option {
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+      cursor: pointer;
+      font: inherit;
+      color: var(--ink);
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .sim-option:hover {
+      transform: translateY(-1px);
+      border-color: rgba(235, 111, 74, 0.35);
+      background: rgba(255, 247, 239, 0.96);
+    }
+    .sim-option[disabled] {
+      cursor: default;
+      opacity: .72;
+      transform: none;
+    }
+    .sim-option.is-correct {
+      border-color: rgba(12, 124, 127, 0.5);
+      background: rgba(237, 246, 245, 0.96);
+    }
+    .sim-option.is-wrong {
+      border-color: rgba(235, 111, 74, 0.45);
+      background: rgba(255, 242, 238, 0.95);
+    }
+    .sim-feedback {
+      display: grid;
+      gap: 10px;
+    }
+    .sim-feedback.success {
+      background: linear-gradient(135deg, rgba(12,124,127,.12), rgba(255,255,255,.88));
+    }
+    .sim-feedback.warning {
+      background: linear-gradient(135deg, rgba(235,111,74,.12), rgba(255,255,255,.88));
+    }
+    .sim-console {
+      background: rgba(23, 34, 46, 0.96);
+      color: #f7f1e7;
+    }
+    .sim-console p, .sim-console li {
+      color: rgba(247,241,231,.82);
+    }
+    .sim-console code {
+      background: transparent;
+      color: #f7f1e7;
+      padding: 0;
+    }
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(23, 34, 46, 0.08);
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--teal));
+      transition: width .2s ease;
+    }
+    .sim-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .sim-actions button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 10px 14px;
+      font: inherit;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .sim-actions button.primary {
+      background: rgba(23, 34, 46, 0.96);
+      color: #f7f1e7;
+      border-color: rgba(23,34,46,.96);
+    }
+    .simulator-shell {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .scenario-list, .sim-stage, .sim-console, .sim-feedback, .sim-mini-card {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 22px;
+    }
+    .scenario-list {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+    .scenario-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(247,240,232,.84));
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+    }
+    .scenario-btn strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .scenario-btn span {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    .scenario-btn.is-active {
+      border-color: rgba(12, 124, 127, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(12, 124, 127, 0.15);
+      background: linear-gradient(135deg, rgba(12,124,127,.12), rgba(255,255,255,.92));
+    }
+    .simulator-main {
+      display: grid;
+      gap: 12px;
+    }
+    .sim-stage,
+    .sim-console,
+    .sim-feedback {
+      padding: 16px;
+    }
+    .sim-topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(23, 34, 46, 0.06);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .status-pill strong { color: var(--ink); }
+    .sim-clues {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .sim-mini-card {
+      padding: 12px;
+    }
+    .sim-mini-card strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .sim-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .sim-option {
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+      cursor: pointer;
+      font: inherit;
+      color: var(--ink);
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .sim-option:hover {
+      transform: translateY(-1px);
+      border-color: rgba(235, 111, 74, 0.35);
+      background: rgba(255, 247, 239, 0.96);
+    }
+    .sim-option[disabled] {
+      cursor: default;
+      opacity: .72;
+      transform: none;
+    }
+    .sim-option.is-correct {
+      border-color: rgba(12, 124, 127, 0.5);
+      background: rgba(237, 246, 245, 0.96);
+    }
+    .sim-option.is-wrong {
+      border-color: rgba(235, 111, 74, 0.45);
+      background: rgba(255, 242, 238, 0.95);
+    }
+    .sim-feedback {
+      display: grid;
+      gap: 10px;
+    }
+    .sim-feedback.success {
+      background: linear-gradient(135deg, rgba(12,124,127,.12), rgba(255,255,255,.88));
+    }
+    .sim-feedback.warning {
+      background: linear-gradient(135deg, rgba(235,111,74,.12), rgba(255,255,255,.88));
+    }
+    .sim-console {
+      background: rgba(23, 34, 46, 0.96);
+      color: #f7f1e7;
+    }
+    .sim-console p, .sim-console li {
+      color: rgba(247,241,231,.82);
+    }
+    .sim-console code {
+      background: transparent;
+      color: #f7f1e7;
+      padding: 0;
+    }
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(23, 34, 46, 0.08);
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--teal));
+      transition: width .2s ease;
+    }
+    .sim-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .sim-actions button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 10px 14px;
+      font: inherit;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .sim-actions button.primary {
+      background: rgba(23, 34, 46, 0.96);
+      color: #f7f1e7;
+      border-color: rgba(23,34,46,.96);
+    }
+    .workspace-top {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      min-height: 230px;
+    }
+    .pane {
+      padding: 16px;
+      border-right: 1px solid var(--line);
+    }
+    .pane:last-child { border-right: 0; }
+    .pane-title {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(23, 34, 46, 0.06);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .editor-lines {
+      display: grid;
+      gap: 8px;
+    }
+    .line {
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(12, 124, 127, 0.28), rgba(23, 34, 46, 0.08));
+    }
+    .line.short { width: 58%; }
+    .line.mid { width: 76%; }
+    .line.long { width: 92%; }
+    .workspace-bottom {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      border-top: 1px solid var(--line);
+      min-height: 150px;
+    }
+    .terminal {
+      background: rgba(23, 34, 46, 0.96);
+      color: #f7f1e7;
+    }
+    .terminal code {
+      background: transparent;
+      color: #f7f1e7;
+      padding: 0;
+    }
+    .svg-wrap {
+      margin-top: 10px;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.78);
+    }
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .footer {
+      text-align: center;
+      font-size: 14px;
+    }
+    @media (max-width: 1024px) {
+      .hero-inner,
+      .cards,
+      .resources,
+      .learn-grid,
+      .timeline,
+      .two-col,
+      .triptych,
+      .pillars,
+      .diagram-grid,
+      .workspace-top,
+      .workspace-bottom,
+      .simulator-shell,
+      .sim-clues,
+      .sim-options {
+        grid-template-columns: 1fr;
+      }
+      .grid, .metrics { grid-template-columns: 1fr 1fr; }
+      .section-head { flex-direction: column; align-items: start; }
+    }
+    @media (max-width: 720px) {
+      .page { width: min(1240px, calc(100vw - 16px)); }
+      .hero, .panel { padding: 18px; border-radius: 22px; }
+      .grid, .metrics { grid-template-columns: 1fr; }
+      h1 { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class='page'>
+    <section class='hero'>
+      <div class='eyebrow'>GitHub + 编程基础 + Vibe Coding</div>
+      <div class='hero-inner'>
+        <div>
+          <h1>GitHub 与 Vibe Coding 学习作战地图</h1>
+          <p class='lead'>这份网页把你要补的几层知识放在一张图里：GitHub 与 Git 主线、编程基本结构、终端与文件系统、Web 基础、AI 编程工作流、可视化图示、原型化练习和权威资源。你可以把它当成 Claude Code 与 Codex 用户的基础地基页。</p>
+          <div class='grid'>
+            <div class='chip'><strong>你现在的问题</strong><span>工具已经在用，但变量、路径、API、报错、PR、验证这些基础层还不够稳。</span></div>
+            <div class='chip'><strong>最该建立的能力</strong><span>看懂代码结构、看懂终端输出、看懂网页请求流、看懂 AI 工作闭环。</span></div>
+            <div class='chip'><strong>最重要的习惯</strong><span>不要只会“让 AI 改”，要会“检查它改了什么、为什么错、如何验证”。</span></div>
+            <div class='chip'><strong>页面怎么用</strong><span>从上往下学主线，遇到薄弱处就点开细节、看图示、做纸上练习，再去读资源。</span></div>
+          </div>
+        </div>
+        <aside>
+          <div class='metrics'>
+            <div class='metric'><strong>17</strong><span>个模块</span></div>
+            <div class='metric'><strong>1</strong><span>个故障排查模拟器</span></div>
+            <div class='metric'><strong>17</strong><span>个模块</span></div>
+            <div class='metric'><strong>6</strong><span>个案例 + 可点击练习</span></div>
+          </div>
+          <div class='flow-note'>
+            <strong>一句话先记住</strong>
+            <p>AI 编程不是“会提需求就行”。真正高效的 Vibe Coding 需要三层同时成立：</p>
+            <ul>
+              <li>能描述目标：知道自己要什么。</li>
+              <li>能读懂反馈：知道终端、报错、diff 在说什么。</li>
+              <li>能验证结果：知道改动是否真的正确。</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <nav class='nav' aria-label='页面导航'>
+      <a href='#setup'>1. GitHub 设置</a>
+      <a href='#map'>2. Git 与 GitHub</a>
+      <a href='#syntax'>3. 编程基础</a>
+      <a href='#terminal'>4. 终端与路径</a>
+      <a href='#web-basics'>5. Web 基础</a>
+      <a href='#runtime'>6. 运行时与依赖</a>
+      <a href='#debugging'>7. 调试与验证</a>
+      <a href='#cases'>8. 案例拆解</a>
+      <a href='#workflow'>9. AI 工作流</a>
+      <a href='#visuals'>10. 可视化图示</a>
+      <a href='#terms'>11. 术语卡</a>
+      <a href='#commands'>12. 命令工作台</a>
+      <a href='#flow'>13. GitHub Flow</a>
+      <a href='#prototype'>14. 工作台原型</a>
+      <a href='#simulator'>15. 排查模拟器</a>
+      <a href='#quiz'>16. 测验</a>
+      <a href='#resources'>17. 学习资源</a>
+    </nav>
+
+    <div class='stack'>
+      <section class='panel' id='setup'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 1</div>
+            <h2>先把 GitHub 设置对</h2>
+            <p>初学者最容易忽略的其实不是命令，而是账户安全、认证方式、通知规则和仓库卫生。先把这些做对，你后面学 Git 会顺很多。</p>
+          </div>
+        </div>
+        <div class='cards'>
+          <article class='card'><div class='card-head'><strong>个人资料与 Profile README</strong><span class='tag'>第一印象</span></div><p>补齐头像、Bio、主页、README，让别人一眼看懂你是谁、做什么、项目在哪。</p><label><input type='checkbox'>我已经知道要优先完善个人资料</label></article>
+          <article class='card'><div class='card-head'><strong>2FA / Passkey / 恢复码</strong><span class='tag'>必须优先</span></div><p>GitHub 官方长期强调 2FA；恢复码也要保存好，不然丢失认证方式时可能永久失去账户。</p><label><input type='checkbox'>我知道账户安全要先做</label></article>
+          <article class='card'><div class='card-head'><strong>SSH Key 或 PAT</strong><span class='tag'>连接电脑</span></div><p>你在命令行 push / pull 时，需要 SSH key 或 PAT 作为安全身份验证方式。</p><label><input type='checkbox'>我知道命令行需要认证方式</label></article>
+          <article class='card'><div class='card-head'><strong>通知规则</strong><span class='tag'>减少噪音</span></div><p>把邮件和站内通知调好，不然你会被 review、mention、watch 消息淹没。</p><label><input type='checkbox'>我知道要控制通知噪音</label></article>
+          <article class='card'><div class='card-head'><strong>本地 Git 配置</strong><span class='tag'>你的电脑</span></div><p>安装 Git，配置用户名和邮箱，确认默认编辑器与认证方式，这一步属于 Git 而不是 GitHub 页面。</p><label><input type='checkbox'>我知道 Git 和 GitHub 设置不是一回事</label></article>
+          <article class='card'><div class='card-head'><strong>仓库卫生习惯</strong><span class='tag'>长期收益</span></div><p>README、LICENSE、.gitignore、保护分支、Issue / PR 模板，会决定你以后协作是否清晰。</p><label><input type='checkbox'>我知道仓库需要有规则与说明</label></article>
+        </div>
+      </section>
+
+      <section class='panel' id='map'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 2</div>
+            <h2>先分清 Git 和 GitHub</h2>
+            <p>很多人一听到 PR、commit、branch 就晕，本质上是边界没分清。只要先把“本地版本控制”和“远程协作平台”拆开，后面就顺了。</p>
+          </div>
+        </div>
+        <div class='diagram-grid'>
+          <article class='box'>
+            <strong>概念关系图</strong>
+            <div class='flowline'>
+              <span class='node'>你本地电脑</span>
+              <span class='arrow'>→</span>
+              <span class='node'>Git</span>
+              <span class='arrow'>→</span>
+              <span class='node'>GitHub</span>
+              <span class='arrow'>→</span>
+              <span class='node'>团队协作</span>
+            </div>
+            <ul class='list'>
+              <li>Git 负责记录历史、分支、diff、回退。</li>
+              <li>GitHub 负责托管远程仓库、PR、Review、Issue、Actions。</li>
+              <li>AI 帮你改代码，但 Git 和 GitHub 帮你证明、审查和协作。</li>
+            </ul>
+          </article>
+          <article class='diagram'>
+            <div class='svg-wrap'>
+              <svg viewBox='0 0 760 280' xmlns='http://www.w3.org/2000/svg'>
+                <rect x='24' y='54' width='180' height='170' rx='24' fill='#fff7ef' stroke='rgba(23,34,46,.12)'/>
+                <text x='52' y='90' font-size='28' fill='#17222e' font-family='sans-serif' font-weight='700'>本地电脑</text>
+                <text x='52' y='126' font-size='18' fill='#526476' font-family='sans-serif'>编辑器</text>
+                <text x='52' y='152' font-size='18' fill='#526476' font-family='sans-serif'>终端</text>
+                <text x='52' y='178' font-size='18' fill='#526476' font-family='sans-serif'>文件与代码</text>
+
+                <rect x='286' y='54' width='180' height='170' rx='24' fill='#edf6f5' stroke='rgba(23,34,46,.12)'/>
+                <text x='354' y='102' text-anchor='middle' font-size='34' fill='#0c7c7f' font-family='sans-serif' font-weight='700'>Git</text>
+                <text x='354' y='138' text-anchor='middle' font-size='17' fill='#526476' font-family='sans-serif'>版本记录</text>
+                <text x='354' y='164' text-anchor='middle' font-size='17' fill='#526476' font-family='sans-serif'>分支 / commit / diff</text>
+
+                <rect x='548' y='54' width='188' height='170' rx='24' fill='#fff2ee' stroke='rgba(23,34,46,.12)'/>
+                <text x='642' y='102' text-anchor='middle' font-size='32' fill='#eb6f4a' font-family='sans-serif' font-weight='700'>GitHub</text>
+                <text x='642' y='138' text-anchor='middle' font-size='17' fill='#526476' font-family='sans-serif'>远程仓库</text>
+                <text x='642' y='164' text-anchor='middle' font-size='17' fill='#526476' font-family='sans-serif'>PR / Review / Actions</text>
+
+                <path d='M208 138 H270' stroke='#eb6f4a' stroke-width='6' stroke-linecap='round'/>
+                <polygon points='270,138 252,128 252,148' fill='#eb6f4a'/>
+                <path d='M470 138 H530' stroke='#0c7c7f' stroke-width='6' stroke-linecap='round'/>
+                <polygon points='530,138 512,128 512,148' fill='#0c7c7f'/>
+              </svg>
+            </div>
+            <p class='svg-note'>看图方式：代码先在本地电脑被修改，Git 负责管理这些变化，GitHub 再把这些变化变成可协作的流程。</p>
+          </article>
+        </div>
+        <div class='note'><strong>记忆法：</strong>Git 像你手上的版本记录器；GitHub 像整个团队共享的代码基地和审查台。AI 写出来的改动，Git 负责留痕，GitHub 负责协作。</div>
+      </section>
+
+      <section class='panel' id='syntax'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 3</div>
+            <h2>编程基础地基：你最该先补哪几块</h2>
+            <p>你不用立刻学一整门计算机课，但至少要知道代码最基本的积木。否则你看 AI 改出来的代码，会像在看一堆无法判断对错的符号。</p>
+          </div>
+        </div>
+        <div class='pillars'>
+          <article class='pillar'><strong>变量 Variable</strong><p>变量是“给数据起名字”。名字有了，你后面才能追踪这份数据在哪里被创建、修改和使用。</p></article>
+          <article class='pillar'><strong>条件 Condition</strong><p>条件是“如果……就……”。程序不是永远直线执行，而是根据条件决定走哪条路。</p></article>
+          <article class='pillar'><strong>循环 Loop</strong><p>循环是“对一组东西重复处理”。AI 改列表、表格、批量数据时，经常会涉及循环。</p></article>
+          <article class='pillar'><strong>函数 Function</strong><p>函数是“可重复调用的处理块”。参数是输入，返回值是输出。</p></article>
+        </div>
+        <div class='two-col' style='margin-top:12px'>
+          <article class='box'>
+            <strong>最重要的理解模型</strong>
+            <div class='flowline'>
+              <span class='node'>输入 Input</span>
+              <span class='arrow'>→</span>
+              <span class='node'>处理 Logic</span>
+              <span class='arrow'>→</span>
+              <span class='node'>输出 Output</span>
+            </div>
+            <p>绝大多数代码都可以先粗略理解成这三步。变量负责存输入，条件/循环/函数负责处理，返回值、页面显示、文件输出或 API 响应属于输出。</p>
+            <pre>function greet(name) {
+  const message = 'Hello, ' + name;
+  return message;
+}</pre>
+          </article>
+          <article class='box'>
+            <strong>你最该会看懂的 7 个基础词</strong>
+            <div class='qa-list'>
+              <details><summary>数据类型 data type</summary><p>至少知道字符串、数字、布尔值、数组、对象分别长什么样，很多报错都和数据类型不匹配有关。</p></details>
+              <details><summary>参数 parameter</summary><p>函数吃进去的输入。比如名字、路径、端口、用户输入都可能是参数。</p></details>
+              <details><summary>返回值 return value</summary><p>函数处理完后吐出来的结果。没有返回值时，后面的代码就可能拿不到它想要的东西。</p></details>
+              <details><summary>对象 object</summary><p>一组“键:值”数据。API 返回 JSON 时，你几乎一定会看到对象。</p></details>
+              <details><summary>数组 array</summary><p>一组按顺序排列的值。列表页面、批量任务、循环处理经常用到数组。</p></details>
+              <details><summary>作用域 scope</summary><p>变量在哪个范围里能被访问。很多“变量未定义”本质就是作用域问题。</p></details>
+              <details><summary>报错 error</summary><p>报错不是坏事，它是在告诉你：哪一层出了问题、缺了什么、类型错了还是路径错了。</p></details>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class='panel' id='terminal'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 4</div>
+            <h2>终端与文件系统：Claude Code / Codex 用户必须补的基础</h2>
+            <p>你现在很多工具都跑在终端里，所以“路径、文件、命令在哪执行”必须看懂。不会这层，就会经常不知道 AI 为什么改错目录、为什么找不到文件、为什么命令跑不起来。</p>
+          </div>
+        </div>
+        <div class='diagram-grid'>
+          <article class='box'>
+            <strong>文件树和路径到底是什么</strong>
+            <div class='tree'>
+              <pre>/Users/adam
+├── Desktop
+│   └── GitHub学习作战地图.html
+├── Projects
+│   └── my-app
+│       ├── package.json
+│       ├── src
+│       │   └── app.js
+│       └── README.md
+└── Downloads</pre>
+            </div>
+            <ul class='list'>
+              <li><strong>绝对路径</strong>：从根开始写完整位置，例如 <code>/Users/adam/Desktop</code>。</li>
+              <li><strong>相对路径</strong>：相对于当前目录，例如 <code>src/app.js</code>。</li>
+              <li><strong>当前工作目录 cwd</strong>：你命令现在是站在哪个目录里执行的。</li>
+            </ul>
+          </article>
+          <article class='box'>
+            <strong>最常见的终端命令</strong>
+            <div class='qa-list'>
+              <details open><summary><code>pwd</code></summary><p>看你当前站在哪个目录。很多路径错误，第一步就该先看 <code>pwd</code>。</p></details>
+              <details><summary><code>ls</code></summary><p>列出当前目录里有什么文件和文件夹。</p></details>
+              <details><summary><code>cd path</code></summary><p>切换目录。让 AI 跑命令前，你也要知道它应该站在哪。</p></details>
+              <details><summary><code>mkdir</code> / <code>touch</code></summary><p>创建文件夹和文件。</p></details>
+              <details><summary><code>rm</code></summary><p>删除文件。危险命令，理解后再用，别盲删。</p></details>
+              <details><summary>终端和 Finder 的关系</summary><p>Finder 是图形界面看文件；终端是文本方式操作文件。它们操作的是同一套文件系统。</p></details>
+            </div>
+          </article>
+        </div>
+        <div class='note'><strong>你现在最该建立的判断：</strong>看到“file not found”“No such file or directory”“Cannot open”时，优先检查当前目录、路径写法、文件是否真的存在，而不是先怀疑 AI 模型本身。</div>
+      </section>
+
+      <section class='panel' id='web-basics'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 5</div>
+            <h2>Web 基础：前端、后端、浏览器、服务器、API 到底怎么连起来</h2>
+            <p>只要你在做网页、产品页、表单、后台、接口、登录、列表、数据库，就绕不开这层。很多人知道单词，但不知道它们在一条链上各自做什么。</p>
+          </div>
+        </div>
+        <div class='diagram-grid'>
+          <article class='diagram'>
+            <div class='svg-wrap'>
+              <svg viewBox='0 0 860 300' xmlns='http://www.w3.org/2000/svg'>
+                <rect x='26' y='88' width='170' height='120' rx='24' fill='#fff7ef' stroke='rgba(23,34,46,.12)'/>
+                <text x='111' y='135' text-anchor='middle' font-size='28' font-family='sans-serif' fill='#17222e' font-weight='700'>浏览器</text>
+                <text x='111' y='168' text-anchor='middle' font-size='17' font-family='sans-serif' fill='#526476'>HTML / CSS / JS</text>
+
+                <rect x='256' y='88' width='170' height='120' rx='24' fill='#edf6f5' stroke='rgba(23,34,46,.12)'/>
+                <text x='341' y='135' text-anchor='middle' font-size='28' font-family='sans-serif' fill='#0c7c7f' font-weight='700'>前端</text>
+                <text x='341' y='168' text-anchor='middle' font-size='17' font-family='sans-serif' fill='#526476'>页面交互</text>
+
+                <rect x='486' y='88' width='170' height='120' rx='24' fill='#fff2ee' stroke='rgba(23,34,46,.12)'/>
+                <text x='571' y='135' text-anchor='middle' font-size='28' font-family='sans-serif' fill='#eb6f4a' font-weight='700'>后端 / API</text>
+                <text x='571' y='168' text-anchor='middle' font-size='17' font-family='sans-serif' fill='#526476'>业务逻辑</text>
+
+                <rect x='716' y='88' width='118' height='120' rx='24' fill='#f9efd8' stroke='rgba(23,34,46,.12)'/>
+                <text x='775' y='135' text-anchor='middle' font-size='26' font-family='sans-serif' fill='#916a15' font-weight='700'>数据库</text>
+                <text x='775' y='168' text-anchor='middle' font-size='16' font-family='sans-serif' fill='#526476'>数据存储</text>
+
+                <path d='M198 148 H238' stroke='#eb6f4a' stroke-width='6' stroke-linecap='round'/>
+                <polygon points='238,148 220,138 220,158' fill='#eb6f4a'/>
+                <path d='M428 148 H468' stroke='#0c7c7f' stroke-width='6' stroke-linecap='round'/>
+                <polygon points='468,148 450,138 450,158' fill='#0c7c7f'/>
+                <path d='M658 148 H698' stroke='#c9993a' stroke-width='6' stroke-linecap='round'/>
+                <polygon points='698,148 680,138 680,158' fill='#c9993a'/>
+              </svg>
+            </div>
+            <p class='svg-note'>简化理解：浏览器里运行前端，前端向后端/API 发请求，后端从数据库读写数据后再把结果返回回来。</p>
+          </article>
+          <article class='box'>
+            <strong>这条链上每个词是什么意思</strong>
+            <div class='qa-list'>
+              <details open><summary>前端 Frontend</summary><p>用户直接看到和点击的页面层，比如按钮、表单、列表、弹窗、导航。</p></details>
+              <details><summary>后端 Backend</summary><p>处理业务逻辑、权限、数据读写、校验、接口返回的那一层。</p></details>
+              <details><summary>API</summary><p>前端与后端通信的接口。前端问，后端答，常见数据格式就是 JSON。</p></details>
+              <details><summary>HTTP</summary><p>浏览器和服务器传递请求/响应时最基础的协议。看到 200、404、500 时，本质都和 HTTP 响应有关。</p></details>
+              <details><summary>JSON</summary><p>一种文本数据格式，API 最常用的返回方式之一。你会经常看到对象和数组长成 JSON 的样子。</p></details>
+              <details><summary>表单和验证</summary><p>表单收集用户输入，前端会先做基本验证，后端还需要再验证一次。</p></details>
+            </div>
+          </article>
+        </div>
+        <div class='triptych' style='margin-top:12px'>
+          <article class='box'><strong>一个页面加载发生了什么</strong><p>浏览器请求 HTML → 下载 CSS/JS → 渲染页面 → 执行交互逻辑 → 可能继续请求 API。</p></article>
+          <article class='box'><strong>为什么你会看到接口报错</strong><p>常见原因：路径错、参数错、权限没带、后端异常、网络失败、返回的数据结构和前端预期不一致。</p></article>
+          <article class='box'><strong>为什么 JSON 值得先学</strong><p>它是前端、后端、API、配置文件、自动化工具之间最常见的通用语言之一。</p></article>
+        </div>
+      </section>
+
+
+      <section class='panel' id='runtime'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 6</div>
+            <h2>运行时、依赖、异步、环境变量：AI 编程里最常卡住的工程层</h2>
+            <p>很多人以为代码写出来就结束了，实际上大量问题根本不在“语法”，而在运行环境。你要逐步分清 JavaScript、Node.js、浏览器、依赖包、环境变量、模块系统分别负责什么。</p>
+          </div>
+        </div>
+        <div class='triptych'>
+          <article class='box'>
+            <strong>异步 async / await</strong>
+            <p>异步不是“更高级的同步”，而是程序在等待网络、文件、数据库时不阻塞整个流程。你看到 <code>fetch</code>、<code>await</code>、Promise 时，本质上都在处理“结果不会立刻回来”。</p>
+            <pre>async function loadUser() {
+  const response = await fetch('/api/user');
+  const data = await response.json();
+  return data;
+}</pre>
+          </article>
+          <article class='box'>
+            <strong>依赖与 package.json</strong>
+            <p><code>package.json</code> 是项目的说明书之一，里面通常定义依赖、脚本、项目入口。看到 <code>npm install</code>、<code>npm run dev</code>、<code>npm test</code> 时，通常都和它有关。</p>
+            <ul class='list'>
+              <li><code>dependencies</code>：运行项目需要的包。</li>
+              <li><code>devDependencies</code>：开发时需要的包。</li>
+              <li><code>scripts</code>：一组可执行命令。</li>
+            </ul>
+          </article>
+          <article class='box'>
+            <strong>环境变量 env</strong>
+            <p>环境变量是项目运行时读取的外部配置，例如 API Key、数据库地址、端口号。它们通常不应该直接写死在代码里，更不应该提交到公开仓库。</p>
+            <ul class='list'>
+              <li>常见名字：<code>API_KEY</code>、<code>DATABASE_URL</code>、<code>PORT</code>。</li>
+              <li>Node.js 中常通过 <code>process.env</code> 读取。</li>
+              <li>缺少环境变量时，项目常表现为启动失败、鉴权失败、请求失败。</li>
+            </ul>
+          </article>
+        </div>
+        <div class='two-col' style='margin-top:12px'>
+          <article class='box'>
+            <strong>模块与导入导出</strong>
+            <div class='flowline'>
+              <span class='node'>一个文件</span>
+              <span class='arrow'>→</span>
+              <span class='node'>export</span>
+              <span class='arrow'>→</span>
+              <span class='node'>另一个文件 import</span>
+            </div>
+            <p>很多“找不到函数”“模块不存在”“default/export 错误”都和这里有关。你至少要知道：一个文件可以输出东西，另一个文件再把它引进来用。</p>
+          </article>
+          <article class='box'>
+            <strong>这一层最常见的报错信号</strong>
+            <div class='qa-list'>
+              <details open><summary>Cannot find module</summary><p>依赖没装、路径写错、模块名写错，或当前运行目录不对。</p></details>
+              <details><summary>process.env 为空或 undefined</summary><p>环境变量没配置、变量名不一致，或没有正确加载 <code>.env</code>。</p></details>
+              <details><summary>await 相关错误</summary><p>可能是在不支持的位置用了 <code>await</code>，或者忘了把函数声明成 <code>async</code>。</p></details>
+              <details><summary>npm script 找不到</summary><p><code>package.json</code> 里没有对应脚本，或者当前目录不是项目根目录。</p></details>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class='panel' id='debugging'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 7</div>
+            <h2>调试与验证：不要把“模型信心”当作正确性</h2>
+            <p>Vibe Coding 最危险的时刻不是模型报错，而是模型看起来很自信，但你没有验证。你至少要会看 5 类反馈：终端错误、浏览器报错、网络请求、页面现象、测试结果。</p>
+          </div>
+        </div>
+        <div class='triptych'>
+          <article class='box'>
+            <strong>终端层</strong>
+            <p>这里告诉你：命令有没有运行起来、依赖有没有装好、脚本有没有报错、测试有没有通过。</p>
+            <pre>$ npm run dev
+$ npm test
+$ git diff
+Error: Cannot find module ...</pre>
+          </article>
+          <article class='box'>
+            <strong>浏览器层</strong>
+            <p>这里告诉你：页面是否渲染、按钮是否生效、控制台是否报错、接口是否请求成功。</p>
+            <ul class='list'>
+              <li>看 Console：JavaScript 报错。</li>
+              <li>看 Network：请求是否发出、状态码是否正常。</li>
+              <li>看 Elements：DOM 是否真的被渲染。</li>
+            </ul>
+          </article>
+          <article class='box'>
+            <strong>验证层</strong>
+            <p>至少要验证 4 件事：代码 diff、页面结果、测试结果、关键路径。不是“看起来像对”就算结束。</p>
+            <div class='flowline'>
+              <span class='node'>diff</span><span class='arrow'>→</span>
+              <span class='node'>运行</span><span class='arrow'>→</span>
+              <span class='node'>测试</span><span class='arrow'>→</span>
+              <span class='node'>提交</span>
+            </div>
+          </article>
+        </div>
+        <div class='two-col' style='margin-top:12px'>
+          <article class='box'>
+            <strong>看到错误后先问的 5 个问题</strong>
+            <ol class='list'>
+              <li>这是终端错误、浏览器错误、网络错误，还是逻辑错误？</li>
+              <li>错误发生在启动时、点击后、提交后，还是渲染时？</li>
+              <li>是路径问题、变量问题、类型问题、依赖问题，还是权限/环境变量问题？</li>
+              <li>我能不能先缩小范围，复现出最小问题？</li>
+              <li>修复后我用什么证据证明它真的好了？</li>
+            </ol>
+          </article>
+          <article class='box'>
+            <strong>最值得先学会的调试动作</strong>
+            <div class='qa-list'>
+              <details open><summary><code>console.log</code> / <code>console.error</code></summary><p>先把关键变量和流程点打印出来，看它到底有没有值、值长什么样、代码有没有走到这里。</p></details>
+              <details><summary><code>console.trace()</code></summary><p>当你不知道某段逻辑为什么会被执行时，看调用链很有帮助。</p></details>
+              <details><summary>浏览器 Network 面板</summary><p>接口有没有发出去、返回什么状态码、回来的 JSON 长什么样，这里最直观。</p></details>
+              <details><summary><code>git diff</code></summary><p>当你怀疑 AI 改坏了东西时，先看 diff，不要凭记忆猜。</p></details>
+            </div>
+          </article>
+
+        <div class='triptych' style='margin-top:12px'>
+          <article class='box'>
+            <strong>测试分层：不要只会看绿色勾</strong>
+            <p><strong>单元测试</strong>检查一个函数或一个小模块；<strong>集成测试</strong>检查几个模块连起来后是否正确；<strong>端到端测试</strong>检查真实用户路径能不能走通。</p>
+          </article>
+          <article class='box'>
+            <strong>AI 改完代码后最少验证什么</strong>
+            <ul class='list'>
+              <li>关键函数有没有返回正确结果。</li>
+              <li>主要页面能不能加载和点击。</li>
+              <li>核心接口有没有正常请求和返回。</li>
+              <li>改动有没有破坏旧功能。</li>
+            </ul>
+          </article>
+          <article class='box'>
+            <strong>最小案例</strong>
+            <pre>function add(a, b) {
+  return a + b;
+}
+
+add(1, 2) === 3;</pre>
+            <p>这就是最小的“验证思维”。先验证最小逻辑，再验证页面和流程，不要一开始就把所有问题混成一团。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class='panel' id='cases'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 8</div>
+            <h2>案例拆解：把概念放进真实 Vibe Coding 场景里</h2>
+            <p>下面这些案例不是“标准答案”，而是帮你建立判断顺序。你要学会的不是某一条命令，而是每种问题该从哪一层开始排查。</p>
+          </div>
+        </div>
+        <div class='cards'>
+          <article class='card'>
+            <strong>案例 1：按钮文案改了，但页面没变</strong>
+            <p>场景：你让 AI 改首页按钮文案，代码看起来改了，但浏览器里还是旧内容。</p>
+            <details><summary>应该怎么查</summary><p>先看你改的是不是正确文件；再看开发服务器是否重启；然后看浏览器缓存、热更新是否生效；最后看有没有多个同名组件。</p></details>
+          </article>
+          <article class='card'>
+            <strong>案例 2：列表页空白，接口看似没问题</strong>
+            <p>场景：浏览器没有报红，但页面就是空。AI 说“接口已经返回成功”。</p>
+            <details><summary>应该怎么查</summary><p>打开 Network 看响应 JSON 结构；再检查前端代码是否按正确字段取值，例如 <code>data.items</code> 还是 <code>data.results</code>；最后看 map 循环有没有跑到。</p></details>
+          </article>
+          <article class='card'>
+            <strong>案例 3：登录接口 401 / 403</strong>
+            <p>场景：功能逻辑好像没错，但请求总是未授权。</p>
+            <details><summary>应该怎么查</summary><p>先看环境变量里的 Key/Token 是否存在；再看请求头有没有带上；再看是不是请求到了错误环境或错误域名。</p></details>
+          </article>
+          <article class='card'>
+            <strong>案例 4：<code>npm run dev</code> 启动失败</strong>
+            <p>场景：AI 让你运行项目，但命令一执行就报错。</p>
+            <details><summary>应该怎么查</summary><p>先确认当前目录是否是项目根目录；再看 <code>package.json</code> 是否存在对应脚本；再看依赖是否已经 <code>npm install</code>；最后看 Node 版本是否匹配。</p></details>
+          </article>
+          <article class='card'>
+            <strong>案例 5：AI 一次改了太多，结果更乱</strong>
+            <p>场景：一个简单需求，AI 却动了很多文件，页面还出现回归。</p>
+            <details><summary>应该怎么查</summary><p>先用 <code>git diff</code> 看改动边界；把任务拆小；只保留必要改动；必要时回退一部分文件或重新建分支重做。</p></details>
+          </article>
+          <article class='card'>
+            <strong>案例 6：测试通过了，但页面还是坏的</strong>
+            <p>场景：终端里 tests pass，但真实点击流程不对。</p>
+            <details><summary>应该怎么查</summary><p>说明测试覆盖面不足。要补页面层验证：浏览器操作、关键路径点击、接口响应、渲染结果，而不是只看单元测试绿了。</p></details>
+          </article>
+        </div>
+      </section>
+
+      <section class='panel' id='workflow'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 9</div>
+            <h2>AI 编程工作流：你不该只会“让模型改代码”</h2>
+            <p>Claude Code 和 Codex 真正值钱的用法，不是让它们盲写，而是你能带着一个稳定流程去驱动它们。流程一旦对，模型换了也能继续工作。</p>
+          </div>
+        </div>
+        <div class='diagram-grid'>
+          <article class='box'>
+            <strong>最推荐的闭环</strong>
+            <div class='flowline'>
+              <span class='node'>读需求</span><span class='arrow'>→</span>
+              <span class='node'>读代码</span><span class='arrow'>→</span>
+              <span class='node'>改代码</span><span class='arrow'>→</span>
+              <span class='node'>运行</span><span class='arrow'>→</span>
+              <span class='node'>看报错</span><span class='arrow'>→</span>
+              <span class='node'>修复</span><span class='arrow'>→</span>
+              <span class='node'>验证</span><span class='arrow'>→</span>
+              <span class='node'>commit / PR</span>
+            </div>
+            <ul class='list'>
+              <li>读需求：你到底要改什么，不要直接跳实现。</li>
+              <li>读代码：先看目录、关键文件、函数入口和数据流。</li>
+              <li>运行与报错：不要只靠“看起来像对”。</li>
+              <li>验证：至少看 diff、看测试、看页面、看输出。</li>
+            </ul>
+          </article>
+          <article class='box'>
+            <strong>你现在最容易踩的坑</strong>
+            <div class='qa-list'>
+              <details open><summary>直接让 AI 改，但自己不看 diff</summary><p>这样你不知道它到底改了哪些文件、顺手动了什么逻辑、有没有引入无关改动。</p></details>
+              <details><summary>看到报错就继续追问模型，不先读错误信息</summary><p>报错里通常已经告诉你是路径错、变量未定义、模块找不到、类型不对还是权限不足。</p></details>
+              <details><summary>没有验证就 commit</summary><p>只改不跑、不看页面、不看测试，是最容易把“AI 幻觉”带进仓库的方式。</p></details>
+              <details><summary>不拆任务</summary><p>越大的改动越应该拆成小步骤，不然模型很容易一次动太多地方。</p></details>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class='panel' id='visuals'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 10</div>
+            <h2>可视化实验室：用图理解，不靠死背</h2>
+            <p>这部分专门把最抽象的几个问题做成图。你以后复习时，可以直接先看这些图，再回头读术语与命令。</p>
+          </div>
+        </div>
+        <div class='triptych'>
+          <article class='diagram'>
+            <strong>图 1：函数像一台机器</strong>
+            <div class='svg-wrap'>
+              <svg viewBox='0 0 420 260' xmlns='http://www.w3.org/2000/svg'>
+                <rect x='28' y='104' width='100' height='56' rx='18' fill='#fff7ef' stroke='rgba(23,34,46,.12)'/>
+                <text x='78' y='138' text-anchor='middle' font-size='20' fill='#17222e' font-family='sans-serif' font-weight='700'>输入</text>
+                <rect x='154' y='70' width='120' height='124' rx='26' fill='#edf6f5' stroke='rgba(23,34,46,.12)'/>
+                <text x='214' y='122' text-anchor='middle' font-size='22' fill='#0c7c7f' font-family='sans-serif' font-weight='700'>函数</text>
+                <text x='214' y='150' text-anchor='middle' font-size='16' fill='#526476' font-family='sans-serif'>处理逻辑</text>
+                <rect x='300' y='104' width='92' height='56' rx='18' fill='#fff2ee' stroke='rgba(23,34,46,.12)'/>
+                <text x='346' y='138' text-anchor='middle' font-size='20' fill='#17222e' font-family='sans-serif' font-weight='700'>输出</text>
+                <path d='M128 132 H148' stroke='#eb6f4a' stroke-width='5'/>
+                <polygon points='148,132 136,125 136,139' fill='#eb6f4a'/>
+                <path d='M274 132 H294' stroke='#0c7c7f' stroke-width='5'/>
+                <polygon points='294,132 282,125 282,139' fill='#0c7c7f'/>
+              </svg>
+            </div>
+          </article>
+          <article class='diagram'>
+            <strong>图 2：HTTP 请求流向</strong>
+            <div class='svg-wrap'>
+              <svg viewBox='0 0 420 260' xmlns='http://www.w3.org/2000/svg'>
+                <rect x='24' y='40' width='110' height='64' rx='18' fill='#fff7ef' stroke='rgba(23,34,46,.12)'/>
+                <text x='79' y='79' text-anchor='middle' font-size='18' fill='#17222e' font-family='sans-serif' font-weight='700'>浏览器</text>
+                <rect x='156' y='40' width='110' height='64' rx='18' fill='#edf6f5' stroke='rgba(23,34,46,.12)'/>
+                <text x='211' y='79' text-anchor='middle' font-size='18' fill='#17222e' font-family='sans-serif' font-weight='700'>服务器</text>
+                <rect x='288' y='40' width='108' height='64' rx='18' fill='#f9efd8' stroke='rgba(23,34,46,.12)'/>
+                <text x='342' y='79' text-anchor='middle' font-size='18' fill='#17222e' font-family='sans-serif' font-weight='700'>数据库</text>
+                <text x='112' y='148' font-size='15' fill='#526476' font-family='sans-serif'>1. 发请求</text>
+                <text x='194' y='176' font-size='15' fill='#526476' font-family='sans-serif'>2. 查数据</text>
+                <text x='154' y='220' font-size='15' fill='#526476' font-family='sans-serif'>3. 返回 JSON / HTML</text>
+                <path d='M134 72 H150' stroke='#eb6f4a' stroke-width='5'/><polygon points='150,72 140,66 140,78' fill='#eb6f4a'/>
+                <path d='M266 72 H282' stroke='#c9993a' stroke-width='5'/><polygon points='282,72 272,66 272,78' fill='#c9993a'/>
+                <path d='M342 106 V138 H211 V110' stroke='#0c7c7f' stroke-width='4' fill='none'/>
+                <path d='M211 138 V182 H79 V106' stroke='#0c7c7f' stroke-width='4' fill='none'/>
+              </svg>
+            </div>
+          </article>
+          <article class='diagram'>
+            <strong>图 3：AI 调试闭环</strong>
+            <div class='svg-wrap'>
+              <svg viewBox='0 0 420 260' xmlns='http://www.w3.org/2000/svg'>
+                <circle cx='210' cy='58' r='38' fill='#fff7ef' stroke='rgba(23,34,46,.12)'/>
+                <text x='210' y='64' text-anchor='middle' font-size='18' fill='#17222e' font-family='sans-serif' font-weight='700'>读需求</text>
+                <circle cx='330' cy='130' r='38' fill='#edf6f5' stroke='rgba(23,34,46,.12)'/>
+                <text x='330' y='136' text-anchor='middle' font-size='18' fill='#17222e' font-family='sans-serif' font-weight='700'>改代码</text>
+                <circle cx='210' cy='202' r='38' fill='#fff2ee' stroke='rgba(23,34,46,.12)'/>
+                <text x='210' y='208' text-anchor='middle' font-size='18' fill='#17222e' font-family='sans-serif' font-weight='700'>看反馈</text>
+                <circle cx='90' cy='130' r='38' fill='#f9efd8' stroke='rgba(23,34,46,.12)'/>
+                <text x='90' y='136' text-anchor='middle' font-size='18' fill='#17222e' font-family='sans-serif' font-weight='700'>验证</text>
+                <path d='M243 83 L296 114' stroke='#eb6f4a' stroke-width='5'/><polygon points='296,114 282,103 280,118' fill='#eb6f4a'/>
+                <path d='M305 154 L243 188' stroke='#0c7c7f' stroke-width='5'/><polygon points='243,188 248,173 256,186' fill='#0c7c7f'/>
+                <path d='M176 188 L116 154' stroke='#c9993a' stroke-width='5'/><polygon points='116,154 131,154 124,166' fill='#c9993a'/>
+                <path d='M116 106 L177 72' stroke='#17222e' stroke-width='5'/><polygon points='177,72 169,85 161,72' fill='#17222e'/>
+              </svg>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class='panel' id='terms'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 11</div>
+            <h2>术语卡：高频词一次讲明白</h2>
+            <p>点击展开下面的术语卡。每张卡都包含白话解释、真实场景，以及它和 AI 编程的关系。</p>
+          </div>
+        </div>
+        <div class='learn-grid'>
+          <div class='term-list'>
+            <details><summary>Repository / 仓库</summary><p>仓库是项目的完整容器，里面不仅有文件，还有分支、历史、标签和说明文档。白话理解：项目的正式档案柜。AI 改的是文件，但协作发生在仓库这个边界里。</p></details>
+            <details><summary>Clone / 克隆</summary><p>把远程仓库完整复制到你本地，包括历史记录。不是下载 zip，而是把整个项目历史一起拿下来。</p></details>
+            <details><summary>Branch / 分支</summary><p>分支是一条独立工作线，让你在不影响默认分支时尝试功能或修 bug。AI 改动大时，分支是最重要的安全隔离层。</p></details>
+            <details><summary>Commit / 提交</summary><p>commit 是一次带说明的版本快照。它不是上传，而是在本地写下一条清楚的历史记录。</p></details>
+            <details><summary>Push / 推送</summary><p>把本地 commit 发送到远程仓库。commit 只在你电脑里，push 后 GitHub 才看得见。</p></details>
+            <details><summary>Pull / 拉取</summary><p>把远程仓库的最新变化获取到本地。你不是一个人在改，所以本地得跟上远程节奏。</p></details>
+          </div>
+          <div class='term-list'>
+            <details><summary>Merge / 合并</summary><p>把一个分支上的变化合并到另一个分支。支线剧情结束，把成果并回主线。</p></details>
+            <details><summary>Pull Request / PR</summary><p>PR 是请求把你的改动合并到目标分支，并邀请别人 review。PR 是协作窗口，不是一个本地命令。</p></details>
+            <details><summary>Fork / 派生</summary><p>把别人的仓库复制到你自己的 GitHub 账号下。参与开源项目但没有写权限时，fork 是常见起点。</p></details>
+            <details><summary>Issue / 问题单</summary><p>Issue 用来记录 Bug、需求、讨论点和待办事项。它不是代码，但它决定你为什么改代码。</p></details>
+            <details><summary>README / 项目入口说明</summary><p>README 是别人理解仓库的第一站。没有 README 的仓库，别人打开后常常不知道该干什么。</p></details>
+            <details><summary>GitHub Actions / 自动化</summary><p>Actions 是 GitHub 上的自动化能力，可在 push、PR、发布等时机自动运行测试、构建、部署或检查。</p></details>
+          </div>
+        </div>
+      </section>
+
+      <section class='panel' id='commands'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 12</div>
+            <h2>命令工作台：你最先该理解哪些 Git 指令</h2>
+            <p>不需要一口气背完全部命令。先抓住最常用的那几条，理解它们在真实工作流里的位置。</p>
+          </div>
+        </div>
+        <div class='learn-grid'>
+          <div class='cmd-list'>
+            <details open><summary><code>git status</code></summary><p>先看状态，再决定下一步。它会告诉你哪些文件被修改、哪些已暂存、当前在哪个分支。让 AI 改完代码后，这通常是第一条该看的命令。</p></details>
+            <details><summary><code>git clone &lt;repo-url&gt;</code></summary><p>第一次把远程仓库完整拉到本地。你要在本地跑项目时，通常从 clone 开始。</p></details>
+            <details><summary><code>git switch -c feature/my-task</code></summary><p>创建并切换到新分支。开始一个新功能、修一个 bug、或让 AI 尝试大改动时都应该先做这一步。</p></details>
+            <details><summary><code>git add &lt;file&gt;</code></summary><p>把改动放入暂存区。AI 改动常常溢出范围，add 能帮你把提交粒度收紧。</p></details>
+            <details><summary><code>git commit -m 'message'</code></summary><p>写下一个清楚的历史节点。message 要写人话，说明这次改动解决了什么。</p></details>
+          </div>
+          <div class='cmd-list'>
+            <details><summary><code>git diff</code></summary><p>真正理解改动内容。diff 会精确显示哪些行被删除、哪些行被新增。真正可信的是 diff，不是“AI 说它改好了”。</p></details>
+            <details><summary><code>git pull</code></summary><p>把远程最新变化同步到本地。让 AI 开始改之前先 pull，可减少基于旧代码工作的概率。</p></details>
+            <details><summary><code>git push -u origin &lt;branch&gt;</code></summary><p>把本地成果发到 GitHub。push 后 GitHub 才能看到你的分支与 commit，PR 也才能开起来。</p></details>
+            <details><summary><code>git log --oneline</code></summary><p>快速查看历史。回忆最近变更、定位问题引入时间时很实用。</p></details>
+            <details><summary>最应该记住的顺序</summary><p><code>git status</code> → <code>git diff</code> → <code>git add</code> → <code>git commit</code> → <code>git push</code> → 开 PR。</p></details>
+          </div>
+        </div>
+      </section>
+
+      <section class='panel' id='flow'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 13</div>
+            <h2>GitHub Flow：最适合新手的一条协作流程</h2>
+            <p>GitHub 官方长期推荐 GitHub Flow 作为轻量、基于分支的工作方式。先把这条跑顺，比先学复杂流程更划算。</p>
+          </div>
+        </div>
+        <div class='timeline'>
+          <article class='timeline-card'><strong>1. 建分支</strong><p>别直接在默认分支上乱改，先开一条工作分支。</p></article>
+          <article class='timeline-card'><strong>2. 改代码</strong><p>在分支里完成一组相关修改，范围保持集中。</p></article>
+          <article class='timeline-card'><strong>3. 提交并推送</strong><p>用清晰 commit message 记录，再同步到远程。</p></article>
+          <article class='timeline-card'><strong>4. 开 PR</strong><p>请求 review，也可以先开 Draft PR 提前拿反馈。</p></article>
+          <article class='timeline-card'><strong>5. 合并与清理</strong><p>review 通过后合并，并删除已完成的分支。</p></article>
+        </div>
+        <div class='qa'>
+          <strong>纸上练习</strong>
+          <p>请先不要看答案，在心里或纸上写出正确顺序：创建分支、修改代码、git add、git commit、git push、创建 PR、通过 review、合并 PR。</p>
+          <details><summary>展开查看标准顺序</summary><p>正确顺序是：创建分支 → 修改代码 → <code>git add</code> → <code>git commit</code> → <code>git push</code> → 创建 PR → 通过 review → 合并 PR。</p></details>
+        </div>
+      </section>
+
+      <section class='panel' id='prototype'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 14</div>
+            <h2>Vibe Coding 工作台原型：你每天其实就在和这四块打交道</h2>
+            <p>这张原型图不是软件截图，而是帮助你理解日常工作台的功能分层。只要你知道每块面板该回答什么问题，调试会顺很多。</p>
+          </div>
+        </div>
+        <div class='workspace-mockup'>
+          <div class='workspace-top'>
+            <div class='pane'>
+              <span class='pane-title'>编辑器 / 代码区</span>
+              <div class='editor-lines'>
+                <div class='line long'></div>
+                <div class='line mid'></div>
+                <div class='line short'></div>
+                <div class='line long'></div>
+                <div class='line mid'></div>
+                <div class='line long'></div>
+                <div class='line short'></div>
+                <div class='line mid'></div>
+              </div>
+            </div>
+            <div class='pane'>
+              <span class='pane-title'>浏览器 / 页面区</span>
+              <div class='editor-lines'>
+                <div class='line long'></div>
+                <div class='line long'></div>
+                <div class='line mid'></div>
+                <div class='line short'></div>
+              </div>
+              <p class='workspace-caption'>这里负责看“用户实际看到什么”。页面错位、按钮失效、表单不提交，最终都要回到浏览器验证。</p>
+            </div>
+          </div>
+          <div class='workspace-bottom'>
+            <div class='pane terminal'>
+              <span class='pane-title' style='background: rgba(255,255,255,.08); color: rgba(247,241,231,.75)'>终端 / 日志区</span>
+              <pre style='margin: 0; background: transparent; padding: 0'>$ npm run dev
+$ git status
+$ git diff
+Error: Cannot find module ...</pre>
+            </div>
+            <div class='pane'>
+              <span class='pane-title'>Git / 协作区</span>
+              <p class='workspace-caption'>这里负责回答“改了什么、是否值得提交、需不需要开 PR、是否能回退”。如果你只盯着代码，不看这一块，就很容易把错误带进仓库。</p>
+              <div class='flowline'>
+                <span class='node'>diff</span>
+                <span class='arrow'>→</span>
+                <span class='node'>commit</span>
+                <span class='arrow'>→</span>
+                <span class='node'>push</span>
+                <span class='arrow'>→</span>
+                <span class='node'>PR</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class='panel' id='simulator'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 15</div>
+            <h2>AI 编程故障排查模拟器</h2>
+            <p>这里不是让你背答案，而是练“先看哪一层、再看哪一层”的顺序。每个场景都模拟真实 Vibe Coding 常见问题，你点选排查动作，页面会告诉你为什么这一步对或不对。</p>
+          </div>
+        </div>
+        <div class='note'><strong>练习目标：</strong>建立稳定的排查顺序。先定位问题发生在哪一层，再决定下一步，而不是一上来就让 AI 大改代码。</div>
+        <div class='simulator-shell'>
+          <aside class='scenario-list' id='scenario-list'>
+            <button class='scenario-btn is-active' data-scenario='0'><strong>场景 1</strong><span>按钮文案改了，但页面还是旧内容。</span></button>
+            <button class='scenario-btn' data-scenario='1'><strong>场景 2</strong><span>列表空白，接口好像成功了。</span></button>
+            <button class='scenario-btn' data-scenario='2'><strong>场景 3</strong><span><code>npm run dev</code> 一启动就报错。</span></button>
+          </aside>
+          <div class='simulator-main'>
+            <div class='sim-stage'>
+              <div class='sim-topline'>
+                <div>
+                  <div class='badge' id='sim-badge'>Scenario 1</div>
+                  <h3 id='sim-title'>按钮文案改了，但页面还是旧内容</h3>
+                </div>
+                <div class='status-pill'>当前步骤 <strong id='sim-step'>1 / 2</strong></div>
+              </div>
+              <p id='sim-description'>你让 AI 修改首页 Hero 按钮文案，终端没有报错，代码里似乎也改到了字符串，但浏览器里还是旧文案。</p>
+              <div class='sim-clues'>
+                <article class='sim-mini-card'><strong>现象</strong><p id='sim-symptom'>页面显示没有变化。</p></article>
+                <article class='sim-mini-card'><strong>你已知的信息</strong><p id='sim-clue'>Git diff 显示已经改动了一个组件文件。</p></article>
+                <article class='sim-mini-card'><strong>这一步你要判断</strong><p id='sim-goal'>第一步应该先检查哪一层。</p></article>
+              </div>
+              <div class='progress-track'><div class='progress-fill' id='sim-progress'></div></div>
+              <div class='sim-options' id='sim-options'></div>
+            </div>
+            <div class='sim-feedback warning' id='sim-feedback'>
+              <strong>练习提示</strong>
+              <p id='sim-feedback-text'>先选一个你会先做的动作。目标不是猜中，而是学会“为什么应该先看这里”。</p>
+              <div class='sim-actions'>
+                <button class='primary' id='sim-next' disabled>进入下一步</button>
+                <button id='sim-reset'>重置当前场景</button>
+              </div>
+            </div>
+            <div class='sim-console'>
+              <strong>排查思路提示台</strong>
+              <ul>
+                <li>先问自己：这是代码没改到、运行没刷新、数据没回来，还是权限/环境变量问题？</li>
+                <li>先看证据，再动代码：<code>git diff</code>、浏览器 Console、Network、终端输出。</li>
+                <li>错误没分层时，AI 最容易给你“改得更多但更乱”的答案。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class='panel' id='simulator'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 15</div>
+            <h2>AI 编程故障排查模拟器</h2>
+            <p>这里不是让你背答案，而是练“先看哪一层、再看哪一层”的顺序。每个场景都模拟真实 Vibe Coding 常见问题，你点选排查动作，页面会告诉你为什么这一步对或不对。</p>
+          </div>
+        </div>
+        <div class='note'><strong>练习目标：</strong>建立稳定的排查顺序。先定位问题发生在哪一层，再决定下一步，而不是一上来就让 AI 大改代码。</div>
+        <div class='simulator-shell'>
+          <aside class='scenario-list' id='scenario-list'>
+            <button class='scenario-btn is-active' data-scenario='0'><strong>场景 1</strong><span>按钮文案改了，但页面还是旧内容。</span></button>
+            <button class='scenario-btn' data-scenario='1'><strong>场景 2</strong><span>列表空白，接口好像成功了。</span></button>
+            <button class='scenario-btn' data-scenario='2'><strong>场景 3</strong><span><code>npm run dev</code> 一启动就报错。</span></button>
+          </aside>
+          <div class='simulator-main'>
+            <div class='sim-stage'>
+              <div class='sim-topline'>
+                <div>
+                  <div class='badge' id='sim-badge'>Scenario 1</div>
+                  <h3 id='sim-title'>按钮文案改了，但页面还是旧内容</h3>
+                </div>
+                <div class='status-pill'>当前步骤 <strong id='sim-step'>1 / 2</strong></div>
+              </div>
+              <p id='sim-description'>你让 AI 修改首页 Hero 按钮文案，终端没有报错，代码里似乎也改到了字符串，但浏览器里还是旧文案。</p>
+              <div class='sim-clues'>
+                <article class='sim-mini-card'><strong>现象</strong><p id='sim-symptom'>页面显示没有变化。</p></article>
+                <article class='sim-mini-card'><strong>你已知的信息</strong><p id='sim-clue'>Git diff 显示已经改动了一个组件文件。</p></article>
+                <article class='sim-mini-card'><strong>这一步你要判断</strong><p id='sim-goal'>第一步应该先检查哪一层。</p></article>
+              </div>
+              <div class='progress-track'><div class='progress-fill' id='sim-progress'></div></div>
+              <div class='sim-options' id='sim-options'></div>
+            </div>
+            <div class='sim-feedback warning' id='sim-feedback'>
+              <strong>练习提示</strong>
+              <p id='sim-feedback-text'>先选一个你会先做的动作。目标不是猜中，而是学会“为什么应该先看这里”。</p>
+              <div class='sim-actions'>
+                <button class='primary' id='sim-next' disabled>进入下一步</button>
+                <button id='sim-reset'>重置当前场景</button>
+              </div>
+            </div>
+            <div class='sim-console'>
+              <strong>排查思路提示台</strong>
+              <ul>
+                <li>先问自己：这是代码没改到、运行没刷新、数据没回来，还是权限/环境变量问题？</li>
+                <li>先看证据，再动代码：<code>git diff</code>、浏览器 Console、Network、终端输出。</li>
+                <li>错误没分层时，AI 最容易给你“改得更多但更乱”的答案。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class='panel' id='quiz'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 16</div>
+            <h2>快速测验</h2>
+            <p>先自己回答，再展开答案。这样比直接看解释更容易真正记住。</p>
+          </div>
+        </div>
+        <div class='learn-grid'>
+          <div class='qa-list'>
+            <details><summary>1. Git 和 GitHub 有什么区别？</summary><p>Git 是版本控制工具；GitHub 是托管仓库与协作平台。</p></details>
+            <details><summary>2. commit 是不是已经上传到 GitHub？</summary><p>不是。commit 只发生在本地，push 后 GitHub 才能看到。</p></details>
+            <details><summary>3. PR 最准确的意思是什么？</summary><p>请求把你的改动合并到目标分支，并邀请 review。</p></details>
+            <details><summary>4. 看到 file not found 时第一反应应该检查什么？</summary><p>当前目录、路径写法、文件是否真的存在，而不是先猜模型坏了。</p></details>
+          </div>
+          <div class='qa-list'>
+            <details><summary>5. 一个网页请求大致会经过哪几层？</summary><p>浏览器/前端 → 后端/API → 数据库 → 返回结果。</p></details>
+            <details><summary>6. AI 改完代码后第一条最值得看的命令是什么？</summary><p><code>git status</code>，然后通常会接着看 <code>git diff</code>。</p></details>
+            <details><summary>7. 为什么 AI 编程更需要 Git？</summary><p>因为 AI 让改动更快，而 Git 让这些改动可审查、可回退、可协作。</p></details>
+            <details><summary>8. 为什么函数值得你现在就搞懂？</summary><p>因为它是“输入 → 处理 → 输出”的最小抽象单元，很多代码理解都能先从函数开始。</p></details>
+          </div>
+        </div>
+      </section>
+
+      <section class='panel' id='resources'>
+        <div class='section-head'>
+          <div>
+            <div class='badge'>Module 17</div>
+            <h2>学习资源：先读官方，再读扩展</h2>
+            <p>下面这些链接优先使用 GitHub Docs、Git 官方文档、MDN 和 Apple 官方资料。资源核验日期为 2026 年 4 月 8 日。</p>
+          </div>
+        </div>
+        <div class='resources'>
+          <article class='resource'><strong>GitHub 与 Git 是什么</strong><p>先建立最重要的概念边界：Git 是版本控制，GitHub 是托管与协作平台。</p><a href='https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git' target='_blank' rel='noreferrer'>打开 GitHub Docs</a></article>
+          <article class='resource'><strong>设置 Git</strong><p>安装 Git、配置用户名邮箱、理解本地开发和身份验证的关系。</p><a href='https://docs.github.com/zh/get-started/git-basics/set-up-git' target='_blank' rel='noreferrer'>打开设置 Git 文档</a></article>
+          <article class='resource'><strong>Pull Request 官方说明</strong><p>理解 PR 是什么、为什么它是协作而不是本地命令。</p><a href='https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests' target='_blank' rel='noreferrer'>打开 PR 文档</a></article>
+          <article class='resource'><strong>Git 官方书：What is Git?</strong><p>如果你想从根上理解 Git，这篇最值得继续读。</p><a href='https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F' target='_blank' rel='noreferrer'>打开 Git 官方书</a></article>
+          <article class='resource'><strong>MDN JavaScript Guide</strong><p>系统学习 JavaScript 语法、控制流、循环、函数、对象等基础。</p><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide' target='_blank' rel='noreferrer'>打开 MDN JavaScript Guide</a></article>
+          <article class='resource'><strong>MDN What is JavaScript?</strong><p>适合从“JavaScript 到底是什么”这个层级开始补概念。</p><a href='https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript' target='_blank' rel='noreferrer'>打开入门文档</a></article>
+          <article class='resource'><strong>Terminal on Mac 入门</strong><p>如果你在 macOS 上用 Claude Code / Codex，终端基础建议从 Apple 官方说明开始。</p><a href='https://support.apple.com/guide/terminal/get-started-pht23b129fed/mac' target='_blank' rel='noreferrer'>打开 Apple Terminal Guide</a></article>
+          <article class='resource'><strong>MDN Client-Server Overview</strong><p>理解浏览器、服务器、请求与响应之间的关系。</p><a href='https://developer.mozilla.org/docs/Learn/Server-side/First_steps/Client-Server_overview' target='_blank' rel='noreferrer'>打开 Client-Server Overview</a></article>
+          <article class='resource'><strong>MDN HTTP Overview</strong><p>如果你经常看到 200、404、500、请求头、响应体，这个页面很重要。</p><a href='https://developer.mozilla.org/en-US/docs/Web/HTTP' target='_blank' rel='noreferrer'>打开 HTTP 文档</a></article>
+          <article class='resource'><strong>MDN Working with JSON</strong><p>前端、后端、API 沟通时最常见的数据格式之一。</p><a href='https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON' target='_blank' rel='noreferrer'>打开 JSON 教程</a></article>
+          <article class='resource'><strong>MDN Introduction to Web APIs</strong><p>理解“API 在浏览器里是什么意思”，以及 JavaScript 如何调用它们。</p><a href='https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Client-side_APIs/Introduction' target='_blank' rel='noreferrer'>打开 Web APIs 教程</a></article>
+          <article class='resource'><strong>MDN Client-side form validation</strong><p>理解表单校验为什么分前端和后端两层。</p><a href='https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation' target='_blank' rel='noreferrer'>打开表单校验教程</a></article>
+          <article class='resource'><strong>Node.js: How much JavaScript do you need?</strong><p>这篇很适合你现在这个阶段，用 Node 官方视角告诉你先补哪些 JavaScript 基础。</p><a href='https://nodejs.org/en/learn/getting-started/how-much-javascript-do-you-need-to-know-to-use-nodejs' target='_blank' rel='noreferrer'>打开 Node.js 指南</a></article>
+          <article class='resource'><strong>Node.js: Learn</strong><p>理解 Node.js 为什么和浏览器不同，以及为什么它经常出现在全栈项目里。</p><a href='https://nodejs.org/en/learn' target='_blank' rel='noreferrer'>打开 Node.js 学习中心</a></article>
+          <article class='resource'><strong>Node.js: Run scripts from the command line</strong><p>看懂 <code>node app.js</code>、<code>--watch</code>、脚本运行方式和命令行入口。</p><a href='https://nodejs.org/en/learn/command-line/run-nodejs-scripts-from-the-command-line' target='_blank' rel='noreferrer'>打开命令行脚本指南</a></article>
+          <article class='resource'><strong>Node.js: Environment variables</strong><p>系统理解 <code>process.env</code>、<code>.env</code> 与运行配置的关系。</p><a href='https://nodejs.org/en/learn/command-line/how-to-read-environment-variables-from-nodejs' target='_blank' rel='noreferrer'>打开环境变量指南</a></article>
+          <article class='resource'><strong>Node.js: How to use the REPL</strong><p>你可以把 REPL 当成临时代码试验场，用来快速验证表达式和小段逻辑。</p><a href='https://nodejs.org/en/learn/command-line/how-to-use-the-nodejs-repl' target='_blank' rel='noreferrer'>打开 REPL 指南</a></article>
+          <article class='resource'><strong>MDN Debugging JavaScript</strong><p>当你开始系统学习排错，这篇应该进收藏夹。</p><a href='https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Debugging_JavaScript' target='_blank' rel='noreferrer'>打开调试教程</a></article>
+          <article class='resource'><strong>MDN JavaScript error reference</strong><p>看到 ReferenceError、TypeError、SyntaxError 时，先来这里查。</p><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors' target='_blank' rel='noreferrer'>打开错误参考</a></article>
+        </div>
+        <div class='note' style='margin-top: 14px'><strong>建议学习顺序：</strong>1. 先完成 GitHub 设置。2. 再读 Git 与 GitHub 的区别。3. 用 MDN 补变量、条件、循环、函数。4. 用 Apple Terminal Guide 和 Node 命令行文档补路径、脚本、REPL。5. 再补依赖、<code>package.json</code>、环境变量、异步。6. 用 MDN 补浏览器/服务器/API/JSON/HTTP。7. 最后回到 GitHub Flow、diff、PR、调试和验证，把这些知识用到日常 Claude Code / Codex 工作流里。</div>
+      </section>
+
+      <p class='footer'>桌面文件路径：[GitHub学习作战地图.html](/Users/adam/Desktop/GitHub学习作战地图.html)。内容与资源核验日期：2026 年 4 月 8 日。若文档路径或产品界面后续变化，请以最新官方文档为准。</p>
+    </div>
+  </main>
+
+  <script>
+    const simulatorScenarios = [
+      {
+        badge: 'Scenario 1',
+        title: '按钮文案改了，但页面还是旧内容',
+        description: '你让 AI 修改首页 Hero 按钮文案，终端没有报错，代码里似乎也改到了字符串，但浏览器里还是旧文案。',
+        symptom: '页面显示没有变化。',
+        clue: 'Git diff 显示已经改动了一个组件文件。',
+        steps: [
+          {
+            goal: '第一步应该先检查哪一层。',
+            correct: 0,
+            options: [
+              { label: '先确认改的是不是正确组件，并重新看一次 git diff', reason: '这是最稳的第一步。你要先确认改动目标对不对，再判断为什么浏览器没变化。' },
+              { label: '先去数据库里找按钮文案', reason: '这个现象更像前端渲染或改错文件，不应该先跳到数据库层。' },
+              { label: '直接再让 AI 重写整个首页', reason: '还没定位问题层级就重写，通常只会扩大改动范围。' },
+              { label: '先改 .env 文件', reason: '按钮文案静态显示问题通常与环境变量无关。' }
+            ]
+          },
+          {
+            goal: '确认文件改对了之后，下一步最该看什么。',
+            correct: 1,
+            options: [
+              { label: '先开一个新的 GitHub 仓库', reason: '这和当前页面未刷新没有关系。' },
+              { label: '检查开发服务器、热更新和是否存在多个同名组件', reason: '这一步能区分是页面没刷新、组件没挂上，还是你看到的不是被修改的那个组件。' },
+              { label: '先把 node_modules 删掉重装', reason: '没有证据时先重装依赖是典型的高成本低信息动作。' },
+              { label: '直接提交 commit', reason: '问题还没解决，提交只会把未验证的状态写进历史。' }
+            ]
+          }
+        ],
+        takeaway: '这类问题先看改动边界和页面渲染链，不要一上来就大修。正确顺序通常是：diff → 正确文件 → 开发服务器 / 热更新 → 是否有重复组件。'
+      },
+      {
+        badge: 'Scenario 2',
+        title: '列表页空白，接口好像成功了',
+        description: '页面没有明显红色报错，AI 说接口已经返回成功，但列表区就是空白。',
+        symptom: '接口“看起来成功”，页面仍为空。',
+        clue: '你怀疑是 JSON 结构和前端取值不一致。',
+        steps: [
+          {
+            goal: '第一步该先看哪里。',
+            correct: 2,
+            options: [
+              { label: '先去改 CSS，让列表显眼一点', reason: '列表为空先查数据流，不是先改样式。' },
+              { label: '先重启电脑', reason: '这不是有信息量的排查动作。' },
+              { label: '打开浏览器 Network，看响应 JSON 实际长什么样', reason: '这是定位数据层最直接的证据来源。先看后端到底返回了什么。' },
+              { label: '直接把 map 循环删掉重写', reason: '你还不知道数据结构，重写循环没有依据。' }
+            ]
+          },
+          {
+            goal: '看到响应体后，下一步最合理的动作是什么。',
+            correct: 0,
+            options: [
+              { label: '对照前端代码，确认取的是 data.items、data.results 还是别的字段', reason: '接口成功但页面空，最常见原因就是字段路径取错。' },
+              { label: '立刻去新建数据库表', reason: '响应已经回来了，说明问题更可能在前端取值层。' },
+              { label: '先 push 再开 PR', reason: '问题尚未定位，不能把流程动作当成调试动作。' },
+              { label: '改 package.json', reason: '列表渲染和 package.json 没有直接关系。' }
+            ]
+          }
+        ],
+        takeaway: '接口成功不代表页面一定能显示。中间还隔着 JSON 结构、字段路径、循环渲染和条件判断。先看 Network，再看前端取值。'
+      },
+      {
+        badge: 'Scenario 3',
+        title: 'npm run dev 一启动就报错',
+        description: '你刚 clone 下来一个项目，AI 让你执行 <code>npm run dev</code>，结果终端立刻报错，项目根本没启动。',
+        symptom: '命令一执行就失败。',
+        clue: '终端里可能提示 missing script、cannot find module 或 Node version 不兼容。',
+        steps: [
+          {
+            goal: '第一步最该先确认什么。',
+            correct: 1,
+            options: [
+              { label: '先去 GitHub 改头像', reason: '这和本地运行失败无关。' },
+              { label: '确认当前目录是不是项目根目录，并检查 package.json 里有没有 dev 脚本', reason: '启动失败先看 cwd 和脚本定义，这是最低成本且信息量最高的一步。' },
+              { label: '直接让 AI 把项目改成另一个框架', reason: '还没定位就大改架构，代价过高。' },
+              { label: '先打开数据库控制台', reason: '项目还没启动，不该先跳到数据库层。' }
+            ]
+          },
+          {
+            goal: '确认脚本存在之后，下一步最合理的排查方向是什么。',
+            correct: 3,
+            options: [
+              { label: '先提交一个空 commit', reason: '这不是调试动作。' },
+              { label: '直接删库重来', reason: '问题仍在运行层，不能跳过基础排查。' },
+              { label: '把所有源代码文件名都改一遍', reason: '没有证据支持这种高风险操作。' },
+              { label: '看报错内容，区分是依赖没装、模块缺失，还是 Node 版本不匹配', reason: '这一步能把问题继续分到依赖层或运行时层，才知道该装包、换版本还是改命令。' }
+            ]
+          }
+        ],
+        takeaway: '运行失败先看目录、脚本和报错文本本身。很多问题都不是“代码坏了”，而是你站错目录、没装依赖，或者 Node 版本不匹配。'
+      }
+    ];
+
+    const state = { scenarioIndex: 0, stepIndex: 0, score: 0, answered: false };
+
+    const scenarioList = document.getElementById('scenario-list');
+    const simBadge = document.getElementById('sim-badge');
+    const simTitle = document.getElementById('sim-title');
+    const simDescription = document.getElementById('sim-description');
+    const simSymptom = document.getElementById('sim-symptom');
+    const simClue = document.getElementById('sim-clue');
+    const simGoal = document.getElementById('sim-goal');
+    const simStep = document.getElementById('sim-step');
+    const simOptions = document.getElementById('sim-options');
+    const simFeedback = document.getElementById('sim-feedback');
+    const simFeedbackText = document.getElementById('sim-feedback-text');
+    const simProgress = document.getElementById('sim-progress');
+    const simNext = document.getElementById('sim-next');
+    const simReset = document.getElementById('sim-reset');
+
+    function renderScenarioButtons() {
+      const buttons = scenarioList.querySelectorAll('.scenario-btn');
+      buttons.forEach((button, index) => {
+        button.classList.toggle('is-active', index === state.scenarioIndex);
+      });
+    }
+
+    function renderStep() {
+      const scenario = simulatorScenarios[state.scenarioIndex];
+      const step = scenario.steps[state.stepIndex];
+      simBadge.textContent = scenario.badge;
+      simTitle.innerHTML = scenario.title;
+      simDescription.innerHTML = scenario.description;
+      simSymptom.textContent = scenario.symptom;
+      simClue.textContent = scenario.clue;
+      simGoal.textContent = step.goal;
+      simStep.textContent = `${state.stepIndex + 1} / ${scenario.steps.length}`;
+      simProgress.style.width = `${((state.stepIndex) / scenario.steps.length) * 100}%`;
+      simOptions.innerHTML = '';
+      state.answered = false;
+      simNext.disabled = true;
+      simNext.textContent = state.stepIndex === scenario.steps.length - 1 ? '查看总结' : '进入下一步';
+      simFeedback.className = 'sim-feedback warning';
+      simFeedback.querySelector('strong').textContent = '练习提示';
+      simFeedbackText.textContent = '先选一个你会先做的动作。目标不是猜中，而是学会“为什么应该先看这里”。';
+
+      step.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'sim-option';
+        button.type = 'button';
+        button.innerHTML = `<strong>选择 ${index + 1}</strong><span>${option.label}</span>`;
+        button.addEventListener('click', () => answerStep(index));
+        simOptions.appendChild(button);
+      });
+      renderScenarioButtons();
+    }
+
+    function answerStep(choiceIndex) {
+      if (state.answered) return;
+      const scenario = simulatorScenarios[state.scenarioIndex];
+      const step = scenario.steps[state.stepIndex];
+      const buttons = simOptions.querySelectorAll('.sim-option');
+      const correct = choiceIndex === step.correct;
+      state.answered = true;
+      buttons.forEach((button, index) => {
+        button.disabled = true;
+        if (index === step.correct) button.classList.add('is-correct');
+        if (index === choiceIndex && index !== step.correct) button.classList.add('is-wrong');
+      });
+      if (correct) state.score += 1;
+      simFeedback.className = `sim-feedback ${correct ? 'success' : 'warning'}`;
+      simFeedback.querySelector('strong').textContent = correct ? '这一步判断正确' : '这一步不够理想';
+      simFeedbackText.textContent = step.options[choiceIndex].reason;
+      simNext.disabled = false;
+      simProgress.style.width = `${((state.stepIndex + 1) / scenario.steps.length) * 100}%`;
+      if (state.stepIndex === scenario.steps.length - 1) {
+        simNext.textContent = '查看总结';
+      }
+    }
+
+    function advanceStep() {
+      const scenario = simulatorScenarios[state.scenarioIndex];
+      if (!state.answered) return;
+      if (state.stepIndex < scenario.steps.length - 1) {
+        state.stepIndex += 1;
+        renderStep();
+        return;
+      }
+      simFeedback.className = 'sim-feedback success';
+      simFeedback.querySelector('strong').textContent = '本场景总结';
+      simFeedbackText.textContent = `${scenario.takeaway} 你在这个场景中的得分：${state.score} / ${scenario.steps.length * simulatorScenarios.length}（累计得分）。`;
+      simNext.disabled = true;
+    }
+
+    scenarioList.addEventListener('click', (event) => {
+      const button = event.target.closest('.scenario-btn');
+      if (!button) return;
+      state.scenarioIndex = Number(button.dataset.scenario);
+      state.stepIndex = 0;
+      state.answered = false;
+      renderStep();
+    });
+
+    simNext.addEventListener('click', advanceStep);
+    simReset.addEventListener('click', () => {
+      state.stepIndex = 0;
+      state.answered = false;
+      renderStep();
+    });
+
+    renderStep();
+  </script>
+  <script>
+(function () {
+  var scenarios = [
+    {
+      badge: 'Scenario 1',
+      title: '按钮文案改了，但页面还是旧内容',
+      description: '你让 AI 修改首页 Hero 按钮文案，终端没有报错，代码里似乎也改到了字符串，但浏览器里还是旧文案。',
+      symptom: '页面显示没有变化。',
+      clue: 'Git diff 显示已经改动了一个组件文件。',
+      takeaway: '这类问题先看改动边界和页面渲染链，不要一上来就大修。正确顺序通常是：diff → 正确文件 → 开发服务器 / 热更新 → 是否有重复组件。',
+      steps: [
+        {
+          goal: '第一步应该先检查哪一层。',
+          correct: 0,
+          options: [
+            { label: '先确认改的是不是正确组件，并重新看一次 git diff', reason: '这是最稳的第一步。你要先确认改动目标对不对，再判断为什么浏览器没变化。' },
+            { label: '先去数据库里找按钮文案', reason: '这个现象更像前端渲染或改错文件，不应该先跳到数据库层。' },
+            { label: '直接再让 AI 重写整个首页', reason: '还没定位问题层级就重写，通常只会扩大改动范围。' },
+            { label: '先改 .env 文件', reason: '按钮文案静态显示问题通常与环境变量无关。' }
+          ]
+        },
+        {
+          goal: '确认文件改对了之后，下一步最该看什么。',
+          correct: 1,
+          options: [
+            { label: '先开一个新的 GitHub 仓库', reason: '这和当前页面未刷新没有关系。' },
+            { label: '检查开发服务器、热更新和是否存在多个同名组件', reason: '这一步能区分是页面没刷新、组件没挂上，还是你看到的不是被修改的那个组件。' },
+            { label: '先把 node_modules 删掉重装', reason: '没有证据时先重装依赖是典型的高成本低信息动作。' },
+            { label: '直接提交 commit', reason: '问题还没解决，提交只会把未验证的状态写进历史。' }
+          ]
+        }
+      ]
+    },
+    {
+      badge: 'Scenario 2',
+      title: '列表页空白，接口好像成功了',
+      description: '页面没有明显红色报错，AI 说接口已经返回成功，但列表区就是空白。',
+      symptom: '接口“看起来成功”，页面仍为空。',
+      clue: '你怀疑是 JSON 结构和前端取值不一致。',
+      takeaway: '接口成功不代表页面一定能显示。中间还隔着 JSON 结构、字段路径、循环渲染和条件判断。先看 Network，再看前端取值。',
+      steps: [
+        {
+          goal: '第一步该先看哪里。',
+          correct: 2,
+          options: [
+            { label: '先去改 CSS，让列表显眼一点', reason: '列表为空先查数据流，不是先改样式。' },
+            { label: '先重启电脑', reason: '这不是有信息量的排查动作。' },
+            { label: '打开浏览器 Network，看响应 JSON 实际长什么样', reason: '这是定位数据层最直接的证据来源。先看后端到底返回了什么。' },
+            { label: '直接把 map 循环删掉重写', reason: '你还不知道数据结构，重写循环没有依据。' }
+          ]
+        },
+        {
+          goal: '看到响应体后，下一步最合理的动作是什么。',
+          correct: 0,
+          options: [
+            { label: '对照前端代码，确认取的是 data.items、data.results 还是别的字段', reason: '接口成功但页面空，最常见原因就是字段路径取错。' },
+            { label: '立刻去新建数据库表', reason: '响应已经回来了，说明问题更可能在前端取值层。' },
+            { label: '先 push 再开 PR', reason: '问题尚未定位，不能把流程动作当成调试动作。' },
+            { label: '改 package.json', reason: '列表渲染和 package.json 没有直接关系。' }
+          ]
+        }
+      ]
+    },
+    {
+      badge: 'Scenario 3',
+      title: 'npm run dev 一启动就报错',
+      description: '你刚 clone 下来一个项目，AI 让你执行 npm run dev，结果终端立刻报错，项目根本没启动。',
+      symptom: '命令一执行就失败。',
+      clue: '终端里可能提示 missing script、cannot find module 或 Node 版本不兼容。',
+      takeaway: '运行失败先看目录、脚本和报错文本本身。很多问题都不是代码坏了，而是你站错目录、没装依赖，或者 Node 版本不匹配。',
+      steps: [
+        {
+          goal: '第一步最该先确认什么。',
+          correct: 1,
+          options: [
+            { label: '先去 GitHub 改头像', reason: '这和本地运行失败无关。' },
+            { label: '确认当前目录是不是项目根目录，并检查 package.json 里有没有 dev 脚本', reason: '启动失败先看 cwd 和脚本定义，这是最低成本且信息量最高的一步。' },
+            { label: '直接让 AI 把项目改成另一个框架', reason: '还没定位就大改架构，代价过高。' },
+            { label: '先打开数据库控制台', reason: '项目还没启动，不该先跳到数据库层。' }
+          ]
+        },
+        {
+          goal: '确认脚本存在之后，下一步最合理的排查方向是什么。',
+          correct: 3,
+          options: [
+            { label: '先提交一个空 commit', reason: '这不是调试动作。' },
+            { label: '直接删库重来', reason: '问题仍在运行层，不能跳过基础排查。' },
+            { label: '把所有源代码文件名都改一遍', reason: '没有证据支持这种高风险操作。' },
+            { label: '看报错内容，区分是依赖没装、模块缺失，还是 Node 版本不匹配', reason: '这一步能把问题继续分到依赖层或运行时层，才知道该装包、换版本还是改命令。' }
+          ]
+        }
+      ]
+    }
+  ];
+
+  var state = { scenarioIndex: 0, stepIndex: 0, answered: false, totalCorrect: 0 };
+  var scenarioList = document.getElementById('scenario-list');
+  if (!scenarioList) return;
+  var simBadge = document.getElementById('sim-badge');
+  var simTitle = document.getElementById('sim-title');
+  var simDescription = document.getElementById('sim-description');
+  var simSymptom = document.getElementById('sim-symptom');
+  var simClue = document.getElementById('sim-clue');
+  var simGoal = document.getElementById('sim-goal');
+  var simStep = document.getElementById('sim-step');
+  var simOptions = document.getElementById('sim-options');
+  var simFeedback = document.getElementById('sim-feedback');
+  var simFeedbackTitle = simFeedback.querySelector('strong');
+  var simFeedbackText = document.getElementById('sim-feedback-text');
+  var simProgress = document.getElementById('sim-progress');
+  var simNext = document.getElementById('sim-next');
+  var simReset = document.getElementById('sim-reset');
+
+  function setActiveScenarioButtons() {
+    var buttons = scenarioList.querySelectorAll('.scenario-btn');
+    buttons.forEach(function (button, index) {
+      button.classList.toggle('is-active', index === state.scenarioIndex);
+    });
+  }
+
+  function renderStep() {
+    var scenario = scenarios[state.scenarioIndex];
+    var step = scenario.steps[state.stepIndex];
+    simBadge.textContent = scenario.badge;
+    simTitle.textContent = scenario.title;
+    simDescription.textContent = scenario.description;
+    simSymptom.textContent = scenario.symptom;
+    simClue.textContent = scenario.clue;
+    simGoal.textContent = step.goal;
+    simStep.textContent = String(state.stepIndex + 1) + ' / ' + String(scenario.steps.length);
+    simProgress.style.width = String((state.stepIndex / scenario.steps.length) * 100) + '%';
+    simOptions.innerHTML = '';
+    simFeedback.className = 'sim-feedback warning';
+    simFeedbackTitle.textContent = '练习提示';
+    simFeedbackText.textContent = '先选一个你会先做的动作。目标不是猜中，而是学会为什么应该先看这里。';
+    simNext.disabled = true;
+    simNext.textContent = state.stepIndex === scenario.steps.length - 1 ? '查看总结' : '进入下一步';
+    state.answered = false;
+
+    step.options.forEach(function (option, index) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sim-option';
+      button.innerHTML = '<strong>选择 ' + String(index + 1) + '</strong><span>' + option.label + '</span>';
+      button.addEventListener('click', function () { answerStep(index); });
+      simOptions.appendChild(button);
+    });
+
+    setActiveScenarioButtons();
+  }
+
+  function answerStep(choiceIndex) {
+    if (state.answered) return;
+    var scenario = scenarios[state.scenarioIndex];
+    var step = scenario.steps[state.stepIndex];
+    var buttons = simOptions.querySelectorAll('.sim-option');
+    var isCorrect = choiceIndex === step.correct;
+    state.answered = true;
+
+    buttons.forEach(function (button, index) {
+      button.disabled = true;
+      if (index === step.correct) button.classList.add('is-correct');
+      if (index === choiceIndex && index !== step.correct) button.classList.add('is-wrong');
+    });
+
+    if (isCorrect) state.totalCorrect += 1;
+    simFeedback.className = 'sim-feedback ' + (isCorrect ? 'success' : 'warning');
+    simFeedbackTitle.textContent = isCorrect ? '这一步判断正确' : '这一步不够理想';
+    simFeedbackText.textContent = step.options[choiceIndex].reason;
+    simProgress.style.width = String(((state.stepIndex + 1) / scenario.steps.length) * 100) + '%';
+    simNext.disabled = false;
+  }
+
+  function nextStep() {
+    if (!state.answered) return;
+    var scenario = scenarios[state.scenarioIndex];
+    if (state.stepIndex < scenario.steps.length - 1) {
+      state.stepIndex += 1;
+      renderStep();
+      return;
+    }
+    simFeedback.className = 'sim-feedback success';
+    simFeedbackTitle.textContent = '本场景总结';
+    simFeedbackText.textContent = scenario.takeaway + ' 当前累计答对：' + String(state.totalCorrect) + ' / ' + String(scenarios.length * 2) + '。';
+    simNext.disabled = true;
+  }
+
+  scenarioList.addEventListener('click', function (event) {
+    var button = event.target.closest('.scenario-btn');
+    if (!button) return;
+    state.scenarioIndex = Number(button.getAttribute('data-scenario'));
+    state.stepIndex = 0;
+    state.answered = false;
+    renderStep();
+  });
+
+  simNext.addEventListener('click', nextStep);
+  simReset.addEventListener('click', function () {
+    state.stepIndex = 0;
+    state.answered = false;
+    renderStep();
+  });
+
+  renderStep();
+  </script>
+</body>
+</html>
+

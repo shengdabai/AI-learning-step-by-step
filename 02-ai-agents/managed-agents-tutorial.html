@@ -1,0 +1,2579 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anthropic Managed Agents — 完整指南</title>
+
+  <!-- Fonts: Georgia fallback for serif, system sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Highlight.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/solarized-dark.min.css" id="hljs-theme" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — Claude / Anthropic Design System
+       ============================================================ */
+    :root {
+      /* Surfaces */
+      --parchment:    #f5f4ed;
+      --ivory:        #faf9f5;
+      --pure-white:   #ffffff;
+      --warm-sand:    #e8e6dc;
+      --dark-surface: #30302e;
+      --deep-dark:    #141413;
+
+      /* Text */
+      --near-black:   #141413;
+      --charcoal:     #4d4c48;
+      --olive-gray:   #5e5d59;
+      --stone-gray:   #87867f;
+      --dark-warm:    #3d3d3a;
+      --warm-silver:  #b0aea5;
+
+      /* Brand */
+      --terracotta:   #c96442;
+      --coral:        #d97757;
+
+      /* Borders */
+      --border-cream: #f0eee6;
+      --border-warm:  #e8e6dc;
+      --border-dark:  #30302e;
+
+      /* Semantic */
+      --error:        #b53333;
+      --focus-blue:   #3898ec;
+
+      /* Rings */
+      --ring-warm:    #d1cfc5;
+      --ring-deep:    #c2c0b6;
+
+      /* Fonts */
+      --font-serif:   'Lora', Georgia, 'Times New Roman', serif;
+      --font-sans:    'DM Sans', system-ui, -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+      /* Spacing */
+      --space-1:  4px;
+      --space-2:  8px;
+      --space-3:  12px;
+      --space-4:  16px;
+      --space-5:  20px;
+      --space-6:  24px;
+      --space-7:  32px;
+      --space-8:  48px;
+      --space-9:  64px;
+      --space-10: 96px;
+      --space-11: 120px;
+
+      /* Page defaults */
+      --bg:       var(--parchment);
+      --surface:  var(--ivory);
+      --text:     var(--near-black);
+      --text-sec: var(--olive-gray);
+      --text-ter: var(--stone-gray);
+      --border:   var(--border-cream);
+
+      /* Sidebar */
+      --sidebar-width: 240px;
+    }
+
+    [data-theme="dark"] {
+      --bg:        var(--deep-dark);
+      --surface:   var(--dark-surface);
+      --text:      #faf9f5;
+      --text-sec:  var(--warm-silver);
+      --text-ter:  var(--stone-gray);
+      --border:    var(--border-dark);
+      --parchment: var(--deep-dark);
+      --ivory:     var(--dark-surface);
+      --border-cream: #30302e;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--terracotta); color: var(--ivory); }
+
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    .page-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       SIDEBAR NAV
+       ============================================================ */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: var(--space-7) 0;
+      z-index: 100;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border-warm); border-radius: 2px; }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0 var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--space-5);
+    }
+
+    .sidebar-logo-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--terracotta);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo-mark svg { width: 16px; height: 16px; fill: var(--ivory); }
+
+    .sidebar-logo-text {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .sidebar-section-label {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-ter);
+      padding: var(--space-4) var(--space-5) var(--space-2);
+    }
+
+    .sidebar-nav { list-style: none; }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 6px var(--space-5);
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--text-sec);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .sidebar-nav a.active {
+      color: var(--terracotta);
+      border-left-color: var(--terracotta);
+      background: var(--bg);
+      font-weight: 500;
+    }
+
+    .sidebar-nav a .nav-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.4;
+      flex-shrink: 0;
+    }
+
+    .sidebar-nav a.active .nav-dot { opacity: 1; }
+
+    /* Mobile sidebar toggle */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 200;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px var(--ring-warm);
+    }
+
+    /* ============================================================
+       MAIN CONTENT
+       ============================================================ */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ============================================================
+       TOP BAR
+       ============================================================ */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-3) var(--space-9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .topbar-breadcrumb {
+      font-size: 13px;
+      color: var(--text-ter);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .topbar-breadcrumb span { color: var(--text-sec); }
+
+    .topbar-actions { display: flex; align-items: center; gap: var(--space-3); }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 6px var(--space-3);
+      border-radius: 8px;
+      background: var(--warm-sand);
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--charcoal);
+      box-shadow: 0 0 0 1px var(--ring-warm);
+      transition: all 0.15s ease;
+    }
+
+    [data-theme="dark"] .theme-toggle {
+      background: var(--dark-surface);
+      color: var(--warm-silver);
+    }
+
+    .theme-toggle:hover { box-shadow: 0 0 0 2px var(--ring-deep); }
+
+    .beta-badge {
+      padding: 4px 10px;
+      border-radius: 24px;
+      background: var(--terracotta);
+      color: var(--ivory);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+    }
+
+    /* ============================================================
+       HERO SECTION
+       ============================================================ */
+    .hero {
+      position: relative;
+      padding: var(--space-11) var(--space-9) var(--space-10);
+      overflow: hidden;
+      background: var(--near-black);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 50%, rgba(201, 100, 66, 0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 75% 30%, rgba(217, 119, 87, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 60% 80%, rgba(201, 100, 66, 0.08) 0%, transparent 60%);
+      animation: heroGlow 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroGlow {
+      0%   { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,100,66,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,100,66,0.06) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 820px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 6px 14px;
+      border-radius: 24px;
+      border: 1px solid rgba(201,100,66,0.35);
+      background: rgba(201,100,66,0.12);
+      color: var(--coral);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--ivory);
+      margin-bottom: var(--space-5);
+      letter-spacing: -0.01em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--coral);
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--warm-silver);
+      line-height: 1.6;
+      max-width: 580px;
+      margin-bottom: var(--space-8);
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 13px;
+      color: var(--stone-gray);
+    }
+
+    .hero-meta-item strong { color: var(--warm-silver); font-weight: 500; }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 10px 20px;
+      border-radius: 10px;
+      background: var(--terracotta);
+      color: var(--ivory);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      box-shadow: 0 0 0 1px var(--terracotta), 0 4px 16px rgba(201,100,66,0.3);
+      transition: all 0.2s ease;
+    }
+
+    .hero-cta:hover {
+      background: var(--coral);
+      transform: translateY(-1px);
+      box-shadow: 0 0 0 1px var(--coral), 0 8px 24px rgba(201,100,66,0.4);
+    }
+
+    /* ============================================================
+       SECTION BASE
+       ============================================================ */
+    .section {
+      padding: var(--space-10) var(--space-9);
+    }
+
+    .section-alt {
+      background: var(--near-black);
+      color: var(--ivory);
+    }
+
+    .section-alt .section-label { color: var(--stone-gray); }
+    .section-alt .section-title { color: var(--ivory); }
+    .section-alt .section-desc { color: var(--warm-silver); }
+
+    .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-inner-wide {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: var(--space-3);
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: var(--space-4);
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-sec);
+      line-height: 1.7;
+      max-width: 640px;
+      margin-bottom: var(--space-8);
+    }
+
+    /* ============================================================
+       CONCEPT CARDS
+       ============================================================ */
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+
+    .concept-card {
+      background: var(--ivory);
+      border: 1px solid var(--border-cream);
+      border-radius: 16px;
+      padding: var(--space-6);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    [data-theme="dark"] .concept-card {
+      background: var(--dark-surface);
+      border-color: var(--border-dark);
+    }
+
+    .concept-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--terracotta);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .concept-card:hover {
+      box-shadow: rgba(0,0,0,0.08) 0 8px 32px;
+      transform: translateY(-2px);
+    }
+
+    .concept-card:hover::before { opacity: 1; }
+
+    .concept-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--warm-sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+      font-size: 18px;
+    }
+
+    [data-theme="dark"] .concept-icon {
+      background: #3a3a38;
+    }
+
+    .concept-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: var(--space-2);
+    }
+
+    .concept-card p {
+      font-size: 14px;
+      color: var(--text-sec);
+      line-height: 1.6;
+      margin-bottom: var(--space-3);
+    }
+
+    .concept-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(201,100,66,0.1);
+      color: var(--terracotta);
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-mono);
+    }
+
+    /* ============================================================
+       ARCHITECTURE DIAGRAM
+       ============================================================ */
+    .arch-diagram {
+      background: var(--deep-dark);
+      border-radius: 20px;
+      padding: var(--space-7);
+      margin-top: var(--space-8);
+      border: 1px solid var(--border-dark);
+      overflow-x: auto;
+    }
+
+    .arch-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: nowrap;
+      min-width: 600px;
+    }
+
+    .arch-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .arch-box {
+      padding: 14px 20px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .arch-box-app {
+      background: rgba(201,100,66,0.15);
+      border: 1px solid rgba(201,100,66,0.3);
+    }
+
+    .arch-box-api {
+      background: rgba(217,119,87,0.12);
+      border: 1px solid rgba(217,119,87,0.25);
+    }
+
+    .arch-box-loop {
+      background: rgba(56,152,236,0.1);
+      border: 1px solid rgba(56,152,236,0.2);
+    }
+
+    .arch-box-container {
+      background: rgba(176,174,165,0.1);
+      border: 1px solid rgba(176,174,165,0.2);
+    }
+
+    .arch-box-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ivory);
+      margin-bottom: 3px;
+    }
+
+    .arch-box-desc {
+      font-size: 11px;
+      color: var(--stone-gray);
+    }
+
+    .arch-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 0 var(--space-2);
+    }
+
+    .arch-arrow-line {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--terracotta), var(--coral));
+      position: relative;
+    }
+
+    .arch-arrow-line::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -4px;
+      width: 0;
+      height: 0;
+      border-left: 7px solid var(--coral);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
+
+    .arch-arrow-label {
+      font-size: 10px;
+      color: var(--stone-gray);
+      white-space: nowrap;
+    }
+
+    .arch-node-label {
+      font-size: 11px;
+      color: var(--stone-gray);
+    }
+
+    /* ============================================================
+       STEPS (Quick Start)
+       ============================================================ */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: var(--space-5);
+      position: relative;
+    }
+
+    .step:not(:last-child) .step-line {
+      position: absolute;
+      left: 23px;
+      top: 48px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-cream);
+    }
+
+    [data-theme="dark"] .step:not(:last-child) .step-line {
+      background: var(--border-dark);
+    }
+
+    .step-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      color: var(--ivory);
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-content {
+      padding-bottom: var(--space-8);
+    }
+
+    .step-title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: var(--space-2);
+      margin-top: 10px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--text-sec);
+      margin-bottom: var(--space-4);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       CODE BLOCKS
+       ============================================================ */
+    .code-block {
+      position: relative;
+      margin: var(--space-4) 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: rgba(0,0,0,0.15) 0 4px 24px;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px var(--space-4);
+      background: #1a1918;
+      border-bottom: 1px solid #2a2a28;
+    }
+
+    .code-lang {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--stone-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .code-lang-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot-python { background: #3572A5; }
+    .dot-typescript { background: #2b7489; }
+    .dot-bash { background: #c96442; }
+
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--stone-gray);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: all 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.14);
+      color: var(--warm-silver);
+    }
+
+    .copy-btn.copied {
+      color: #5cb85c;
+      border-color: rgba(92,184,92,0.3);
+    }
+
+    .code-block pre {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      background: #1e1d1b !important;
+    }
+
+    .code-block pre code {
+      font-family: var(--font-mono) !important;
+      font-size: 13.5px !important;
+      line-height: 1.65 !important;
+      padding: var(--space-5) !important;
+      letter-spacing: -0.2px;
+    }
+
+    /* ============================================================
+       USE CASE CARDS
+       ============================================================ */
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+
+    .use-case-card {
+      background: var(--deep-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .use-case-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+    }
+
+    .use-case-header {
+      padding: var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .use-case-icon {
+      font-size: 22px;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(201,100,66,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .use-case-header h3 {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ivory);
+    }
+
+    .use-case-header p {
+      font-size: 12px;
+      color: var(--stone-gray);
+    }
+
+    .use-case-prompt {
+      margin: var(--space-4) var(--space-6);
+      padding: var(--space-3) var(--space-4);
+      border-radius: 8px;
+      background: rgba(201,100,66,0.08);
+      border-left: 3px solid var(--terracotta);
+      font-size: 13px;
+      color: var(--warm-silver);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .use-case-steps {
+      padding: 0 var(--space-6) var(--space-6);
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .use-case-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+      font-size: 13px;
+      color: var(--warm-silver);
+      line-height: 1.5;
+    }
+
+    .use-case-steps li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       API TABLE
+       ============================================================ */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: rgba(0,0,0,0.05) 0 4px 24px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead {
+      background: var(--warm-sand);
+    }
+
+    [data-theme="dark"] thead {
+      background: var(--dark-surface);
+    }
+
+    thead th {
+      padding: 12px var(--space-5);
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.1s ease;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover {
+      background: var(--warm-sand);
+    }
+
+    [data-theme="dark"] tbody tr:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
+    tbody td {
+      padding: 12px var(--space-5);
+      color: var(--text-sec);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    tbody td:first-child {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--terracotta);
+    }
+
+    .method-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .method-get { background: rgba(56,152,236,0.12); color: #3898ec; }
+    .method-post { background: rgba(92,184,92,0.12); color: #5cb85c; }
+
+    /* ============================================================
+       TIPS / BEST PRACTICES
+       ============================================================ */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+    }
+
+    .tip-card {
+      padding: var(--space-5);
+      border-radius: 12px;
+      background: var(--ivory);
+      border: 1px solid var(--border-cream);
+      display: flex;
+      gap: var(--space-3);
+      transition: box-shadow 0.15s ease;
+    }
+
+    [data-theme="dark"] .tip-card {
+      background: var(--dark-surface);
+      border-color: var(--border-dark);
+    }
+
+    .tip-card:hover {
+      box-shadow: 0 0 0 1px var(--ring-warm);
+    }
+
+    .tip-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tip-content h4 {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: var(--space-1);
+    }
+
+    .tip-content p {
+      font-size: 13.5px;
+      color: var(--text-sec);
+      line-height: 1.55;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      background: var(--warm-sand);
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: var(--terracotta);
+    }
+
+    [data-theme="dark"] code {
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* ============================================================
+       CLI SECTION
+       ============================================================ */
+    .cli-commands {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .cli-cmd {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      border-radius: 10px;
+      background: var(--ivory);
+      border: 1px solid var(--border);
+      align-items: center;
+    }
+
+    [data-theme="dark"] .cli-cmd {
+      background: var(--dark-surface);
+      border-color: var(--border-dark);
+    }
+
+    .cli-cmd-text {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--terracotta);
+    }
+
+    .cli-cmd-desc {
+      font-size: 13px;
+      color: var(--text-sec);
+    }
+
+    /* ============================================================
+       COMPARISON TABLE
+       ============================================================ */
+    .comparison-table td:first-child {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .check { color: #5cb85c; font-weight: 600; }
+    .cross { color: var(--stone-gray); }
+    .partial { color: var(--terracotta); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      background: var(--deep-dark);
+      padding: var(--space-9) var(--space-9) var(--space-7);
+      border-top: 1px solid var(--border-dark);
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--space-8);
+      margin-bottom: var(--space-8);
+    }
+
+    .footer-brand h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--ivory);
+      margin-bottom: var(--space-3);
+    }
+
+    .footer-brand p {
+      font-size: 13.5px;
+      color: var(--stone-gray);
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--stone-gray);
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+
+    .footer-col a {
+      font-size: 13.5px;
+      color: var(--warm-silver);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-col a:hover { color: var(--coral); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-dark);
+      padding-top: var(--space-5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+
+    .footer-bottom-text {
+      font-size: 12.5px;
+      color: var(--stone-gray);
+    }
+
+    .built-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(201,100,66,0.25);
+      background: rgba(201,100,66,0.08);
+      color: var(--coral);
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    /* ============================================================
+       SCROLL ANIMATIONS
+       ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ============================================================
+       SECTION DIVIDER
+       ============================================================ */
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ============================================================
+       INLINE HIGHLIGHTS
+       ============================================================ */
+    .highlight-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(201,100,66,0.1);
+      color: var(--terracotta);
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    /* ============================================================
+       NOTICE BOX
+       ============================================================ */
+    .notice {
+      padding: var(--space-4) var(--space-5);
+      border-radius: 10px;
+      border-left: 3px solid var(--terracotta);
+      background: rgba(201,100,66,0.06);
+      margin: var(--space-5) 0;
+      font-size: 13.5px;
+      color: var(--text-sec);
+      line-height: 1.6;
+    }
+
+    .notice strong { color: var(--terracotta); }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 1024px) {
+      :root { --sidebar-width: 0px; }
+      .sidebar { transform: translateX(-100%); width: 260px; }
+      .sidebar.open { transform: translateX(0); }
+      .main-content { margin-left: 0; }
+      .sidebar-toggle { display: flex; }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: var(--space-8) var(--space-5); }
+      .topbar { padding: var(--space-3) var(--space-5); }
+      .hero { padding: var(--space-10) var(--space-5) var(--space-8); }
+      .concepts-grid { grid-template-columns: 1fr; }
+      .use-cases-grid { grid-template-columns: 1fr; }
+      .tips-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .arch-flow { min-width: 500px; }
+      .cli-cmd { grid-template-columns: 1fr; }
+      .topbar-breadcrumb { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.8rem; }
+      .section-title { font-size: 1.5rem; }
+    }
+
+    /* ============================================================
+       PROGRESS BAR
+       ============================================================ */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--terracotta);
+      z-index: 999;
+      transition: width 0.1s linear;
+      border-radius: 0 1px 1px 0;
+    }
+
+    /* ============================================================
+       SIDEBAR OVERLAY (mobile)
+       ============================================================ */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,20,19,0.5);
+      z-index: 90;
+      backdrop-filter: blur(2px);
+    }
+
+    .sidebar-overlay.open { display: block; }
+
+    /* ============================================================
+       LANG TAG
+       ============================================================ */
+    .lang-tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--warm-sand);
+      color: var(--stone-gray);
+      font-weight: 500;
+      margin-left: var(--space-2);
+    }
+
+    [data-theme="dark"] .lang-tag {
+      background: #3a3a38;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- Mobile Sidebar Toggle -->
+  <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" aria-label="导航菜单">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <rect x="2" y="4" width="14" height="1.5" rx="0.75" fill="currentColor"/>
+      <rect x="2" y="8.25" width="14" height="1.5" rx="0.75" fill="currentColor"/>
+      <rect x="2" y="12.5" width="14" height="1.5" rx="0.75" fill="currentColor"/>
+    </svg>
+  </button>
+
+  <!-- Page Wrapper -->
+  <div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar" aria-label="页面导航">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z"/>
+          </svg>
+        </div>
+        <div class="sidebar-logo-text">Managed Agents<br>完整指南</div>
+      </div>
+
+      <div class="sidebar-section-label">目录</div>
+      <ul class="sidebar-nav" id="sidebarNav">
+        <li><a href="#hero" class="active"><span class="nav-dot"></span>概述</a></li>
+        <li><a href="#concepts"><span class="nav-dot"></span>核心概念</a></li>
+        <li><a href="#quickstart"><span class="nav-dot"></span>快速开始</a></li>
+        <li><a href="#usecases"><span class="nav-dot"></span>使用案例</a></li>
+        <li><a href="#api-ref"><span class="nav-dot"></span>API 参考</a></li>
+        <li><a href="#typescript"><span class="nav-dot"></span>TypeScript 示例</a></li>
+        <li><a href="#cli"><span class="nav-dot"></span>CLI 工具 (ant)</a></li>
+        <li><a href="#tips"><span class="nav-dot"></span>最佳实践</a></li>
+        <li><a href="#comparison"><span class="nav-dot"></span>方案对比</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-breadcrumb">
+          <span>Anthropic</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Managed Agents
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>完整指南</span>
+        </div>
+        <div class="topbar-actions">
+          <span class="beta-badge">Beta</span>
+          <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换主题">
+            <svg id="themeIcon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M7 1v1M7 12v1M1 7h1M12 7h1M3.22 3.22l.7.7M10.08 10.08l.7.7M10.78 3.22l-.7.7M3.92 10.08l-.7.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span id="themeLabel">浅色模式</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ============ HERO ============ -->
+      <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="hero-eyebrow-dot"></span>
+            Anthropic Beta — managed-agents-2026-04-01
+          </div>
+          <h1>Anthropic<br><em>Managed Agents</em><br>完整指南</h1>
+          <p class="hero-subtitle">
+            构建、部署并编排自主运行的 AI Agent。一次创建，无限复用，托管执行环境，SSE 实时流式传输。
+          </p>
+          <div class="hero-meta">
+            <a href="#quickstart" class="hero-cta">
+              开始构建
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <div class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              预计阅读时间 <strong>15 分钟</strong>
+            </div>
+            <div class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M2 7h10M2 10h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              <strong>Python</strong> 和 <strong>TypeScript</strong>
+            </div>
+            <div class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7l2 2 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              SDK <strong>自动处理</strong> Beta Header
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CONCEPTS ============ -->
+      <section class="section" id="concepts">
+        <div class="section-inner">
+          <div class="section-label reveal">核心概念</div>
+          <h2 class="section-title reveal reveal-delay-1">四个关键对象</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            Managed Agents 由四个核心原语组成。理解它们的边界和职责，是正确设计系统架构的第一步。
+          </p>
+
+          <div class="concepts-grid">
+            <div class="concept-card reveal reveal-delay-1">
+              <div class="concept-icon">🤖</div>
+              <h3>Agent（智能体）</h3>
+              <p>持久化的配置模板，包含模型选择、系统提示词和工具集定义。创建一次，在多个 Session 中复用。类比：函数定义，而非函数调用。</p>
+              <span class="concept-tag">持久化 · 可复用</span>
+            </div>
+            <div class="concept-card reveal reveal-delay-2">
+              <div class="concept-icon">🏗️</div>
+              <h3>Environment（环境）</h3>
+              <p>沙盒容器模板，定义网络访问策略、预装软件包和运行时资源。与 Agent 分离设计，允许同一 Agent 在不同环境中执行。</p>
+              <span class="concept-tag">沙盒隔离 · 可配置</span>
+            </div>
+            <div class="concept-card reveal reveal-delay-3">
+              <div class="concept-icon">⚡</div>
+              <h3>Session（会话）</h3>
+              <p>Agent 的单次运行实例。绑定一个 Agent + 一个 Environment，每个任务创建独立 Session，互相隔离，状态不跨越泄漏。</p>
+              <span class="concept-tag">一次性 · 状态隔离</span>
+            </div>
+            <div class="concept-card reveal reveal-delay-4">
+              <div class="concept-icon">📡</div>
+              <h3>Events（事件流）</h3>
+              <p>基于 SSE（Server-Sent Events）的双向通信机制。用户消息写入（POST），Agent 响应和工具调用流式读出（GET），通过 <code>session.status_idle</code> 信号任务完成。</p>
+              <span class="concept-tag">SSE 流式 · 实时</span>
+            </div>
+          </div>
+
+          <!-- Architecture Diagram -->
+          <div class="arch-diagram reveal">
+            <div style="text-align:center; margin-bottom: var(--space-6);">
+              <div style="font-family:var(--font-serif); font-size:1rem; color:var(--ivory); margin-bottom:4px;">架构数据流</div>
+              <div style="font-size:12px; color:var(--stone-gray);">从应用到容器的完整调用链路</div>
+            </div>
+            <div class="arch-flow">
+              <div class="arch-node">
+                <div class="arch-box arch-box-app">
+                  <div class="arch-box-label">Your App</div>
+                  <div class="arch-box-desc">Python / TS / CLI</div>
+                </div>
+                <div class="arch-node-label">调用方</div>
+              </div>
+              <div class="arch-arrow">
+                <div class="arch-arrow-line"></div>
+                <div class="arch-arrow-label">SDK / HTTP</div>
+              </div>
+              <div class="arch-node">
+                <div class="arch-box arch-box-api">
+                  <div class="arch-box-label">Anthropic API</div>
+                  <div class="arch-box-desc">Sessions · Events</div>
+                </div>
+                <div class="arch-node-label">托管层</div>
+              </div>
+              <div class="arch-arrow">
+                <div class="arch-arrow-line"></div>
+                <div class="arch-arrow-label">内部调度</div>
+              </div>
+              <div class="arch-node">
+                <div class="arch-box arch-box-loop">
+                  <div class="arch-box-label">Agent Loop</div>
+                  <div class="arch-box-desc">Claude 推理引擎</div>
+                </div>
+                <div class="arch-node-label">AI 推理</div>
+              </div>
+              <div class="arch-arrow">
+                <div class="arch-arrow-line"></div>
+                <div class="arch-arrow-label">工具调用</div>
+              </div>
+              <div class="arch-node">
+                <div class="arch-box arch-box-container">
+                  <div class="arch-box-label">Container</div>
+                  <div class="arch-box-desc">Bash · Files · Web</div>
+                </div>
+                <div class="arch-node-label">沙盒执行</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============ QUICK START ============ -->
+      <section class="section" id="quickstart">
+        <div class="section-inner">
+          <div class="section-label reveal">快速开始</div>
+          <h2 class="section-title reveal reveal-delay-1">四步运行第一个 Agent</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            从零到运行中的 Agent，只需四个 API 调用。以下示例使用 Python SDK，假设你已安装依赖并配置了 API Key。
+          </p>
+
+          <div class="notice reveal">
+            <strong>前置要求：</strong> 安装 Anthropic CLI 工具（<code>ant</code>）和 Python SDK，并导出 API Key。
+          </div>
+
+          <!-- Prerequisites -->
+          <div class="code-block reveal">
+            <div class="code-header">
+              <span class="code-lang"><span class="code-lang-dot dot-bash"></span>bash — 安装依赖</span>
+              <button class="copy-btn" onclick="copyCode(this)">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                复制
+              </button>
+            </div>
+            <pre><code class="language-bash">brew install anthropics/tap/ant
+pip install anthropic
+export ANTHROPIC_API_KEY="your-key"</code></pre>
+          </div>
+
+          <div class="steps">
+            <!-- Step 1 -->
+            <div class="step reveal">
+              <div class="step-line"></div>
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3 class="step-title">创建 Agent（持久化配置）</h3>
+                <p class="step-desc">Agent 是你的 AI 配置蓝图：指定模型、系统提示词和可用工具集。<code>agent_toolset_20260401</code> 工具集包含 Bash、文件操作和 Web 访问能力。</p>
+                <div class="code-block">
+                  <div class="code-header">
+                    <span class="code-lang"><span class="code-lang-dot dot-python"></span>python</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      复制
+                    </button>
+                  </div>
+                  <pre><code class="language-python">from anthropic import Anthropic
+
+client = Anthropic()
+
+agent = client.beta.agents.create(
+    name="Coding Assistant",
+    model="claude-sonnet-4-6",
+    system="You are a helpful coding assistant. Write clean, "
+           "well-documented code and explain your decisions.",
+    tools=[{"type": "agent_toolset_20260401"}],
+)
+
+print(f"Agent created: {agent.id}")
+# Agent ID 是持久的 — 保存它以便后续复用！</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step reveal">
+              <div class="step-line"></div>
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3 class="step-title">创建 Environment（沙盒容器模板）</h3>
+                <p class="step-desc">Environment 定义 Agent 代码执行的沙盒环境。<code>unrestricted</code> 网络模式允许 Agent 访问外部 URL；也可设置 <code>none</code> 完全隔离网络。</p>
+                <div class="code-block">
+                  <div class="code-header">
+                    <span class="code-lang"><span class="code-lang-dot dot-python"></span>python</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      复制
+                    </button>
+                  </div>
+                  <pre><code class="language-python">environment = client.beta.environments.create(
+    name="quickstart-env",
+    config={
+        "type": "cloud",
+        "networking": {"type": "unrestricted"},  # 允许网络访问
+    },
+)
+
+print(f"Environment created: {environment.id}")
+# Environment ID 同样持久化 — 可跨 Session 复用</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step reveal">
+              <div class="step-line"></div>
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3 class="step-title">创建 Session（运行实例）</h3>
+                <p class="step-desc">Session 将 Agent 配置与 Environment 绑定，产生一个独立的运行实例。每个任务创建独立 Session，保证状态隔离。</p>
+                <div class="code-block">
+                  <div class="code-header">
+                    <span class="code-lang"><span class="code-lang-dot dot-python"></span>python</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      复制
+                    </button>
+                  </div>
+                  <pre><code class="language-python">session = client.beta.sessions.create(
+    agent=agent.id,
+    environment_id=environment.id,
+    title="Fibonacci Task — 2026-04-09",
+)
+
+print(f"Session created: {session.id}")
+# Session 是短暂的 — 每个独立任务用一个新 Session</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step reveal">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h3 class="step-title">发送消息并流式接收事件</h3>
+                <p class="step-desc">使用 SSE 建立事件流连接。发送用户消息后，Agent 开始工作并实时推送事件。收到 <code>session.status_idle</code> 说明当前任务已完成。</p>
+                <div class="code-block">
+                  <div class="code-header">
+                    <span class="code-lang"><span class="code-lang-dot dot-python"></span>python</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      复制
+                    </button>
+                  </div>
+                  <pre><code class="language-python">with client.beta.sessions.events.stream(session.id) as stream:
+    # 向 Agent 发送用户消息
+    client.beta.sessions.events.send(session.id, events=[{
+        "type": "user.message",
+        "content": [{"type": "text", "text": "创建一个 Fibonacci 数列生成脚本，"
+                                              "包含单元测试，并运行验证它正确工作。"}],
+    }])
+
+    # 流式接收 Agent 响应
+    for event in stream:
+        match event.type:
+            case "agent.message":
+                # Agent 的文本回复
+                print(f"🤖 Agent: {event.content}")
+            case "agent.tool_use":
+                # Agent 正在使用工具（如执行 bash 命令）
+                print(f"🔧 工具调用: [{event.name}] {event.input}")
+            case "agent.tool_result":
+                # 工具执行结果
+                print(f"✅ 结果: {event.content[:200]}...")
+            case "session.status_idle":
+                # Agent 完成任务，退出循环
+                print("✨ 任务完成")
+                break</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============ USE CASES ============ -->
+      <section class="section section-alt" id="usecases">
+        <div class="section-inner-wide">
+          <div class="section-label reveal">使用案例</div>
+          <h2 class="section-title reveal reveal-delay-1">真实世界的应用场景</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            Managed Agents 适用于需要多步骤推理、代码执行和持续迭代的复杂自动化任务。
+          </p>
+
+          <div class="use-cases-grid">
+            <!-- Case 1: Code Generator -->
+            <div class="use-case-card reveal reveal-delay-1">
+              <div class="use-case-header">
+                <div class="use-case-icon">⚙️</div>
+                <div>
+                  <h3>代码生成器</h3>
+                  <p>自动生成、测试并修复完整项目代码</p>
+                </div>
+              </div>
+              <div class="use-case-prompt">
+                "用 FastAPI 创建一个 REST API，包含用户认证、数据库模型和完整的 CRUD 操作，并写集成测试。"
+              </div>
+              <ul class="use-case-steps">
+                <li>Agent 分析需求，设计 API 结构和数据库 Schema</li>
+                <li>生成 FastAPI 路由、Pydantic 模型和 SQLAlchemy ORM 代码</li>
+                <li>执行 <code>pip install</code> 安装依赖，运行 pytest</li>
+                <li>根据测试失败结果自动修复代码，直到全部通过</li>
+                <li>生成 README 和 API 文档</li>
+              </ul>
+              <div class="code-block" style="margin: 0 var(--space-6) var(--space-5);">
+                <div class="code-header">
+                  <span class="code-lang"><span class="code-lang-dot dot-python"></span>python — 配置要点</span>
+                  <button class="copy-btn" onclick="copyCode(this)">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    复制
+                  </button>
+                </div>
+                <pre><code class="language-python">agent = client.beta.agents.create(
+    name="Code Generator",
+    model="claude-sonnet-4-6",
+    system="You are an expert software engineer. Write production-quality "
+           "code with tests. Always run tests and fix failures before finishing.",
+    tools=[{"type": "agent_toolset_20260401"}],
+)</code></pre>
+              </div>
+            </div>
+
+            <!-- Case 2: Data Analyst -->
+            <div class="use-case-card reveal reveal-delay-2">
+              <div class="use-case-header">
+                <div class="use-case-icon">📊</div>
+                <div>
+                  <h3>数据分析师</h3>
+                  <p>处理 CSV、生成图表和洞察报告</p>
+                </div>
+              </div>
+              <div class="use-case-prompt">
+                "分析这份电商销售 CSV 数据，找出月度趋势、Top 10 产品，并生成包含交互图表的 HTML 报告。"
+              </div>
+              <ul class="use-case-steps">
+                <li>Agent 读取 CSV 文件，检查数据质量和异常值</li>
+                <li>使用 pandas 进行数据清洗和统计聚合</li>
+                <li>用 plotly 生成交互式月度趋势折线图和产品排行柱状图</li>
+                <li>计算关键指标（MoM 增长率、客单价、退货率）</li>
+                <li>输出完整的 HTML 报告，包含 AI 生成的自然语言洞察</li>
+              </ul>
+              <div class="code-block" style="margin: 0 var(--space-6) var(--space-5);">
+                <div class="code-header">
+                  <span class="code-lang"><span class="code-lang-dot dot-python"></span>python — 上传文件</span>
+                  <button class="copy-btn" onclick="copyCode(this)">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    复制
+                  </button>
+                </div>
+                <pre><code class="language-python">client.beta.sessions.events.send(session.id, events=[{
+    "type": "user.message",
+    "content": [
+        {"type": "text", "text": "分析以下销售数据："},
+        {"type": "document", "source": {
+            "type": "base64",
+            "media_type": "text/csv",
+            "data": base64_csv_data,
+        }},
+    ],
+}])</code></pre>
+              </div>
+            </div>
+
+            <!-- Case 3: DevOps Assistant -->
+            <div class="use-case-card reveal reveal-delay-3">
+              <div class="use-case-header">
+                <div class="use-case-icon">🚀</div>
+                <div>
+                  <h3>DevOps 助手</h3>
+                  <p>自动化 CI/CD 配置和基础设施脚本</p>
+                </div>
+              </div>
+              <div class="use-case-prompt">
+                "为我的 Next.js 应用设置 GitHub Actions CI/CD 流水线，包含测试、构建、Docker 镜像推送和 Vercel 部署。"
+              </div>
+              <ul class="use-case-steps">
+                <li>分析项目结构，识别框架版本和测试框架</li>
+                <li>生成 <code>.github/workflows/ci.yml</code>，包含矩阵测试策略</li>
+                <li>编写 Dockerfile（多阶段构建，最小化镜像体积）</li>
+                <li>配置 Vercel 部署步骤和环境变量处理</li>
+                <li>验证 YAML 语法，检查 Secret 引用是否正确</li>
+              </ul>
+              <div class="code-block" style="margin: 0 var(--space-6) var(--space-5);">
+                <div class="code-header">
+                  <span class="code-lang"><span class="code-lang-dot dot-python"></span>python — 网络配置</span>
+                  <button class="copy-btn" onclick="copyCode(this)">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    复制
+                  </button>
+                </div>
+                <pre><code class="language-python"># DevOps Agent 需要访问外部资源（npm, Docker Hub）
+environment = client.beta.environments.create(
+    name="devops-env",
+    config={
+        "type": "cloud",
+        "networking": {"type": "unrestricted"},
+    },
+)</code></pre>
+              </div>
+            </div>
+
+            <!-- Case 4: Research Agent -->
+            <div class="use-case-card reveal reveal-delay-4">
+              <div class="use-case-header">
+                <div class="use-case-icon">🔬</div>
+                <div>
+                  <h3>研究助手</h3>
+                  <p>抓取、阅读并汇总最新研究资料</p>
+                </div>
+              </div>
+              <div class="use-case-prompt">
+                "搜索过去三个月关于 LLM 推理加速的最新论文，总结关键技术突破，并按影响力排序生成研究报告。"
+              </div>
+              <ul class="use-case-steps">
+                <li>访问 arXiv、Semantic Scholar API 搜索相关论文</li>
+                <li>下载 PDF，提取摘要、方法和实验结果</li>
+                <li>对比各论文的技术方案（量化、蒸馏、推测解码等）</li>
+                <li>按引用量、新颖性和实用性综合评分排序</li>
+                <li>生成 Markdown 研究报告，附带论文链接和核心贡献摘要</li>
+              </ul>
+              <div class="code-block" style="margin: 0 var(--space-6) var(--space-5);">
+                <div class="code-header">
+                  <span class="code-lang"><span class="code-lang-dot dot-python"></span>python — 流式处理</span>
+                  <button class="copy-btn" onclick="copyCode(this)">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    复制
+                  </button>
+                </div>
+                <pre><code class="language-python">for event in stream:
+    match event.type:
+        case "agent.tool_use" if event.name == "bash":
+            # 实时看到 Agent 正在访问哪些 URL
+            print(f"📡 访问: {event.input.get('command', '')[:80]}")
+        case "agent.message":
+            # 流式打印 Agent 的分析文本
+            print(event.content, end="", flush=True)
+        case "session.status_idle":
+            break</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ API REFERENCE ============ -->
+      <section class="section" id="api-ref">
+        <div class="section-inner">
+          <div class="section-label reveal">API 参考</div>
+          <h2 class="section-title reveal reveal-delay-1">端点速查</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            所有端点都在 <code>https://api.anthropic.com/v1/</code> 下。使用 SDK 时，Beta header <code>managed-agents-2026-04-01</code> 由 SDK 自动附加，无需手动处理。
+          </p>
+
+          <div class="table-wrapper reveal">
+            <table>
+              <thead>
+                <tr>
+                  <th>端点路径</th>
+                  <th>方法</th>
+                  <th>描述</th>
+                  <th>关键参数</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>/v1/agents</td>
+                  <td><span class="method-badge method-post">POST</span></td>
+                  <td>创建 Agent（持久化配置）</td>
+                  <td><code>name</code>, <code>model</code>, <code>system</code>, <code>tools</code></td>
+                </tr>
+                <tr>
+                  <td>/v1/agents/:id</td>
+                  <td><span class="method-badge method-get">GET</span></td>
+                  <td>获取 Agent 详情</td>
+                  <td><code>id</code></td>
+                </tr>
+                <tr>
+                  <td>/v1/agents</td>
+                  <td><span class="method-badge method-get">GET</span></td>
+                  <td>列出所有 Agent</td>
+                  <td><code>limit</code>, <code>after_id</code></td>
+                </tr>
+                <tr>
+                  <td>/v1/environments</td>
+                  <td><span class="method-badge method-post">POST</span></td>
+                  <td>创建 Environment（沙盒模板）</td>
+                  <td><code>name</code>, <code>config.type</code>, <code>config.networking</code></td>
+                </tr>
+                <tr>
+                  <td>/v1/sessions</td>
+                  <td><span class="method-badge method-post">POST</span></td>
+                  <td>创建 Session（运行实例）</td>
+                  <td><code>agent</code>, <code>environment_id</code>, <code>title</code></td>
+                </tr>
+                <tr>
+                  <td>/v1/sessions/:id</td>
+                  <td><span class="method-badge method-get">GET</span></td>
+                  <td>获取 Session 状态</td>
+                  <td><code>id</code></td>
+                </tr>
+                <tr>
+                  <td>/v1/sessions/:id/events</td>
+                  <td><span class="method-badge method-get">GET</span> SSE</td>
+                  <td>建立 SSE 事件流，接收 Agent 实时输出</td>
+                  <td><code>id</code>（路径参数）</td>
+                </tr>
+                <tr>
+                  <td>/v1/sessions/:id/events</td>
+                  <td><span class="method-badge method-post">POST</span></td>
+                  <td>向 Agent 发送用户消息</td>
+                  <td><code>events[].type</code>, <code>events[].content</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: var(--space-7);">
+            <div class="section-label" style="margin-bottom: var(--space-4);">事件类型</div>
+            <div class="table-wrapper reveal">
+              <table>
+                <thead>
+                  <tr>
+                    <th>事件类型</th>
+                    <th>方向</th>
+                    <th>触发时机</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>user.message</td>
+                    <td>→ 发送</td>
+                    <td>用户向 Agent 发送文本或文件</td>
+                  </tr>
+                  <tr>
+                    <td>agent.message</td>
+                    <td>← 接收</td>
+                    <td>Agent 生成文本回复（可能分块流式）</td>
+                  </tr>
+                  <tr>
+                    <td>agent.tool_use</td>
+                    <td>← 接收</td>
+                    <td>Agent 调用工具（bash, read_file, web_search 等）</td>
+                  </tr>
+                  <tr>
+                    <td>agent.tool_result</td>
+                    <td>← 接收</td>
+                    <td>工具执行完毕，返回结果</td>
+                  </tr>
+                  <tr>
+                    <td>session.status_idle</td>
+                    <td>← 接收</td>
+                    <td>Agent 完成当前任务，等待下一个用户消息</td>
+                  </tr>
+                  <tr>
+                    <td>session.status_error</td>
+                    <td>← 接收</td>
+                    <td>Session 发生错误，需要处理</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============ TYPESCRIPT ============ -->
+      <section class="section section-alt" id="typescript">
+        <div class="section-inner">
+          <div class="section-label reveal">TypeScript 示例</div>
+          <h2 class="section-title reveal reveal-delay-1">使用 @anthropic-ai/sdk</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            TypeScript SDK 提供完整的类型定义，与 Python SDK 的 API 设计几乎一致。以下展示与 Python 快速开始相同的四步流程。
+          </p>
+
+          <div class="code-block reveal">
+            <div class="code-header">
+              <span class="code-lang"><span class="code-lang-dot dot-bash"></span>bash — 安装 SDK</span>
+              <button class="copy-btn" onclick="copyCode(this)">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                复制
+              </button>
+            </div>
+            <pre><code class="language-bash">npm install @anthropic-ai/sdk
+# 或
+bun add @anthropic-ai/sdk</code></pre>
+          </div>
+
+          <div class="code-block reveal">
+            <div class="code-header">
+              <span class="code-lang"><span class="code-lang-dot dot-typescript"></span>typescript — 完整快速开始</span>
+              <button class="copy-btn" onclick="copyCode(this)">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                复制
+              </button>
+            </div>
+            <pre><code class="language-typescript">import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
+
+async function runAgent() {
+  // 步骤 1: 创建 Agent（一次性，可复用）
+  const agent = await client.beta.agents.create({
+    name: "Coding Assistant",
+    model: "claude-sonnet-4-6",
+    system:
+      "You are a helpful coding assistant. Write clean, " +
+      "well-documented code and explain your decisions.",
+    tools: [{ type: "agent_toolset_20260401" }],
+  });
+  console.log(`Agent created: ${agent.id}`);
+
+  // 步骤 2: 创建 Environment
+  const environment = await client.beta.environments.create({
+    name: "quickstart-env",
+    config: {
+      type: "cloud",
+      networking: { type: "unrestricted" },
+    },
+  });
+
+  // 步骤 3: 创建 Session
+  const session = await client.beta.sessions.create({
+    agent: agent.id,
+    environment_id: environment.id,
+    title: "Fibonacci Task",
+  });
+
+  // 步骤 4: 建立 SSE 流并发送消息
+  const stream = await client.beta.sessions.events.stream(session.id);
+
+  // 发送用户消息
+  await client.beta.sessions.events.send(session.id, {
+    events: [
+      {
+        type: "user.message",
+        content: [
+          {
+            type: "text",
+            text: "创建一个 Fibonacci 数列生成脚本，包含单元测试。",
+          },
+        ],
+      },
+    ],
+  });
+
+  // 消费事件流
+  for await (const event of stream) {
+    switch (event.type) {
+      case "agent.message":
+        console.log("🤖 Agent:", event.content);
+        break;
+      case "agent.tool_use":
+        console.log(`🔧 工具: [${event.name}]`);
+        break;
+      case "agent.tool_result":
+        console.log("✅ 结果:", String(event.content).slice(0, 200));
+        break;
+      case "session.status_idle":
+        console.log("✨ 任务完成");
+        stream.return(); // 关闭流
+        break;
+      case "session.status_error":
+        console.error("❌ 错误:", event);
+        stream.return();
+        break;
+    }
+  }
+}
+
+runAgent().catch(console.error);</code></pre>
+          </div>
+
+          <!-- TypeScript Error Handling -->
+          <div class="code-block reveal">
+            <div class="code-header">
+              <span class="code-lang"><span class="code-lang-dot dot-typescript"></span>typescript — 带错误处理的生产级封装</span>
+              <button class="copy-btn" onclick="copyCode(this)">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                复制
+              </button>
+            </div>
+            <pre><code class="language-typescript">interface AgentRunOptions {
+  agentId: string;       // 复用已存在的 Agent
+  environmentId: string; // 复用已存在的 Environment
+  prompt: string;
+  onToolUse?: (name: string, input: unknown) => void;
+  onMessage?: (content: string) => void;
+  timeoutMs?: number;    // 默认 5 分钟
+}
+
+async function runAgentTask(opts: AgentRunOptions): Promise<void> {
+  const { agentId, environmentId, prompt, timeoutMs = 300_000 } = opts;
+
+  const session = await client.beta.sessions.create({
+    agent: agentId,
+    environment_id: environmentId,
+    title: `Task — ${new Date().toISOString()}`,
+  });
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const stream = await client.beta.sessions.events.stream(session.id, {
+      signal: controller.signal,
+    });
+
+    await client.beta.sessions.events.send(session.id, {
+      events: [{ type: "user.message", content: [{ type: "text", text: prompt }] }],
+    });
+
+    for await (const event of stream) {
+      if (event.type === "agent.message") opts.onMessage?.(event.content as string);
+      if (event.type === "agent.tool_use") opts.onToolUse?.(event.name, event.input);
+      if (event.type === "session.status_idle") break;
+      if (event.type === "session.status_error") throw new Error(`Session error: ${JSON.stringify(event)}`);
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CLI ============ -->
+      <section class="section" id="cli">
+        <div class="section-inner">
+          <div class="section-label reveal">CLI 工具</div>
+          <h2 class="section-title reveal reveal-delay-1">ant 命令行参考</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            <code>ant</code> 是 Anthropic 官方 CLI，通过 Homebrew 安装。支持通过命令行管理 Agent、Environment 和 Session，适合脚本化流水线和快速调试。
+          </p>
+
+          <div class="code-block reveal" style="margin-bottom: var(--space-7);">
+            <div class="code-header">
+              <span class="code-lang"><span class="code-lang-dot dot-bash"></span>bash — 安装 ant CLI</span>
+              <button class="copy-btn" onclick="copyCode(this)">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                复制
+              </button>
+            </div>
+            <pre><code class="language-bash">brew install anthropics/tap/ant
+ant --version
+ant auth login</code></pre>
+          </div>
+
+          <div class="cli-commands">
+            <div style="font-family:var(--font-sans); font-size:12px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-ter); margin-bottom: var(--space-3);">Agent 管理</div>
+
+            <div class="cli-cmd reveal reveal-delay-1">
+              <div class="cli-cmd-text">ant beta:agents create --name "My Agent" --model claude-sonnet-4-6</div>
+              <div class="cli-cmd-desc">创建新 Agent，返回 Agent ID</div>
+            </div>
+            <div class="cli-cmd reveal reveal-delay-2">
+              <div class="cli-cmd-text">ant beta:agents list</div>
+              <div class="cli-cmd-desc">列出账户下所有 Agent</div>
+            </div>
+            <div class="cli-cmd reveal reveal-delay-3">
+              <div class="cli-cmd-text">ant beta:agents get &lt;agent-id&gt;</div>
+              <div class="cli-cmd-desc">查看指定 Agent 的完整配置</div>
+            </div>
+
+            <div style="font-family:var(--font-sans); font-size:12px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-ter); margin: var(--space-5) 0 var(--space-3);">Environment 管理</div>
+
+            <div class="cli-cmd reveal reveal-delay-1">
+              <div class="cli-cmd-text">ant beta:environments create --name "my-env" --networking unrestricted</div>
+              <div class="cli-cmd-desc">创建云端沙盒环境</div>
+            </div>
+            <div class="cli-cmd reveal reveal-delay-2">
+              <div class="cli-cmd-text">ant beta:environments list</div>
+              <div class="cli-cmd-desc">列出所有 Environment</div>
+            </div>
+
+            <div style="font-family:var(--font-sans); font-size:12px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-ter); margin: var(--space-5) 0 var(--space-3);">Session 管理</div>
+
+            <div class="cli-cmd reveal reveal-delay-1">
+              <div class="cli-cmd-text">ant beta:sessions create --agent &lt;id&gt; --environment &lt;id&gt;</div>
+              <div class="cli-cmd-desc">创建新 Session，绑定 Agent 和 Environment</div>
+            </div>
+            <div class="cli-cmd reveal reveal-delay-2">
+              <div class="cli-cmd-text">ant beta:sessions list</div>
+              <div class="cli-cmd-desc">列出近期 Session 及其状态</div>
+            </div>
+            <div class="cli-cmd reveal reveal-delay-3">
+              <div class="cli-cmd-text">ant beta:sessions run --session &lt;id&gt; --message "你好"</div>
+              <div class="cli-cmd-desc">向 Session 发送消息并流式输出响应</div>
+            </div>
+          </div>
+
+          <div class="code-block reveal" style="margin-top: var(--space-6);">
+            <div class="code-header">
+              <span class="code-lang"><span class="code-lang-dot dot-bash"></span>bash — 完整 CLI 工作流示例</span>
+              <button class="copy-btn" onclick="copyCode(this)">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                复制
+              </button>
+            </div>
+            <pre><code class="language-bash"># 一次性创建（保存 ID 供复用）
+AGENT_ID=$(ant beta:agents create \
+  --name "DevOps Agent" \
+  --model claude-sonnet-4-6 \
+  --system "You are a DevOps expert." \
+  --output json | jq -r '.id')
+
+ENV_ID=$(ant beta:environments create \
+  --name "devops-env" \
+  --networking unrestricted \
+  --output json | jq -r '.id')
+
+echo "Agent: $AGENT_ID"
+echo "Env: $ENV_ID"
+
+# 每次任务创建新 Session
+SESSION_ID=$(ant beta:sessions create \
+  --agent $AGENT_ID \
+  --environment $ENV_ID \
+  --output json | jq -r '.id')
+
+# 运行任务（流式输出）
+ant beta:sessions run \
+  --session $SESSION_ID \
+  --message "创建 Nginx 反向代理配置，支持 HTTPS 和 gzip 压缩"</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============ TIPS ============ -->
+      <section class="section" id="tips">
+        <div class="section-inner">
+          <div class="section-label reveal">最佳实践</div>
+          <h2 class="section-title reveal reveal-delay-1">生产环境建议</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            以下建议来自 Managed Agents API 的设计原则，帮助你构建稳定、高效的 Agent 系统。
+          </p>
+
+          <div class="tips-grid">
+            <div class="tip-card reveal reveal-delay-1">
+              <div class="tip-icon">♻️</div>
+              <div class="tip-content">
+                <h4>复用 Agent 和 Environment ID</h4>
+                <p>Agent 和 Environment 是持久化的配置。创建一次后将 ID 存入数据库或环境变量，每次任务复用，只为每个任务创建新 Session。避免重复创建浪费资源。</p>
+              </div>
+            </div>
+            <div class="tip-card reveal reveal-delay-2">
+              <div class="tip-icon">🔧</div>
+              <div class="tip-content">
+                <h4>使用 agent_toolset_20260401</h4>
+                <p>这是完整工具集，包含 <code>bash</code>（命令执行）、文件读写、Web 访问等核心能力。如果 Agent 需要执行代码、访问网络，必须指定此工具集。</p>
+              </div>
+            </div>
+            <div class="tip-card reveal reveal-delay-3">
+              <div class="tip-icon">⏱️</div>
+              <div class="tip-content">
+                <h4>正确处理 session.status_idle</h4>
+                <p>收到此事件意味着 Agent 完成了当前任务，正在等待下一条用户消息。这是退出事件循环的正确信号，不要依赖超时来判断任务完成。</p>
+              </div>
+            </div>
+            <div class="tip-card reveal reveal-delay-4">
+              <div class="tip-icon">🛡️</div>
+              <div class="tip-content">
+                <h4>SSE 断流重连处理</h4>
+                <p>SSE 连接可能因网络波动中断。生产代码应实现重连逻辑（指数退避），并通过 <code>GET /v1/sessions/:id</code> 检查 Session 当前状态，决定是否需要重新订阅事件流。</p>
+              </div>
+            </div>
+            <div class="tip-card reveal reveal-delay-1">
+              <div class="tip-icon">🔐</div>
+              <div class="tip-content">
+                <h4>Beta Header 自动附加</h4>
+                <p>使用官方 Python 或 TypeScript SDK 时，<code>managed-agents-2026-04-01</code> Beta header 由 SDK 自动处理，无需手动设置。直接调用 HTTP API 时才需要手动添加。</p>
+              </div>
+            </div>
+            <div class="tip-card reveal reveal-delay-2">
+              <div class="tip-icon">📝</div>
+              <div class="tip-content">
+                <h4>精心设计 System Prompt</h4>
+                <p>System prompt 对 Agent 行为影响巨大。明确指定：输出格式要求、错误处理策略（遇到失败是重试还是报告）、完成任务的判断标准、工具使用优先级。</p>
+              </div>
+            </div>
+            <div class="tip-card reveal reveal-delay-3">
+              <div class="tip-icon">🌐</div>
+              <div class="tip-content">
+                <h4>谨慎选择网络策略</h4>
+                <p>默认使用 <code>unrestricted</code>（允许全部网络访问）。处理敏感数据时考虑 <code>none</code>（完全隔离）。未来版本可能支持白名单域名策略，根据安全需求选择合适配置。</p>
+              </div>
+            </div>
+            <div class="tip-card reveal reveal-delay-4">
+              <div class="tip-icon">📊</div>
+              <div class="tip-content">
+                <h4>监控和日志记录</h4>
+                <p>记录每个 Session 的 ID 和开始时间。在 <code>agent.tool_use</code> 事件中记录工具名称和耗时。设置任务超时（通常 5-15 分钟），避免失控的 Agent 无限运行产生意外费用。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============ COMPARISON ============ -->
+      <section class="section" id="comparison">
+        <div class="section-inner-wide">
+          <div class="section-label reveal">方案对比</div>
+          <h2 class="section-title reveal reveal-delay-1">什么时候该用 Managed Agents？</h2>
+          <p class="section-desc reveal reveal-delay-2">
+            Anthropic 提供多种 AI 集成方式，各有适用场景。选择正确的方案对架构设计至关重要。
+          </p>
+
+          <div class="table-wrapper reveal">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>能力维度</th>
+                  <th>Managed Agents</th>
+                  <th>Messages API</th>
+                  <th>Claude Code</th>
+                  <th>Tool Use (API)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>代码执行环境</td>
+                  <td><span class="check">✓ 托管沙盒</span></td>
+                  <td><span class="cross">✗ 无</span></td>
+                  <td><span class="check">✓ 本地机器</span></td>
+                  <td><span class="cross">✗ 需自建</span></td>
+                </tr>
+                <tr>
+                  <td>自主多步推理</td>
+                  <td><span class="check">✓ 内置 Loop</span></td>
+                  <td><span class="cross">✗ 单轮</span></td>
+                  <td><span class="check">✓ 完整 Loop</span></td>
+                  <td><span class="partial">△ 需手动管理</span></td>
+                </tr>
+                <tr>
+                  <td>实时流式输出</td>
+                  <td><span class="check">✓ SSE</span></td>
+                  <td><span class="check">✓ SSE</span></td>
+                  <td><span class="check">✓ 终端输出</span></td>
+                  <td><span class="check">✓ SSE</span></td>
+                </tr>
+                <tr>
+                  <td>配置持久化</td>
+                  <td><span class="check">✓ Agent 对象</span></td>
+                  <td><span class="cross">✗ 每次传入</span></td>
+                  <td><span class="partial">△ CLAUDE.md</span></td>
+                  <td><span class="cross">✗ 每次传入</span></td>
+                </tr>
+                <tr>
+                  <td>网络访问控制</td>
+                  <td><span class="check">✓ 策略可配置</span></td>
+                  <td><span class="cross">✗ 无执行环境</span></td>
+                  <td><span class="partial">△ 依赖本地</span></td>
+                  <td><span class="cross">✗ 需自建</span></td>
+                </tr>
+                <tr>
+                  <td>适合对象</td>
+                  <td>自动化任务、SaaS 平台嵌入</td>
+                  <td>简单对话、内容生成</td>
+                  <td>开发者本地工具</td>
+                  <td>自定义工具集成</td>
+                </tr>
+                <tr>
+                  <td>基础设施负担</td>
+                  <td><span class="check">✓ 零基础设施</span></td>
+                  <td><span class="check">✓ 零基础设施</span></td>
+                  <td><span class="partial">△ 本地机器</span></td>
+                  <td><span class="cross">✗ 需自建执行层</span></td>
+                </tr>
+                <tr>
+                  <td>典型延迟</td>
+                  <td>秒级~分钟级（任务型）</td>
+                  <td>毫秒~秒级（单轮）</td>
+                  <td>秒级~分钟级</td>
+                  <td>毫秒~秒级</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="notice reveal" style="margin-top: var(--space-6);">
+            <strong>选择建议：</strong> 如果任务需要执行代码、访问文件系统、多步骤迭代（写代码→运行→修复→再运行），且你不想维护自己的执行基础设施，Managed Agents 是最佳选择。如果只需要单次文本生成或简单问答，Messages API 更简单高效。
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FOOTER ============ -->
+      <footer class="footer">
+        <div class="footer-inner">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <h3>Anthropic Managed Agents</h3>
+              <p>
+                托管 AI Agent 基础设施，让你专注于构建产品逻辑，而不是运维执行环境。当前处于 Beta 阶段，API 可能发生变化。
+              </p>
+              <div style="margin-top: var(--space-5);">
+                <span class="beta-badge" style="font-size:12px;">Beta — managed-agents-2026-04-01</span>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>官方资源</h4>
+              <ul>
+                <li><a href="https://docs.anthropic.com/beta/managed-agents" target="_blank" rel="noopener">官方文档</a></li>
+                <li><a href="https://console.anthropic.com" target="_blank" rel="noopener">Anthropic Console</a></li>
+                <li><a href="https://github.com/anthropics/anthropic-sdk-python" target="_blank" rel="noopener">Python SDK</a></li>
+                <li><a href="https://github.com/anthropics/anthropic-sdk-typescript" target="_blank" rel="noopener">TypeScript SDK</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>相关话题</h4>
+              <ul>
+                <li><a href="https://docs.anthropic.com/claude/reference/messages_post" target="_blank" rel="noopener">Messages API</a></li>
+                <li><a href="https://docs.anthropic.com/claude/docs/tool-use" target="_blank" rel="noopener">Tool Use</a></li>
+                <li><a href="https://claude.ai/code" target="_blank" rel="noopener">Claude Code</a></li>
+                <li><a href="https://docs.anthropic.com/claude/docs/models-overview" target="_blank" rel="noopener">模型列表</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div class="footer-bottom-text">
+              本指南基于 Managed Agents Beta API（2026-04-01）编写。内容仅供参考，以官方文档为准。
+            </div>
+            <a href="https://claude.ai" target="_blank" rel="noopener" class="built-badge">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              Built with Claude
+            </a>
+          </div>
+        </div>
+      </footer>
+
+    </div><!-- end .main-content -->
+  </div><!-- end .page-wrapper -->
+
+  <script>
+    // ============================================================
+    // THEME TOGGLE
+    // ============================================================
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+    const themeIcon = document.getElementById('themeIcon');
+
+    // Default to dark mode for this tutorial
+    html.setAttribute('data-theme', 'dark');
+    themeLabel.textContent = '深色模式';
+
+    const sunIcon = `<circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M7 1v1M7 12v1M1 7h1M12 7h1M3.22 3.22l.7.7M10.08 10.08l.7.7M10.78 3.22l-.7.7M3.92 10.08l-.7.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`;
+    const moonIcon = `<path d="M11 7.5A4.5 4.5 0 1 1 6.5 3 3.5 3.5 0 0 0 11 7.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`;
+
+    themeIcon.innerHTML = moonIcon;
+
+    function toggleTheme() {
+      const current = html.getAttribute('data-theme');
+      if (current === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        themeLabel.textContent = '浅色模式';
+        themeIcon.innerHTML = sunIcon;
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        themeLabel.textContent = '深色模式';
+        themeIcon.innerHTML = moonIcon;
+      }
+    }
+
+    // ============================================================
+    // HIGHLIGHT.JS
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      hljs.highlightAll();
+    });
+
+    // ============================================================
+    // COPY TO CLIPBOARD
+    // ============================================================
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre code');
+      const text = pre.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.classList.add('copied');
+        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 已复制`;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 8V2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> 复制`;
+        }, 2000);
+      });
+    }
+
+    // ============================================================
+    // SCROLL ANIMATIONS
+    // ============================================================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ============================================================
+    // ACTIVE NAV ON SCROLL
+    // ============================================================
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+
+    sections.forEach(s => navObserver.observe(s));
+
+    // ============================================================
+    // PROGRESS BAR
+    // ============================================================
+    const progressBar = document.getElementById('progressBar');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }, { passive: true });
+
+    // ============================================================
+    // MOBILE SIDEBAR
+    // ============================================================
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+    }
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+
+    // Close sidebar when nav link clicked on mobile
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) closeSidebar();
+      });
+    });
+  </script>
+</body>
+</html>
