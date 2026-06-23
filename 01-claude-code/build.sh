@@ -1,4 +1,9 @@
 #!/bin/bash
+# NOTE: This build script is currently non-functional because the `modules/`
+# source directory is not included in the repository.
+# `index.html` is the pre-built final product — open it directly in your browser.
+# If you want to rebuild from source, recreate the `modules/` directory by
+# splitting `index.html` back into per-module HTML fragments.
 set -e
 python3 -c "
 header = open('_base.html').read()

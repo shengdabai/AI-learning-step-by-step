@@ -1,4 +1,5 @@
 .DS_Store
+Thumbs.db
 .omc/
 # Codex governance: local secrets and machine state
 .env
@@ -11,7 +12,13 @@
 id_rsa
 id_dsa
 .npmrc
-.DS_Store
-.omc/
 .codex/
 .claude/local/
+node_modules/
+*.log
+*-todo.md
+*.pipeline-state.json
+.pipeline-state.json
+state.json
+state*.json
+*.key
