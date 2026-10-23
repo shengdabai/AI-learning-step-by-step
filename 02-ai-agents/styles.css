@@ -27,6 +27,8 @@
   /* ACCENT — overridden per course in _base.html */
   --color-accent:         #D94F30;
   --color-accent-hover:   #C4432A;
+  --color-accent-solid:       #C4432A;   /* accent fill that carries white text; AA 5.0:1 (#D94F30 is 4.1:1) */
+  --color-accent-solid-hover: #B03B25;   /* hover for that fill; AA 6.0:1 */
   --color-accent-light:   #FDEEE9;
   --color-accent-muted:   #E8836C;
 
@@ -157,7 +159,7 @@ pre::-webkit-scrollbar { display: none; }
 .code-keyword  { color: #CBA6F7; }
 .code-string   { color: #A6E3A1; }
 .code-function { color: #89B4FA; }
-.code-comment  { color: #6C7086; }
+.code-comment  { color: #9399B2; }  /* Catppuccin overlay2: comments are content, 5.8:1 on the code background (overlay0 #6C7086 was 3.4:1) */
 .code-number   { color: #FAB387; }
 .code-property { color: #F9E2AF; }
 .code-operator { color: #94E2D5; }
@@ -471,11 +473,13 @@ p:last-child { margin-bottom: 0; }
   transition: background var(--duration-fast), transform var(--duration-fast);
 }
 .quiz-check-btn {
-  background: var(--color-accent);
+  background: var(--color-accent-solid);
   color: white;
   margin-right: var(--space-3);
 }
-.quiz-check-btn:hover { background: var(--color-accent-hover); transform: translateY(-1px); }
+/* .lang-zh / .lang-en set their own dark and grey colours; inside the button they must stay white */
+.quiz-check-btn .lang-zh, .quiz-check-btn .lang-en { color: inherit; }
+.quiz-check-btn:hover { background: var(--color-accent-solid-hover); transform: translateY(-1px); }
 .quiz-reset-btn {
   background: var(--color-surface);
   color: var(--color-text-secondary);
