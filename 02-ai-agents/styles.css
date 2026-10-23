@@ -1174,6 +1174,37 @@ p:last-child { margin-bottom: 0; }
   .flow-steps { flex-direction: column; }
   .flow-arrow { transform: rotate(90deg); }
   .nav-title { max-width: 140px; }
+
+  /* Touch targets: 32px hit area per nav dot, the 10px dot is drawn by ::before */
+  .nav-dots { gap: 0; }
+  .nav-dot,
+  .nav-dot.active,
+  .nav-dot.visited {
+    width: 32px; height: 32px;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+  }
+  .nav-dot::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 10px; height: 10px;
+    margin: -5px 0 0 -5px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 2px solid var(--color-text-muted);
+    transition: all var(--duration-fast);
+  }
+  .nav-dot.active::before {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-light);
+  }
+  .nav-dot.visited::before {
+    border-color: var(--color-accent-muted);
+    background: var(--color-accent-muted);
+  }
 }
 
 /* ── KEYFRAMES ──────────────────────────────────────────────── */
@@ -1270,6 +1301,8 @@ p:last-child { margin-bottom: 0; }
 .quiz-option .lang-zh {
   display: block;
   font-size: 1em;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .quiz-option .lang-en {
@@ -1278,6 +1311,8 @@ p:last-child { margin-bottom: 0; }
   color: var(--color-text-muted);
   margin-top: 0.1em;
   font-style: normal;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Chat bubble bilingual */

@@ -698,7 +698,7 @@
 
     .step {
       display: grid;
-      grid-template-columns: 48px 1fr;
+      grid-template-columns: 48px minmax(0, 1fr);
       gap: var(--space-5);
       position: relative;
     }
@@ -1281,6 +1281,10 @@
       .arch-flow { min-width: 500px; }
       .cli-cmd { grid-template-columns: 1fr; }
       .topbar-breadcrumb { display: none; }
+      .theme-toggle { min-height: 32px; }
+      .copy-btn { min-height: 32px; min-width: 32px; justify-content: center; }
+      .footer-col a { padding-block: 9px; }
+      .built-badge { min-height: 32px; }
     }
 
     @media (max-width: 480px) {

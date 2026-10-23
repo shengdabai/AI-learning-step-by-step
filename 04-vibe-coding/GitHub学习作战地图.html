@@ -155,7 +155,7 @@
       color: #f8f0e6;
     }
     .flow-note p, .flow-note li { color: rgba(248, 240, 230, 0.8); }
-    .stack { display: grid; gap: 18px; }
+    .stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
     .panel { padding: 24px; }
     .section-head {
       display: flex;
@@ -739,7 +739,7 @@
       .simulator-shell,
       .sim-clues,
       .sim-options {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .grid, .metrics { grid-template-columns: 1fr 1fr; }
       .section-head { flex-direction: column; align-items: start; }
@@ -749,6 +749,8 @@
       .hero, .panel { padding: 18px; border-radius: 22px; }
       .grid, .metrics { grid-template-columns: 1fr; }
       h1 { max-width: none; }
+      .card label input[type='checkbox'] { width: 32px; height: 32px; flex: none; margin: 0; }
+      .resource a { padding-block: 6px; }
     }
   </style>
 </head>
@@ -2036,6 +2038,7 @@ Error: Cannot find module ...</pre>
   });
 
   renderStep();
+})();
   </script>
 </body>
 </html>
