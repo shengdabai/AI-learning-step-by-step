@@ -327,6 +327,10 @@
     footer a { padding-block: 9px; }
     .table-scroll { overflow-x: auto; max-width: 100%; }
   }
+    /* 系统设置「减少动态效果」时停掉循环动画、过渡直接到位（WCAG 2.2.2） */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+    }
 </style>
 </head>
 <body>

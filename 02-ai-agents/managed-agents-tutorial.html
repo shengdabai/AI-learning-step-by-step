@@ -34,13 +34,21 @@
       --near-black:   #141413;
       --charcoal:     #4d4c48;
       --olive-gray:   #5e5d59;
-      --stone-gray:   #87867f;
+      --stone-gray:   #989791;   /* text on always-dark surfaces; AA (was #87867f, 3.6:1 on --dark-surface) */
       --dark-warm:    #3d3d3a;
       --warm-silver:  #b0aea5;
 
       /* Brand */
       --terracotta:   #c96442;
       --coral:        #d97757;
+
+      /* Text roles that need AA contrast (fills and borders keep the brand tokens above) */
+      --accent-text:   #a64d2f;   /* --terracotta as text on light surfaces */
+      --ivory-text:    #faf9f5;   /* --ivory as text on always-dark surfaces (--ivory itself is remapped in dark theme) */
+      --terracotta-solid: #ad5230;         /* --terracotta for fills that carry ivory text; AA 4.9:1 */
+      --terracotta-solid-hover: #9c4729;   /* hover for those fills; AA 6.0:1 (--coral was 3.0:1) */
+      --green-text:    #327432;
+      --blue-text:     #116ab7;
 
       /* Borders */
       --border-cream: #f0eee6;
@@ -78,7 +86,7 @@
       --surface:  var(--ivory);
       --text:     var(--near-black);
       --text-sec: var(--olive-gray);
-      --text-ter: var(--stone-gray);
+      --text-ter: #686762;
       --border:   var(--border-cream);
 
       /* Sidebar */
@@ -92,6 +100,9 @@
       --text-sec:  var(--warm-silver);
       --text-ter:  var(--stone-gray);
       --border:    var(--border-dark);
+      --accent-text: #dd9d87;
+      --green-text: #5cb85c;
+      --blue-text:  #3898ec;
       --parchment: var(--deep-dark);
       --ivory:     var(--dark-surface);
       --border-cream: #30302e;
@@ -207,7 +218,7 @@
     }
 
     .sidebar-nav a.active {
-      color: var(--terracotta);
+      color: var(--accent-text);
       border-left-color: var(--terracotta);
       background: var(--bg);
       font-weight: 500;
@@ -307,8 +318,8 @@
     .beta-badge {
       padding: 4px 10px;
       border-radius: 24px;
-      background: var(--terracotta);
-      color: var(--ivory);
+      background: var(--terracotta-solid);
+      color: var(--ivory-text);
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.4px;
@@ -388,7 +399,7 @@
       font-size: clamp(2.2rem, 5vw, 3.8rem);
       font-weight: 500;
       line-height: 1.1;
-      color: var(--ivory);
+      color: var(--ivory-text);
       margin-bottom: var(--space-5);
       letter-spacing: -0.01em;
     }
@@ -430,19 +441,19 @@
       gap: var(--space-2);
       padding: 10px 20px;
       border-radius: 10px;
-      background: var(--terracotta);
-      color: var(--ivory);
+      background: var(--terracotta-solid);
+      color: var(--ivory-text);
       text-decoration: none;
       font-size: 15px;
       font-weight: 500;
-      box-shadow: 0 0 0 1px var(--terracotta), 0 4px 16px rgba(201,100,66,0.3);
+      box-shadow: 0 0 0 1px var(--terracotta-solid), 0 4px 16px rgba(201,100,66,0.3);
       transition: all 0.2s ease;
     }
 
     .hero-cta:hover {
-      background: var(--coral);
+      background: var(--terracotta-solid-hover);
       transform: translateY(-1px);
-      box-shadow: 0 0 0 1px var(--coral), 0 8px 24px rgba(201,100,66,0.4);
+      box-shadow: 0 0 0 1px var(--terracotta-solid-hover), 0 8px 24px rgba(201,100,66,0.4);
     }
 
     /* ============================================================
@@ -454,11 +465,11 @@
 
     .section-alt {
       background: var(--near-black);
-      color: var(--ivory);
+      color: var(--ivory-text);
     }
 
     .section-alt .section-label { color: var(--stone-gray); }
-    .section-alt .section-title { color: var(--ivory); }
+    .section-alt .section-title { color: var(--ivory-text); }
     .section-alt .section-desc { color: var(--warm-silver); }
 
     .section-inner {
@@ -476,7 +487,7 @@
       font-weight: 500;
       letter-spacing: 0.8px;
       text-transform: uppercase;
-      color: var(--terracotta);
+      color: var(--accent-text);
       margin-bottom: var(--space-3);
     }
 
@@ -576,7 +587,7 @@
       padding: 3px 10px;
       border-radius: 6px;
       background: rgba(201,100,66,0.1);
-      color: var(--terracotta);
+      color: var(--accent-text);
       font-size: 12px;
       font-weight: 500;
       font-family: var(--font-mono);
@@ -640,7 +651,7 @@
     .arch-box-label {
       font-size: 13px;
       font-weight: 600;
-      color: var(--ivory);
+      color: var(--ivory-text);
       margin-bottom: 3px;
     }
 
@@ -720,8 +731,8 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: var(--terracotta);
-      color: var(--ivory);
+      background: var(--terracotta-solid);
+      color: var(--ivory-text);
       font-family: var(--font-serif);
       font-size: 1.1rem;
       font-weight: 500;
@@ -833,6 +844,13 @@
       padding: var(--space-5) !important;
       letter-spacing: -0.2px;
     }
+    /* highlight.js 没加载（CDN 打不开）时，代码块别套上行内 code 的浅底红字 */
+    .code-block pre code:not(.hljs) {
+      display: block;
+      overflow-x: auto;
+      background: transparent;
+      color: #e8e6dc;
+    }
 
     /* ============================================================
        USE CASE CARDS
@@ -879,7 +897,7 @@
       font-family: var(--font-serif);
       font-size: 1.1rem;
       font-weight: 500;
-      color: var(--ivory);
+      color: var(--ivory-text);
     }
 
     .use-case-header p {
@@ -986,7 +1004,7 @@
     tbody td:first-child {
       font-family: var(--font-mono);
       font-size: 13px;
-      color: var(--terracotta);
+      color: var(--accent-text);
     }
 
     .method-badge {
@@ -998,8 +1016,8 @@
       font-family: var(--font-mono);
     }
 
-    .method-get { background: rgba(56,152,236,0.12); color: #3898ec; }
-    .method-post { background: rgba(92,184,92,0.12); color: #5cb85c; }
+    .method-get { background: rgba(56,152,236,0.12); color: var(--blue-text); }
+    .method-post { background: rgba(92,184,92,0.12); color: var(--green-text); }
 
     /* ============================================================
        TIPS / BEST PRACTICES
@@ -1059,7 +1077,7 @@
       background: var(--warm-sand);
       padding: 1px 5px;
       border-radius: 4px;
-      color: var(--terracotta);
+      color: var(--accent-text);
     }
 
     [data-theme="dark"] code {
@@ -1094,7 +1112,7 @@
     .cli-cmd-text {
       font-family: var(--font-mono);
       font-size: 13px;
-      color: var(--terracotta);
+      color: var(--accent-text);
     }
 
     .cli-cmd-desc {
@@ -1112,9 +1130,9 @@
       color: var(--text);
     }
 
-    .check { color: #5cb85c; font-weight: 600; }
-    .cross { color: var(--stone-gray); }
-    .partial { color: var(--terracotta); }
+    .check { color: var(--green-text); font-weight: 600; }
+    .cross { color: var(--text-ter); }
+    .partial { color: var(--accent-text); }
 
     /* ============================================================
        FOOTER
@@ -1141,7 +1159,7 @@
       font-family: var(--font-serif);
       font-size: 1.2rem;
       font-weight: 500;
-      color: var(--ivory);
+      color: var(--ivory-text);
       margin-bottom: var(--space-3);
     }
 
@@ -1238,7 +1256,7 @@
       padding: 3px 10px;
       border-radius: 6px;
       background: rgba(201,100,66,0.1);
-      color: var(--terracotta);
+      color: var(--accent-text);
       font-family: var(--font-mono);
       font-size: 13px;
     }
@@ -1257,7 +1275,7 @@
       line-height: 1.6;
     }
 
-    .notice strong { color: var(--terracotta); }
+    .notice strong { color: var(--accent-text); }
 
     /* ============================================================
        RESPONSIVE
@@ -1335,6 +1353,10 @@
 
     [data-theme="dark"] .lang-tag {
       background: #3a3a38;
+    }
+    /* 系统设置「减少动态效果」时停掉循环动画、过渡直接到位（WCAG 2.2.2） */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
@@ -1480,7 +1502,7 @@
           <!-- Architecture Diagram -->
           <div class="arch-diagram reveal">
             <div style="text-align:center; margin-bottom: var(--space-6);">
-              <div style="font-family:var(--font-serif); font-size:1rem; color:var(--ivory); margin-bottom:4px;">架构数据流</div>
+              <div style="font-family:var(--font-serif); font-size:1rem; color:var(--ivory-text); margin-bottom:4px;">架构数据流</div>
               <div style="font-size:12px; color:var(--stone-gray);">从应用到容器的完整调用链路</div>
             </div>
             <div class="arch-flow">

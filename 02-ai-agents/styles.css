@@ -17,7 +17,8 @@
   --color-bg-code:        #1E1E2E;
   --color-text:           #2C2A28;
   --color-text-secondary: #6B6560;
-  --color-text-muted:     #9E9790;
+  --color-text-muted:     #726A63;   /* text; AA on every surface (was #9E9790) */
+  --color-muted-decor:    #9E9790;   /* original tone: borders and dots only, never text */
   --color-border:         #E5DFD6;
   --color-border-light:   #EEEBE5;
   --color-surface:        #FFFFFF;
@@ -43,6 +44,11 @@
   --color-actor-3:        #7B6DAA;
   --color-actor-4:        #D4A843;
   --color-actor-5:        #2D8B55;
+  /* actor colours as text on light surfaces (AA); the colours above stay for fills */
+  --color-actor-1-text:   #C24124;
+  --color-actor-2-text:   #287594;
+  --color-actor-3-text:   #7263A4;
+  --color-actor-4-text:   #88681F;
 
   /* FONTS */
   --font-display: 'Bricolage Grotesque', Georgia, serif;
@@ -211,7 +217,7 @@ pre::-webkit-scrollbar { display: none; }
 .nav-dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  border: 2px solid var(--color-text-muted);
+  border: 2px solid var(--color-muted-decor);
   background: transparent;
   cursor: pointer;
   transition: all var(--duration-fast);
@@ -357,7 +363,7 @@ p:last-child { margin-bottom: 0; }
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0.5;
+  color: #82869B;
 }
 .translation-english .translation-label {
   position: static;
@@ -630,7 +636,7 @@ p:last-child { margin-bottom: 0; }
 .typing-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
-  background: var(--color-text-muted);
+  background: var(--color-muted-decor);
   animation: typingBounce 1.4s infinite;
 }
 .typing-dot:nth-child(2) { animation-delay: 0.2s; }
@@ -1193,7 +1199,7 @@ p:last-child { margin-bottom: 0; }
     margin: -5px 0 0 -5px;
     box-sizing: border-box;
     border-radius: 50%;
-    border: 2px solid var(--color-text-muted);
+    border: 2px solid var(--color-muted-decor);
     transition: all var(--duration-fast);
   }
   .nav-dot.active::before {
