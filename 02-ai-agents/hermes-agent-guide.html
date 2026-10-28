@@ -4,7 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hermes Agent - 完整使用指南</title>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" integrity="sha384-yQ4mmBBT+vhTAwjFH0toJXNYJ6O4usWnt6EPIdWwrRvx2V/n5lXuDZQwQFeSFydF" crossorigin="anonymous"></script>
+<meta name="description" content="Hermes Agent 完整使用指南：Nous Research 开源的自进化 AI Agent 框架，覆盖架构、快速开始、工具系统、技能系统、记忆系统、命令参考和实战案例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hermes Agent - 完整使用指南">
+<meta property="og:description" content="Hermes Agent 完整使用指南：Nous Research 开源的自进化 AI Agent 框架，覆盖架构、快速开始、工具系统、技能系统、记忆系统、命令参考和实战案例。">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js" integrity="sha384-rbtjAdnIQE/aQJGEgXrVUlMibdfTSa4PQju4HDhN3sR2PmaKFzhEafuePsl9H/9I" crossorigin="anonymous"></script>
 <style>
   :root {
     --gold: #FFD700;
@@ -316,14 +322,21 @@
     font-size: 0.85rem;
     border-top: 1px solid var(--border);
   }
-  footer a { color: var(--gold); text-decoration: none; }
+  footer a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
 
   /* Responsive */
   @media (max-width: 768px) {
     .hero h1 { font-size: 2.2rem; }
     .card-grid { grid-template-columns: 1fr; }
-    .nav { gap: 12px; }
+    .nav { gap: 0 4px; }
+    .nav a { display: flex; align-items: center; justify-content: center; min-height: 32px; min-width: 32px; padding-inline: 4px; }
+    footer a { padding-block: 9px; }
+    .table-scroll { overflow-x: auto; max-width: 100%; }
   }
+    /* 系统设置「减少动态效果」时停掉循环动画、过渡直接到位（WCAG 2.2.2） */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+    }
 </style>
 </head>
 <body>
@@ -604,7 +617,7 @@ flowchart LR
   <h2><span class="icon">&#128295;</span> 工具系统</h2>
   <p class="section-desc">Hermes 的核心能力来自丰富的工具集。Agent 根据任务自动选择合适的工具组合。</p>
 
-  <table>
+  <div class="table-scroll"><table>
     <tr>
       <th>工具集</th>
       <th>功能</th>
@@ -671,7 +684,7 @@ flowchart LR
       <td>MCP 服务器配置</td>
       <td style="color:var(--green)">已启用</td>
     </tr>
-  </table>
+  </table></div>
 
   <div class="concept">
     <div class="concept-title">工具调用安全机制</div>
@@ -799,7 +812,7 @@ flowchart LR
   <p class="section-desc">Hermes 的两层命令体系：CLI 外部命令 + 对话内 Slash 命令。</p>
 
   <h3>CLI 外部命令 (终端中执行)</h3>
-  <table>
+  <div class="table-scroll"><table>
     <tr><th>命令</th><th>说明</th></tr>
     <tr><td><code>hermes</code></td><td>进入交互式对话</td></tr>
     <tr><td><code>hermes --resume &lt;id&gt;</code></td><td>恢复指定会话</td></tr>
@@ -814,10 +827,10 @@ flowchart LR
     <tr><td><code>hermes sessions list</code></td><td>列出历史会话</td></tr>
     <tr><td><code>hermes config show</code></td><td>显示当前配置</td></tr>
     <tr><td><code>hermes update</code></td><td>更新到最新版本</td></tr>
-  </table>
+  </table></div>
 
   <h3>Slash 命令 (对话中使用)</h3>
-  <table>
+  <div class="table-scroll"><table>
     <tr><th>命令</th><th>说明</th><th>分类</th></tr>
     <tr><td><code>/new</code> / <code>/reset</code></td><td>开始新对话</td><td><span class="tag tag-core">会话</span></td></tr>
     <tr><td><code>/model [provider:model]</code></td><td>切换模型</td><td><span class="tag tag-config">配置</span></td></tr>
@@ -830,7 +843,7 @@ flowchart LR
     <tr><td><code>/skills</code></td><td>浏览/安装技能</td><td><span class="tag tag-skill">技能</span></td></tr>
     <tr><td><code>/insights --days N</code></td><td>使用分析报告</td><td><span class="tag tag-core">会话</span></td></tr>
     <tr><td><code>Ctrl+C</code></td><td>中断当前执行</td><td><span class="tag tag-core">控制</span></td></tr>
-  </table>
+  </table></div>
 </section>
 
 <!-- Section 9: Advanced -->

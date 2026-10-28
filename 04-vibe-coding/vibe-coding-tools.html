@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vibe Coding 新手工具桌面</title>
+<meta name="description" content="Vibe Coding 新手工具桌面：先准备 8 类工具（IDE、Git、UI 设计、动效、图标、图片/视频、数据库、部署），并列出 6 个常踩的坑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vibe Coding 新手工具桌面">
+<meta property="og:description" content="Vibe Coding 新手工具桌面：先准备 8 类工具（IDE、Git、UI 设计、动效、图标、图片/视频、数据库、部署），并列出 6 个常踩的坑。">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
 <style>
   :root {
     --bg: #0a0a0b;
@@ -14,7 +20,8 @@
     --border-light: #3a3a3e;
     --text: #e8e8ec;
     --text-dim: #8a8a94;
-    --text-dimmer: #5a5a64;
+    --text-dimmer: #878793;
+    --line-dimmer: #5a5a64;
     --accent: #6c5ce7;
     --accent-light: #a29bfe;
     --accent-glow: rgba(108, 92, 231, 0.15);
@@ -150,7 +157,7 @@
     display: block;
     width: 1px;
     height: 30px;
-    background: var(--text-dimmer);
+    background: var(--line-dimmer);
     margin: 0.5rem auto 0;
   }
 
@@ -579,6 +586,10 @@
     .workflow { flex-direction: column; align-items: flex-start; }
     .workflow-arrow { transform: rotate(90deg); }
   }
+    /* 系统设置「减少动态效果」时停掉循环动画、过渡直接到位（WCAG 2.2.2） */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+    }
 </style>
 </head>
 <body>

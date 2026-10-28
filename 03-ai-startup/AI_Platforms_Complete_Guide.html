@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI工程实践完全指南 - 从开源工具到Harness Engineering</title>
+    <meta name="description" content="AI 工程实践完全指南：开源工具清单与使用流程、CREAO AI-Native 工程案例、Harness Engineering 驾驭工程、Mac AI 开发工具链和 AI 平台架构建议。">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AI工程实践完全指南 - 从开源工具到Harness Engineering">
+    <meta property="og:description" content="AI 工程实践完全指南：开源工具清单与使用流程、CREAO AI-Native 工程案例、Harness Engineering 驾驭工程、Mac AI 开发工具链和 AI 平台架构建议。">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
     <style>
         * {
             margin: 0;
@@ -373,7 +379,7 @@
         }
 
         .link-content p {
-            color: #888;
+            color: #9c9c9c;
             font-size: 0.9em;
             margin-top: 5px;
         }
@@ -479,6 +485,13 @@
             }
             .tool-grid, .advice-grid {
                 grid-template-columns: 1fr;
+            }
+            .table-scroll {
+                overflow-x: auto;
+                max-width: 100%;
+            }
+            .link-content a {
+                padding-block: 9px;
             }
         }
     </style>
@@ -778,7 +791,7 @@
             </div>
 
             <h3>新工程组织架构</h3>
-            <table class="comparison-table">
+            <div class="table-scroll"><table class="comparison-table">
                 <tr>
                     <th>角色</th>
                     <th>职责</th>
@@ -794,7 +807,7 @@
                     <td>Bug调查、UI优化、PR审查、验证</td>
                     <td>执行能力、注意力、判断力</td>
                 </tr>
-            </table>
+            </table></div>
 
             <div class="quote" style="border-left-color: #f5576c; color: #666;">
                 "我拥有物理学博士学位。我的博士学位教给我的最有用的事情是如何质疑假设、压力测试论证以及寻找缺失的部分。批评人工智能的能力将比编写代码的能力更有价值。"
@@ -814,7 +827,7 @@
 
             <h3>AI范式演进四阶段</h3>
 
-            <table class="comparison-table">
+            <div class="table-scroll"><table class="comparison-table">
                 <tr>
                     <th>阶段</th>
                     <th>关注点</th>
@@ -845,7 +858,7 @@
                     <td>系统级质量控制</td>
                     <td>需要持续投入维护</td>
                 </tr>
-            </table>
+            </table></div>
 
             <h3>Harness四层架构（OpenAI实践）</h3>
 
@@ -908,7 +921,7 @@
             <p>在大模型时代，开发者需要同时管理多个需求/项目，使用多种AI工具。传统桌面配置开始捉襟见肘，需要新的工具链支持。</p>
 
             <h3>核心工具清单</h3>
-            <table class="comparison-table">
+            <div class="table-scroll"><table class="comparison-table">
                 <tr>
                     <th>工具</th>
                     <th>性质</th>
@@ -969,7 +982,7 @@
                     <td>远程终端复用、会话持久化、断线恢复</td>
                     <td><span class="tag">⭐⭐⭐⭐</span></td>
                 </tr>
-            </table>
+            </table></div>
 
             <h3>实用AI实践案例</h3>
 

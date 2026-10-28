@@ -17,7 +17,8 @@
   --color-bg-code:        #1E1E2E;
   --color-text:           #2C2A28;
   --color-text-secondary: #6B6560;
-  --color-text-muted:     #9E9790;
+  --color-text-muted:     #726A63;   /* text; AA on every surface (was #9E9790) */
+  --color-muted-decor:    #9E9790;   /* original tone: borders and dots only, never text */
   --color-border:         #E5DFD6;
   --color-border-light:   #EEEBE5;
   --color-surface:        #FFFFFF;
@@ -26,6 +27,8 @@
   /* ACCENT — overridden per course in _base.html */
   --color-accent:         #D94F30;
   --color-accent-hover:   #C4432A;
+  --color-accent-solid:       #C4432A;   /* accent fill that carries white text; AA 5.0:1 (#D94F30 is 4.1:1) */
+  --color-accent-solid-hover: #B03B25;   /* hover for that fill; AA 6.0:1 */
   --color-accent-light:   #FDEEE9;
   --color-accent-muted:   #E8836C;
 
@@ -43,6 +46,11 @@
   --color-actor-3:        #7B6DAA;
   --color-actor-4:        #D4A843;
   --color-actor-5:        #2D8B55;
+  /* actor colours as text on light surfaces (AA); the colours above stay for fills */
+  --color-actor-1-text:   #C24124;
+  --color-actor-2-text:   #287594;
+  --color-actor-3-text:   #7263A4;
+  --color-actor-4-text:   #88681F;
 
   /* FONTS */
   --font-display: 'Bricolage Grotesque', Georgia, serif;
@@ -151,7 +159,7 @@ pre::-webkit-scrollbar { display: none; }
 .code-keyword  { color: #CBA6F7; }
 .code-string   { color: #A6E3A1; }
 .code-function { color: #89B4FA; }
-.code-comment  { color: #6C7086; }
+.code-comment  { color: #9399B2; }  /* Catppuccin overlay2: comments are content, 5.8:1 on the code background (overlay0 #6C7086 was 3.4:1) */
 .code-number   { color: #FAB387; }
 .code-property { color: #F9E2AF; }
 .code-operator { color: #94E2D5; }
@@ -211,7 +219,7 @@ pre::-webkit-scrollbar { display: none; }
 .nav-dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  border: 2px solid var(--color-text-muted);
+  border: 2px solid var(--color-muted-decor);
   background: transparent;
   cursor: pointer;
   transition: all var(--duration-fast);
@@ -357,7 +365,7 @@ p:last-child { margin-bottom: 0; }
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0.5;
+  color: #82869B;
 }
 .translation-english .translation-label {
   position: static;
@@ -465,11 +473,13 @@ p:last-child { margin-bottom: 0; }
   transition: background var(--duration-fast), transform var(--duration-fast);
 }
 .quiz-check-btn {
-  background: var(--color-accent);
+  background: var(--color-accent-solid);
   color: white;
   margin-right: var(--space-3);
 }
-.quiz-check-btn:hover { background: var(--color-accent-hover); transform: translateY(-1px); }
+/* .lang-zh / .lang-en set their own dark and grey colours; inside the button they must stay white */
+.quiz-check-btn .lang-zh, .quiz-check-btn .lang-en { color: inherit; }
+.quiz-check-btn:hover { background: var(--color-accent-solid-hover); transform: translateY(-1px); }
 .quiz-reset-btn {
   background: var(--color-surface);
   color: var(--color-text-secondary);
@@ -630,7 +640,7 @@ p:last-child { margin-bottom: 0; }
 .typing-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
-  background: var(--color-text-muted);
+  background: var(--color-muted-decor);
   animation: typingBounce 1.4s infinite;
 }
 .typing-dot:nth-child(2) { animation-delay: 0.2s; }
@@ -1174,6 +1184,37 @@ p:last-child { margin-bottom: 0; }
   .flow-steps { flex-direction: column; }
   .flow-arrow { transform: rotate(90deg); }
   .nav-title { max-width: 140px; }
+
+  /* Touch targets: 32px hit area per nav dot, the 10px dot is drawn by ::before */
+  .nav-dots { gap: 0; }
+  .nav-dot,
+  .nav-dot.active,
+  .nav-dot.visited {
+    width: 32px; height: 32px;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+  }
+  .nav-dot::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 10px; height: 10px;
+    margin: -5px 0 0 -5px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 2px solid var(--color-muted-decor);
+    transition: all var(--duration-fast);
+  }
+  .nav-dot.active::before {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-light);
+  }
+  .nav-dot.visited::before {
+    border-color: var(--color-accent-muted);
+    background: var(--color-accent-muted);
+  }
 }
 
 /* ── KEYFRAMES ──────────────────────────────────────────────── */
@@ -1270,6 +1311,8 @@ p:last-child { margin-bottom: 0; }
 .quiz-option .lang-zh {
   display: block;
   font-size: 1em;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .quiz-option .lang-en {
@@ -1278,6 +1321,8 @@ p:last-child { margin-bottom: 0; }
   color: var(--color-text-muted);
   margin-top: 0.1em;
   font-style: normal;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Chat bubble bilingual */

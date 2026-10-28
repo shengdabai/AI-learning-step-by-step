@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Agents 学习课程 — AI Agents Learning Course</title>
+  <meta name="description" content="AI Agents 中英双语学习课程，分 5 个模块：AI 智能体入门（Datawhale Hello-Agents）、行业案例库、Jupyter 实战教程、框架对比学习、微软系统课程。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI Agents 学习课程 — AI Agents Learning Course">
+  <meta property="og:description" content="AI Agents 中英双语学习课程，分 5 个模块：AI 智能体入门（Datawhale Hello-Agents）、行业案例库、Jupyter 实战教程、框架对比学习、微软系统课程。">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary">
 
   <!-- Google Fonts: Noto Sans SC (Chinese) + Bricolage Grotesque · DM Sans · JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +32,7 @@
 <body>
 
   <nav class="nav" id="nav">
-    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-label="学习进度" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     <div class="nav-inner">
       <span class="nav-title">AI Agents 学习课程</span>
       <div class="nav-dots" id="nav-dots" role="tablist">
@@ -175,35 +181,35 @@
             <div class="chat-message" data-msg="0" data-sender="actor-a" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-1)">用户 — User</span>
+                <span class="chat-sender" style="color: var(--color-actor-1-text)">用户 — User</span>
                 <p>帮我规划一趟去日本的旅行，预算5000元</p>
               </div>
             </div>
             <div class="chat-message" data-msg="1" data-sender="actor-b" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-2)">🧠</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-2)">协调器 — Coordinator</span>
+                <span class="chat-sender" style="color: var(--color-actor-2-text)">协调器 — Coordinator</span>
                 <p>收到！我来分解任务：搜索航班、查酒店、规划行程</p>
               </div>
             </div>
             <div class="chat-message" data-msg="2" data-sender="actor-c" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-3)">🔍</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-3)">搜索智能体 — Search Agent</span>
+                <span class="chat-sender" style="color: var(--color-actor-3-text)">搜索智能体 — Search Agent</span>
                 <p>查到上海飞东京往返机票约2000元，东京酒店每晚400元</p>
               </div>
             </div>
             <div class="chat-message" data-msg="3" data-sender="actor-d" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-4)">📋</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-4)">规划智能体 — Planner Agent</span>
+                <span class="chat-sender" style="color: var(--color-actor-4-text)">规划智能体 — Planner Agent</span>
                 <p>5天行程建议：东京3天+京都2天，总预算4800元，剩余200元餐饮</p>
               </div>
             </div>
             <div class="chat-message" data-msg="4" data-sender="actor-b" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-2)">🧠</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-2)">协调器 — Coordinator</span>
+                <span class="chat-sender" style="color: var(--color-actor-2-text)">协调器 — Coordinator</span>
                 <p>方案汇总完成，呈现给用户！✅</p>
               </div>
             </div>
@@ -1085,35 +1091,35 @@
             <div class="chat-message" data-msg="0" data-sender="actor-a" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-1)">用户 — User</span>
+                <span class="chat-sender" style="color: var(--color-actor-1-text)">用户 — User</span>
                 <p>帮我分析这份法律合同的关键条款</p>
               </div>
             </div>
             <div class="chat-message" data-msg="1" data-sender="actor-b" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-2)">📋</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-2)">规划器 — Planner</span>
+                <span class="chat-sender" style="color: var(--color-actor-2-text)">规划器 — Planner</span>
                 <p>我来拆解：先阅读合同，提取关键条款，然后进行风险评估</p>
               </div>
             </div>
             <div class="chat-message" data-msg="2" data-sender="actor-c" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-3)">📄</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-3)">阅读智能体 — Reader</span>
+                <span class="chat-sender" style="color: var(--color-actor-3-text)">阅读智能体 — Reader</span>
                 <p>已读取合同，发现 12 个关键条款，包括违约责任、保密协议和终止条件</p>
               </div>
             </div>
             <div class="chat-message" data-msg="3" data-sender="actor-d" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-4)">⚖️</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-4)">审核智能体 — Reviewer</span>
+                <span class="chat-sender" style="color: var(--color-actor-4-text)">审核智能体 — Reviewer</span>
                 <p>风险评估完成：第 3 条违约责任过严，建议重新谈判。第 7 条保密范围过宽。</p>
               </div>
             </div>
             <div class="chat-message" data-msg="4" data-sender="actor-b" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-2)">📋</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-2)">规划器 — Planner</span>
+                <span class="chat-sender" style="color: var(--color-actor-2-text)">规划器 — Planner</span>
                 <p>分析完成，生成报告并提交给用户 ✅</p>
               </div>
             </div>

@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Code 互动课程 — From Vibe Coding to Agentic Engineering</title>
+  <meta name="description" content="Claude Code 中英双语互动课程，分 6 个模块：认识 Claude Code、核心概念、命令与技能、智能体与工作流、设置与 MCP、最佳实践。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Claude Code 互动课程 — From Vibe Coding to Agentic Engineering">
+  <meta property="og:description" content="Claude Code 中英双语互动课程，分 6 个模块：认识 Claude Code、核心概念、命令与技能、智能体与工作流、设置与 MCP、最佳实践。">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,10 +20,10 @@
 </head>
 <body>
   <nav class="nav">
-    <div class="progress-bar" role="progressbar" aria-valuenow="0"></div>
+    <div class="progress-bar" role="progressbar" aria-label="学习进度" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     <div class="nav-inner">
       <span class="nav-title">Claude Code 互动课程</span>
-      <div class="nav-dots">
+      <div class="nav-dots" role="tablist">
         <button class="nav-dot" data-target="module-1" data-tooltip="模块 1 — 认识 Claude Code" role="tab" aria-label="Module 1"></button>
         <button class="nav-dot" data-target="module-2" data-tooltip="模块 2 — 核心概念" role="tab" aria-label="Module 2"></button>
         <button class="nav-dot" data-target="module-3" data-tooltip="模块 3 — 命令与技能" role="tab" aria-label="Module 3"></button>
@@ -260,7 +266,7 @@
             <div class="chat-message" data-msg="0" data-sender="actor-a" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-1)">你 / You</span>
+                <span class="chat-sender" style="color: var(--color-actor-1-text)">你 / You</span>
                 <p>我需要一个天气信息的 SVG 卡片。</p>
                 <p>I need an SVG weather card.</p>
               </div>
@@ -268,7 +274,7 @@
             <div class="chat-message" data-msg="1" data-sender="actor-b" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-2)">⚡</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-2)">命令 / Command</span>
+                <span class="chat-sender" style="color: var(--color-actor-2-text)">命令 / Command</span>
                 <p>收到！我先问问用户想要摄氏度还是华氏度？</p>
                 <p>Got it! Let me ask: Celsius or Fahrenheit?</p>
               </div>
@@ -276,7 +282,7 @@
             <div class="chat-message" data-msg="2" data-sender="actor-c" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-3)">🤖</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-3)">智能体 / Agent</span>
+                <span class="chat-sender" style="color: var(--color-actor-3-text)">智能体 / Agent</span>
                 <p>我去网上查当前温度，查到了：26°C</p>
                 <p>I'll look up the current temperature online... Found it: 26°C</p>
               </div>
@@ -284,7 +290,7 @@
             <div class="chat-message" data-msg="3" data-sender="actor-d" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-4)">🎨</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-4)">技能 / Skill</span>
+                <span class="chat-sender" style="color: var(--color-actor-4-text)">技能 / Skill</span>
                 <p>我来画一个漂亮的 SVG 天气卡片！</p>
                 <p>I'll draw a beautiful SVG weather card!</p>
               </div>
@@ -292,7 +298,7 @@
             <div class="chat-message" data-msg="4" data-sender="actor-e" style="display:none">
               <div class="chat-avatar" style="background: var(--color-actor-5)">🔧</div>
               <div class="chat-bubble">
-                <span class="chat-sender" style="color: var(--color-actor-5)">MCP</span>
+                <span class="chat-sender" style="color: var(--color-actor-5-text)">MCP</span>
                 <p>我提供了网上查询天气的接口，没有我，智能体就查不到数据。</p>
                 <p>I provide the interface to query weather online. Without me, the agent can't fetch data.</p>
               </div>
